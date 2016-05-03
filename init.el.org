@@ -209,8 +209,7 @@ Maybe I'll do that sometime.
   (use-package org
     :load-path "~/git/org-mode/lisp"
     :bind (("C-c a"   . org-agenda)
-	   ("C-c C-w" . org-refile)
-	   ("C-c j"   . org-clock-goto))
+	   ("C-c C-w" . org-refile))
     :config
     (progn
       (setq org-agenda-files
