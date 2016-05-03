@@ -5,19 +5,19 @@ things I like, I really, really like. I wabt to reimplement them all
 with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 * Install packages
 #+begin_src emacs-lisp :tangle  init.el
-(require 'package)
+  (require 'package)
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-;; set package-user-dir to be relative to Prelude install path
-(setq package-user-dir
-      (expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
-(package-initialize)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/") t)
 
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)                ;; if you use :diminish
-(require 'bind-key)                ;; if you use any :bind variant
+  (setq package-user-dir
+	(expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
+  (package-initialize)
+
+  (eval-when-compile
+    (require 'use-package))
+  (require 'diminish)
+  (require 'bind-key)
 #+end_src
 Not that I know what all these do, but they were in Prelude's list of
 packages. I'll figure it out.
@@ -196,10 +196,32 @@ I dig helm. I don't care much for ido.
 * Org Mode
 I like the bleeding edge. Heck, I compiled my emacs from git :-)
 [GNU Emacs 25.0.93.2 (x86_64-unknown-linux-gnu, GTK+ Version 3.16.7) of 2016-04-28]
+On org-agenda-files, the documentation says:
+#begin+quote
+If the value of the variable is not a list but a single file name, then
+the list of agenda files is actually stored and maintained in that file, one
+agenda file per line.  In this file paths can be given relative to
+‘org-directory’.  Tilde expansion and environment variable substitution
+are also made.
+#+end_quote
+Maybe I'll do that sometime.
 #+begin_src emacs-lisp :tangle  init.el
-(use-package org
-  :load-path "~/git/org-mode/lisp")
+  (use-package org
+    :load-path "~/git/org-mode/lisp"
+    :bind (("C-c a"   . org-agenda)
+	   ("C-c C-w" . org-refile)
+	   ("C-c j"   . org-clock-goto))
+    :config
+    (progn
+      (setq org-agenda-files
+	(delq nil
+              (mapcar (lambda (x) (and (file-exists-p x) x))
+		      (directory-files
+		       (expand-file-name "~/Dropbox/org/agenda/") t org-agenda-file-regexp))))))
 #+end_src
+
+#+RESULTS:
+: t
 
 * Powerline
 [[https://ogbe.net/][Dennis Ogbe]] has the [[https://ogbe.net/emacsconfig.html#orgheadline24][coolest]] mode-line I've ever seen. So I cribbed his
@@ -512,16 +534,18 @@ just unacceptible. :-(
 * Global keybinding
 I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob/master/README.md#keymap][Prelude]].
 #+begin_src emacs-lisp :tangle  init.el
-;; Font size
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-					; Start eshell or switch to it if it's active.
-(global-set-key (kbd "C-x m") 'eshell)
+  ;; Font sizea
+  (global-set-key (kbd "C-+") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+					  ; Start eshell or switch to it if it's active.
+  (global-set-key (kbd "C-x m") 'eshell)
 
-;; Start a new eshell even if one is active.
-(global-set-key (kbd "C-x M")
-		(lambda () (interactive) (eshell t)))
+  ;; Start a new eshell even if one is active.
+  (global-set-key (kbd "C-x M")
+		  (lambda () (interactive) (eshell t)))
 #+end_src
+
+#+RESULTS:
 
 * SSH
 [[http://sachachua.com/blog/][Sacha Chua]] did the work for me [[http://pages.sachachua.com/.emacs.d/Sacha.html#orgb6b973e][here]]. This makes magit work nicely.
@@ -540,6 +564,10 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 
   (my/ssh-refresh)
 #+end_src
+
+#+RESULTS:
+: SSH_AUTH_SOCK nil --> /tmp/ssh-NTkRr2af1PnJ/agent.2777
+
 * UI stuff
 The hippest emacsers don't need menus, toolbars, or scrollbars. But I
 don't either.
@@ -552,6 +580,10 @@ don't either.
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 #+end_src
+
+#+RESULTS:
+: 1
+
 I like an obnoxious, bright, blinking cursor. This adds to it. Cool.
 #+begin_src emacs-lisp :tangle  init.el
 (use-package beacon
