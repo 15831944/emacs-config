@@ -4,7 +4,7 @@ There are things I like and things I don't like about [[https://github.com/bbats
 things I like, I really, really like. I wabt to reimplement them all
 with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 * Install packages
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (require 'package)
 
   (add-to-list 'package-archives
@@ -21,7 +21,7 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 #+end_src
 Not that I know what all these do, but they were in Prelude's list of
 packages. I'll figure it out.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (defvar my/packages
   '(ace-window
     avy
@@ -66,20 +66,20 @@ packages. I'll figure it out.
   "A list of packages to ensure are installed at launch.")
 #+end_src
 Elisp is so cool.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) my/packages)
 #+end_src
 
 * Code
 ** General
 I need to learn to make this not stomp on eldoc like it does sometimes.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package flycheck
   :config (global-flycheck-mode 1))
 #+end_src
 The more the merrier. I eventually want it to be a little less than
 global. It's generally no help in eshell, jabber, or ERC.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   ;; (defvar company-backends)
   (use-package company
     :ensure t
@@ -102,12 +102,12 @@ global. It's generally no help in eshell, jabber, or ERC.
 
 #+end_src
 This is always helpful.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package smartparens
   :config (smartparens-global-mode 1))
 #+end_src
 
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (whitespace-mode 1)
   (setq whitespace-line-column 80) ;; limit line length
   (setq whitespace-style '(face tabs empty trailing lines-tail))
@@ -134,7 +134,7 @@ This is always helpful.
 #+end_src
 
 ** Python
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package anaconda-mode
   :ensure t
   :commands anaconda-mode
@@ -148,14 +148,14 @@ This is always helpful.
 
 ** Revision control
 *** Magit
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package magit
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch-popup)))
 #+end_src
 * Helm
 I dig helm. I don't care much for ido.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package helm
   :diminish helm-mode
   :init
@@ -190,7 +190,7 @@ I dig helm. I don't care much for ido.
 	 ("SPC"     . helm-all-mark-rings)))
 #+end_src
 
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 ;; (use-package helm-projectile)
 #+end_src
 * Org Mode
@@ -205,7 +205,7 @@ agenda file per line.  In this file paths can be given relative to
 are also made.
 #+end_quote
 Maybe I'll do that sometime.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package org
     :load-path "~/git/org-mode/lisp"
     :bind (("C-c a"   . org-agenda)
@@ -226,7 +226,7 @@ Maybe I'll do that sometime.
 [[https://ogbe.net/][Dennis Ogbe]] has the [[https://ogbe.net/emacsconfig.html#orgheadline24][coolest]] mode-line I've ever seen. So I cribbed his
 code. Unfortunately, for me, it gets super fat on some frames. That's
 just unacceptible. :-(
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package powerline
   :config
   (powerline-default-theme)
@@ -532,7 +532,7 @@ just unacceptible. :-(
 
 * Global keybinding
 I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob/master/README.md#keymap][Prelude]].
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   ;; Font sizea
   (global-set-key (kbd "C-+") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
@@ -548,7 +548,7 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 
 * SSH
 [[http://sachachua.com/blog/][Sacha Chua]] did the work for me [[http://pages.sachachua.com/.emacs.d/Sacha.html#orgb6b973e][here]]. This makes magit work nicely.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defun my/ssh-refresh ()
     "Reset the environment variable SSH_AUTH_SOCK"
     (interactive)
@@ -570,7 +570,7 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 * UI stuff
 The hippest emacsers don't need menus, toolbars, or scrollbars. But I
 don't either.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (setq inhibit-startup-screen t)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -584,17 +584,17 @@ don't either.
 : 1
 
 I like an obnoxious, bright, blinking cursor. This adds to it. Cool.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package beacon
   :config (beacon-mode 1))
 #+end_src
 Try this once; never look back.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package avy
   :bind ("C-c j" . avy-goto-word-or-subword-1))
 #+end_src
 Likewise.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package expand-region
     :bind ("C-=" . er/expand-region)
     :config
@@ -602,7 +602,7 @@ Likewise.
 #+end_src
 I kinda don't like it creating a big frame, but the visualization
 helps a bit, I think.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package undo-tree
   :bind (("C-x u" . undo-tree-visualize))
   :config
@@ -614,14 +614,14 @@ I think this is a nice theme, but I could never get my tweaks to stick
 when I used Prelude. I'm moody about themes. I'm sure I'll be
 switching from this to wombat, to leuven, to
 smart-modeline-respectful, /etc/.
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package zenburn-theme
   :config
   (set-cursor-color "red")
   (blink-cursor-mode 1))
 #+end_src
 
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (setq backup-directory-alist
 	`((".*" . ,temporary-file-directory)))
 
@@ -632,7 +632,7 @@ smart-modeline-respectful, /etc/.
 #+end_src
 This ruined me. I can no longer get along without [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][this]].
 
-#+begin_src emacs-lisp :tangle  init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
