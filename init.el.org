@@ -177,7 +177,7 @@ I dig helm. I don't care much for ido.
       :ensure t))
 
 #+end_src
-* COMMENT Org Mode
+* Org Mode
 I like the bleeding edge. Heck, I compiled my emacs from git :-)
 [GNU Emacs 25.0.93.2 (x86_64-unknown-linux-gnu, GTK+ Version 3.16.7) of 2016-04-28]
 On org-agenda-files, the documentation says:
