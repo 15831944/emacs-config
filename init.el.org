@@ -13,14 +13,8 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
   (setq package-user-dir
 	(expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
   (package-initialize)
-
-  (eval-when-compile
-    (require 'use-package))
-  (require 'diminish)
-  (require 'bind-key)
 #+end_src
-Not that I know what all these do, but they were in Prelude's list of
-packages. I'll figure it out.
+
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defvar my/packages
     '(ace-window
@@ -69,7 +63,12 @@ packages. I'll figure it out.
 #+end_src
 Elisp is so cool.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) my/packages)
+  (mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) my/packages)
+
+  (eval-when-compile
+    (require 'use-package))
+  (require 'diminish)
+  (require 'bind-key)
 #+end_src
 
 * Code
