@@ -22,48 +22,49 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 Not that I know what all these do, but they were in Prelude's list of
 packages. I'll figure it out.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(defvar my/packages
-  '(ace-window
-    avy
-    anzu
-    anaconda-mode
-    beacon
-    browse-kill-ring
-    dash
-    discover-my-major
-    diff-hl
-    diminish
-    easy-kill
-    epl
-    expand-region
-    flycheck
-    gist
-    git-timemachine
-    gitconfig-mode
-    gitignore-mode
-    god-mode
-    grizzl
-    guru-mode
-    helm
-    imenu-anywhere
-    irony
-    ov
-    projectile
-    magit
-    move-text
-    operate-on-number
-    powerline
-    sicp
-    ;; smart-mode-line
-    smartparens
-    smartrep
-    undo-tree
-    use-package
-    volatile-highlights
-    which-key
-    zenburn-theme
-    zop-to-char)
-  "A list of packages to ensure are installed at launch.")
+  (defvar my/packages
+    '(ace-window
+      avy
+      anzu
+      anaconda-mode
+      beacon
+      browse-kill-ring
+      dash
+      discover-my-major
+      diff-hl
+      diminish
+      easy-kill
+      epl
+      expand-region
+      flycheck
+      gist
+      git-timemachine
+      gitconfig-mode
+      gitignore-mode
+      ;; god-mode
+      ;; grizzl
+      ;; guru-mode
+      helm
+      helm-imenu-anywhere
+      imenu-anywhere
+      irony
+      ov
+      projectile
+      magit
+      move-text
+      operate-on-number
+      powerline
+      sicp
+      ;; smart-mode-line
+      smartparens
+      smartrep
+      undo-tree
+      use-package
+      volatile-highlights
+      which-key
+      zenburn-theme
+      zop-to-char)
+    "A list of packages to ensure are installed at launch.")
 #+end_src
 Elisp is so cool.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -72,20 +73,6 @@ Elisp is so cool.
 
 * Code
 ** General
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (use-package anzu
-    :bind
-    (([remap query-replace]        . anzu-query-replace)
-     ([remap query-replace-regexp] . anzu-query-replace-regexp))
-    :config
-    (setq anzu-mode-lighter ""
-	  anzu-deactivate-region t
-	  anzu-search-threshold 1000
-	  anzu-replace-threshold 50
-	  anzu-replace-to-string-separator " => ")
-    (global-anzu-mode +1))
-#+end_src
-
 I need to learn to make this not stomp on eldoc like it does sometimes.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package flycheck
@@ -602,11 +589,36 @@ I like an obnoxious, bright, blinking cursor. This adds to it. Cool.
 (use-package beacon
   :config (beacon-mode 1))
 #+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package anzu
+    :bind
+    (([remap query-replace]        . anzu-query-replace)
+     ([remap query-replace-regexp] . anzu-query-replace-regexp))
+    :config
+    (setq anzu-mode-lighter ""
+	  anzu-deactivate-region t
+	  anzu-search-threshold 1000
+	  anzu-replace-threshold 50
+	  anzu-replace-to-string-separator " => ")
+    (global-anzu-mode +1))
+#+end_src
+
 Try this once; never look back.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package avy
   :bind ("C-c j" . avy-goto-word-or-subword-1))
 #+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package diff-hl
+    :config
+    (diff-hl-mode 1))
+#+end_src
+
+#+RESULTS:
+: t
+
 Likewise.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package expand-region
@@ -614,15 +626,22 @@ Likewise.
     :config
     (delete-selection-mode t))
 #+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(use-package imenu-anywhere
+  :bind ("C-." . helm-imenu-anywhere))
+#+end_src
+
+
 I kinda don't like it creating a big frame, but the visualization
 helps a bit, I think.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(use-package undo-tree
-  :bind (("C-x u" . undo-tree-visualize))
-  :config
-  (setq undo-tree-history-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq undo-tree-auto-save-history t))
+  (use-package undo-tree
+    :bind (("C-x u" . undo-tree-visualize))
+    :config
+    (setq undo-tree-history-directory-alist
+	  `((".*" . ,temporary-file-directory)))
+    (setq undo-tree-auto-save-history t))
 #+end_src
 I think this is a nice theme, but I could never get my tweaks to stick
 when I used Prelude. I'm moody about themes. I'm sure I'll be
@@ -647,49 +666,39 @@ smart-modeline-respectful, /etc/.
 This ruined me. I can no longer get along without [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][this]].
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(defun smarter-move-beginning-of-line (arg)
-  "Move point back to indentation of beginning of line.
+  (defun smarter-move-beginning-of-line (arg)
+    "Move point back to indentation of beginning of line.
 
-Move point to the first non-whitespace character on this line.
-If point is already there, move to the beginning of the line.
-Effectively toggle between the first non-whitespace character and
-the beginning of the line.
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
 
-If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-point reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+    (interactive "^p")
+    (setq arg (or arg 1))
 
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
+    ;; Move lines first
+    (when (/= arg 1)
+      (let ((line-move-visual nil))
+	(forward-line (1- arg))))
 
-  (let ((orig-point (point)))
-    (back-to-indentation)
-    (when (= orig-point (point))
-      (move-beginning-of-line 1))))
+    (let ((orig-point (point)))
+      (back-to-indentation)
+      (when (= orig-point (point))
+	(move-beginning-of-line 1))))
 
-;; remap C-a to `smarter-move-beginning-of-line'
-(global-set-key [remap move-beginning-of-line]
-                'smarter-move-beginning-of-line)
+  ;; remap C-a to `smarter-move-beginning-of-line'
+  (global-set-key [remap move-beginning-of-line]
+                  'smarter-move-beginning-of-line)
 #+end_src
 
-* Leftover custom
-#+begin_src emacs-lisp :tangle no
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
- '(package-selected-packages
-   (quote
-    (ac-html-angular ac-html-bootstrap ac-html-csswatcher ac-c-headers ac-clang ac-html ac-ispell ac-php company-arduino company-c-headers company-irony-c-headers company-jedi company-shell company-quickhelp zop-to-char zenburn-theme which-key volatile-highlights use-package undo-tree smartrep smartparens smart-mode-line projectile ov operate-on-number move-text magit imenu-anywhere helm guru-mode grizzl god-mode gitignore-mode gitconfig-mode git-timemachine gist flycheck expand-region easy-kill discover-my-major diff-hl company-web company-irony company-anaconda browse-kill-ring beacon anzu ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+* Custom file
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
 #+end_src
+
+#+RESULTS:
+: /home/juntunenkc/.emacs.d/custom.el
+
