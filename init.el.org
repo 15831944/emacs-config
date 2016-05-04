@@ -164,8 +164,9 @@ I dig helm. I don't care much for ido.
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (use-package helm-projectile
-    :ensure t)
+  (unless (string-equal system-type "windows-nt")
+    (use-package helm-projectile
+      :ensure t))
 
 #+end_src
 * Org Mode
@@ -184,15 +185,17 @@ Maybe I'll do that sometime.
   (use-package org
     :load-path "~/git/org-mode/lisp"
     :bind (("C-c a"   . org-agenda)
-	   ("C-c C-w" . org-refile)
-	   ("C-c c"   . org-capture))
+           ("C-c C-w" . org-refile)
+           ("C-c c"   . org-capture))
     :config
-    (progn
+    (let ((dropbox-dir (if (string-equal system-type "windows-nt")
+                           "~/../../Dropbox/org/agenda"
+                         "~/Dropbox/org/agenda")))
       (setq org-agenda-files
-	(delq nil
-	      (mapcar (lambda (x) (and (file-exists-p x) x))
-		      (directory-files
-		       (expand-file-name "~/Dropbox/org/agenda/") t org-agenda-file-regexp))))))
+            (delq nil
+                  (mapcar (lambda (x) (and (file-exists-p x) x))
+                          (directory-files
+                           (expand-file-name dropbox-dir) t org-agenda-file-regexp))))))
 #+end_src
 
 #+RESULTS:
