@@ -6,8 +6,6 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (defvar init-first-run t
-  "I want to only run package-refresh on the first run.")
   (require 'package)
   
   (add-to-list 'package-archives
@@ -17,9 +15,10 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
         (expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
   (package-initialize)
   
-  (if init-first-run (package-refresh-contents))
+  (unless inhibit-splash-screen (package-refresh-contents))
 #+end_src
 
+Anything that needs to be =require='d before use-package goes here.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defvar my/packages
     '(bind-key
