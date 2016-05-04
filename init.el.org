@@ -177,7 +177,7 @@ I dig helm. I don't care much for ido.
       :ensure t))
 
 #+end_src
-* Org Mode
+* COMMENT Org Mode
 I like the bleeding edge. Heck, I compiled my emacs from git :-)
 [GNU Emacs 25.0.93.2 (x86_64-unknown-linux-gnu, GTK+ Version 3.16.7) of 2016-04-28]
 On org-agenda-files, the documentation says:
@@ -199,10 +199,10 @@ Maybe I'll do that sometime.
            ("C-c C-w" . org-refile)
            ("C-c c"   . org-capture))
     :config
-    (defvar org-directory (concat dropbox-root
-                                  (if (string-equal system-type "windows-nt")
-                                      "~/../../Dropbox/org"
-                                    "~/Dropbox/org"))
+    (defvar org-directory
+      (if (string-equal system-type "windows-nt")
+          "~/../../Dropbox/org"
+        "~/Dropbox/org")
       "The rood directory of my org files.")
     (let ((dropbox-dir (if (string-equal system-type "windows-nt")
                            "~/../../Dropbox/org/agenda"
@@ -236,23 +236,23 @@ Maybe I'll do that sometime.
                     ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
                     ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
       
-      (setq org-default-notes-file (concat dropbox-root "/agenda/refile.org"))
+      (setq org-default-notes-file (concat dropbox-dir "/refile.org"))
       (setq org-capture-templates
-            (quote (("t" "todo" entry (file "~/../../Dropbox/org/agenda/refile.org")
+            (quote (("t" "todo" entry (file (concat dropbox-dir "/refile.org"))
                      "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-                    ("r" "respond" entry (file "~/../../Dropbox/org/agenda/refile.org")
+                    ("r" "respond" entry (file (concat dropbox-dir "/refile.org"))
                      "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-                    ("n" "note" entry (file "~/../../Dropbox/org/agenda/refile.org")
+                    ("n" "note" entry (file (concat dropbox-dir "/agenda/refile.org"))
                      "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-                    ("j" "Journal" entry (file+datetree "~/../../Dropbox/org/agenda/diary.org")
+                    ("j" "Journal" entry (file+datetree (concat dropbox-dir "/diary.org"))
                      "* %?\n%U\n" :clock-in t :clock-resume t)
-                    ("w" "org-protocol" entry (file "~/../../Dropbox/org/agenda/refile.org")
+                    ("w" "org-protocol" entry (file (concat dropbox-dir "/refile.org"))
                      "* TODO Review %c\n%U\n" :immediate-finish t)
-                    ("m" "Meeting" entry (file "~/../../Dropbox/org/agenda/refile.org")
+                    ("m" "Meeting" entry (file (concat dropbox-dir "/refile.org"))
                      "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-                    ("p" "Phone call" entry (file "~/../../Dropbox/org/agenda/refile.org")
+                    ("p" "Phone call" entry (file (concat dropbox-dir "/refile.org"))
                      "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-                    ("h" "Habit" entry (file "~/../../Dropbox/org/agenda/refile.org")
+                    ("h" "Habit" entry (file (concat dropbox-dir "/refile.org"))
                      "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
       
       (defun bh/remove-empty-drawer-on-clock-out ()
