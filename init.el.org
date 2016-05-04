@@ -4,6 +4,15 @@ There are things I like and things I don't like about [[https://github.com/bbats
 things I like, I really, really like. I wabt to reimplement them all
 with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 
+* Custom file
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
+  (if (file-exists-p custom-file) (load-file custom-file))
+#+end_src
+
+#+RESULTS:
+: /home/juntunenkc/.emacs.d/custom.el
+
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (require 'package)
@@ -15,7 +24,7 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
         (expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
   (package-initialize)
   
-  (unless inhibit-splash-screen (package-refresh-contents))
+  (unless inhibit-startup-screen (package-refresh-contents))
 #+end_src
 
 Anything that needs to be =require='d before use-package goes here.
@@ -1336,11 +1345,3 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
         (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
         (split-string (shell-command-to-string kc:lc-command) "\n")))))))
 #+end_src
-* Custom file
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
-#+end_src
-
-#+RESULTS:
-: /home/juntunenkc/.emacs.d/custom.el
-
