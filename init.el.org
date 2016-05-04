@@ -208,17 +208,18 @@ are also made.
 #+end_quote
 Maybe I'll do that sometime.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (use-package org
-    :load-path "~/git/org-mode/lisp"
-    :bind (("C-c a"   . org-agenda)
-	   ("C-c C-w" . org-refile))
-    :config
-    (progn
-      (setq org-agenda-files
-	(delq nil
-              (mapcar (lambda (x) (and (file-exists-p x) x))
-		      (directory-files
-		       (expand-file-name "~/Dropbox/org/agenda/") t org-agenda-file-regexp))))))
+    (use-package org
+      :load-path "~/git/org-mode/lisp"
+      :bind (("C-c a"   . org-agenda)
+	     ("C-c C-w" . org-refile)
+	     ("C-c c"   . org-capture))
+      :config
+      (progn
+	(setq org-agenda-files
+	  (delq nil
+		(mapcar (lambda (x) (and (file-exists-p x) x))
+			(directory-files
+			 (expand-file-name "~/Dropbox/org/agenda/") t org-agenda-file-regexp))))))
 #+end_src
 
 #+RESULTS:
@@ -688,8 +689,8 @@ smart-modeline-respectful, /etc/.
 
   (global-auto-revert-mode t)
 #+end_src
-This ruined me. I can no longer get along without [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][this]].
 
+This ruined me. I can no longer get along without [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][this]].
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
@@ -718,6 +719,22 @@ This ruined me. I can no longer get along without [[http://emacsredux.com/blog/2
   (global-set-key [remap move-beginning-of-line]
                   'smarter-move-beginning-of-line)
 #+end_src
+
+Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nugget]] from [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][Emacs Redux]].
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (defun kill-other-buffers ()
+    "Kill all buffers but the current one.
+    Don't mess with special buffers."
+    (interactive)
+    (dolist (buffer (buffer-list))
+      (unless (or (eql buffer (current-buffer)) (not (buffer-file-name buffer)))
+	(kill-buffer buffer))))
+
+  (global-set-key (kbd "C-c k") 'kill-other-buffers)
+#+end_src
+
+#+RESULTS:
+: kill-other-buffers
 
 * Custom file
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
