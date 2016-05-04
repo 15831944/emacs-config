@@ -45,7 +45,8 @@ packages. I'll figure it out.
       ;; grizzl
       ;; guru-mode
       helm
-      helm-imenu-anywhere
+      helm-proc
+      helm-projectile
       imenu-anywhere
       irony
       ov
@@ -57,7 +58,7 @@ packages. I'll figure it out.
       sicp
       ;; smart-mode-line
       smartparens
-      smartrep
+      ;; smartrep
       undo-tree
       use-package
       volatile-highlights
@@ -104,8 +105,9 @@ global. It's generally no help in eshell, jabber, or ERC.
 #+end_src
 This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(use-package smartparens
-  :config (smartparens-global-mode 1))
+  (use-package smartparens
+    :config (smartparens-global-mode 1)
+    (sp-use-paredit-bindings))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -632,6 +634,14 @@ Likewise.
   :bind ("C-." . helm-imenu-anywhere))
 #+end_src
 
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package move-text
+    :bind (
+	   ;; ("M-up"   . move-text-up)
+	   ;; ("M-down" . move-text-down)
+	   ))
+#+end_src
+
 
 I kinda don't like it creating a big frame, but the visualization
 helps a bit, I think.
@@ -643,6 +653,22 @@ helps a bit, I think.
 	  `((".*" . ,temporary-file-directory)))
     (setq undo-tree-auto-save-history t))
 #+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package volatile-highlights
+    :config (volatile-highlights-mode t))
+#+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package which-key
+    :config (which-key-mode))
+#+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package zop-to-char
+    :bind ([remap zap-to-char] . zop-to-char))
+#+end_src
+
 I think this is a nice theme, but I could never get my tweaks to stick
 when I used Prelude. I'm moody about themes. I'm sure I'll be
 switching from this to wombat, to leuven, to
