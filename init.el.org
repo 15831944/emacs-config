@@ -6,7 +6,7 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (defvar init-first-run nil
+  (defvar init-first-run t
   "I want to only run package-refresh on the first run.")
   (require 'package)
   
@@ -1310,7 +1310,7 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
     :bind ("C-x j c" . jabber-connect-all)
     :config
     (setq jabber-account-list
-          '(("shfengoli@gmail.com"
+          '((""
              (:network-server . "talk.google.com")
              (:port . 5222)
              (:connection-type . starttls)))))
