@@ -6,66 +6,31 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (defvar init-first-run t
+  "I want to only run package-refresh on the first run.")
   (require 'package)
-
+  
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/") t)
-
+  
   (setq package-user-dir
-	(expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
+        (expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
   (package-initialize)
+  
+  (if init-first-run (package-refresh-contents))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defvar my/packages
-    '(ace-window
-      avy
-      anzu
-      anaconda-mode
-      beacon
-      browse-kill-ring
-      dash
-      discover-my-major
-      diff-hl
+    '(bind-key
       diminish
-      easy-kill
-      epl
-      expand-region
-      flycheck
-      gist
-      git-timemachine
-      gitconfig-mode
-      gitignore-mode
-      ;; god-mode
-      ;; grizzl
-      ;; guru-mode
-      helm
-      helm-proc
-      helm-projectile
-      imenu-anywhere
-      irony
-      ov
-      projectile
-      magit
-      move-text
-      operate-on-number
-      powerline
-      sicp
-      ;; smart-mode-line
-      smartparens
-      ;; smartrep
-      undo-tree
-      use-package
-      volatile-highlights
-      which-key
-      zenburn-theme
-      zop-to-char)
+      use-package)
     "A list of packages to ensure are installed at launch.")
 #+end_src
 Elisp is so cool.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) my/packages)
-
+  
   (eval-when-compile
     (require 'use-package))
   (require 'diminish)
@@ -154,10 +119,11 @@ This is always helpful.
 ** Revision control
 *** Magit
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (use-package magit
-    :ensure t
-    :bind (("C-x g" . magit-status)
-	   ("C-x M-g" . magit-dispatch-popup)))
+  (unless (version< emacs-version "24.4")
+    (use-package magit
+      :ensure t
+      :bind (("C-x g" . magit-status)
+             ("C-x M-g" . magit-dispatch-popup))))
 #+end_src
 * Helm
 I dig helm. I don't care much for ido.
