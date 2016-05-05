@@ -930,13 +930,14 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 The hippest emacsers don't need menus, toolbars, or scrollbars. But I
 don't either.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(setq sentence-end-double-space nil)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(setq scroll-margin 0
-      scroll-conservatively 100000
-      scroll-preserve-screen-position 1)
+  (setq sentence-end-double-space nil)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (setq scroll-margin 0
+        scroll-conservatively 100000
+        scroll-preserve-screen-position 1)
 #+end_src
 
 #+RESULTS:
