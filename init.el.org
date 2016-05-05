@@ -8,13 +8,18 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
   (load custom-file t)
-  (setq user-full-name    "K. C. Juntunen"
-        user-mail-address "juntunen.kc@gmail.com")
 #+end_src
 
 #+RESULTS:
 : /home/juntunenkc/.emacs.d/custom.el
-
+* Env stuff
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (setq user-full-name    "K. C. Juntunen"
+        user-mail-address "juntunen.kc@gmail.com"
+        dropbox-dir       (if (string= system-type "windows-nt")
+                              "~/../../Dropbox/"
+                            "~/Dropbox"))
+#+end_src
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (require 'package)
@@ -29,7 +34,7 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
   (unless inhibit-startup-screen (package-refresh-contents))
 #+end_src
 
-Anything that needs to be =require='d before use-package goes here.
+Anything that needs to be =require='d before =use-package= goes here.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defvar my/packages
     '(bind-key
@@ -217,24 +222,29 @@ Maybe I'll do that sometime.
   (use-package org-id
     :defer t)
   
+  (use-package org-habit
+    :defer t)
+  
+  (use-package org-mobile
+    :defer t
+    :config
+    (setq org-mobile-directory (concat ))
+  
   (use-package org
-    :load-path "~/git/org-mode/lisp"
+    :load-path ("~/git/org-mode/lisp" "~/git/org-mode/contrib/lisp")
     :bind (("C-c a"   . org-agenda)
            ("C-c C-w" . org-refile)
            ("C-c c"   . org-capture))
     :defer t
     :config
-    (setq org-directory
-      (if (string-equal system-type "windows-nt")
-          "~/../../Dropbox/org"  
-        "~/Dropbox/org"))
-    (let ((dropbox-dir (concat org-directory "/agenda")))
+    (setq org-directory (concat dropbox-dir "org/"))
+    (let ((agenda-dir (concat org-directory "/agenda")))
   
       (setq org-agenda-files
             (delq nil
                   (mapcar (lambda (x) (and (file-exists-p x) x))
                           (directory-files
-                           (expand-file-name dropbox-dir) t org-agenda-file-regexp))))
+                           (expand-file-name agenda-dir) t org-agenda-file-regexp))))
       (setq org-todo-keywords
             (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
                     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
@@ -258,24 +268,24 @@ Maybe I'll do that sometime.
                     ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
                     ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
       
-      (setq org-default-notes-file (concat dropbox-dir "/refile.org"))
+      (setq org-default-notes-file (concat agenda-dir "/refile.org"))
       (setq org-capture-templates
-            (quote (("t" "todo" entry (file (concat dropbox-dir "/refile.org"))
+            (quote (("t" "todo" entry (file (concat agenda-dir "/refile.org"))
                      "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-                    ("r" "respond" entry (file (concat dropbox-dir "/refile.org"))
+                    ("r" "respond" entry (file (concat agenda-dir "/refile.org"))
                      "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-                    ("n" "note" entry (file (concat dropbox-dir "/agenda/refile.org"))
+                    ("n" "note" entry (file (concat agenda-dir "/agenda/refile.org"))
                      "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-                    ("j" "Journal" entry (file+datetree (concat dropbox-dir "/diary.org"))
+                    ("j" "Journal" entry (file+datetree (concat agenda-dir "/diary.org"))
                      "* %?\n%U\n" :clock-in t :clock-resume t)
-                    ("w" "org-protocol" entry (file (concat dropbox-dir "/refile.org"))
+                    ("w" "org-protocol" entry (file (concat agenda-dir "/refile.org"))
                      "* TODO Review %c\n%U\n" :immediate-finish t)
-                    ("m" "Meeting" entry (file (concat dropbox-dir "/refile.org"))
+                    ("m" "Meeting" entry (file (concat agenda-dir "/refile.org"))
                      "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-                    ("p" "Phone call" entry (file (concat dropbox-dir "/refile.org"))
+                    ("p" "Phone call" entry (file (concat agenda-dir "/refile.org"))
                      "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-                    ("h" "Habit" entry (file (concat dropbox-dir "/refile.org"))
-                     "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+                    ("h" "Habit" entry (file (concat agenda-dir "/refile.org"))
+                     "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))))
       
       (defun bh/remove-empty-drawer-on-clock-out ()
         (interactive)
@@ -579,9 +589,7 @@ Maybe I'll do that sometime.
                 (t (car org-clock-history)))))
           (widen)
           (org-with-point-at clock-in-to-task
-            (org-clock-in nil))))
-      
-      ))
+            (org-clock-in nil))))))
 #+end_src
 
 #+RESULTS:
