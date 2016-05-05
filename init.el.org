@@ -7,7 +7,9 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 * Custom file
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
-  (if (file-exists-p custom-file) (load-file custom-file))
+  (load custom-file t)
+  (setq user-full-name    "K. C. Juntunen"
+        user-mail-address "juntunen.kc@gmail.com")
 #+end_src
 
 #+RESULTS:
@@ -57,6 +59,14 @@ The more the merrier. I eventually want it to be a little less than
 global. It's generally no help in eshell, jabber, or ERC.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   ;; (defvar company-backends)
+  (use-package company-anaconda
+    :ensure t
+    :defer t)
+  
+  (use-package company-shell
+    :ensure t
+    :defer t)
+  
   (use-package company
     :ensure t
     :defer t
@@ -65,17 +75,18 @@ global. It's generally no help in eshell, jabber, or ERC.
     (add-hook 'prog-mode-hook 'company-mode)
     (use-package company-irony :ensure t :defer t)
     (setq company-idle-delay              0
-	  company-minimum-prefix-length   2
-	  company-show-numbers            t
-	  company-tooltip-limit           20
-	  company-dabbrev-downcase        nil
-	  company-tooltip-flip-when-above t
-	  company-backends                '((company-anaconda
+          company-minimum-prefix-length   2
+          company-show-numbers            t
+          company-tooltip-limit           20
+          company-dabbrev-downcase        nil
+          company-tooltip-flip-when-above t
+          company-backends                '((company-anaconda
                                              company-bbdb
                                              company-elisp
                                              company-gtags
-                                             company-irony))))
-
+                                             company-irony
+                                             company-shell))))
+  
 #+end_src
 This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -172,6 +183,13 @@ I dig helm. I don't care much for ido.
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package helm-descbinds
+    :ensure t
+    :defer t
+    :bind (("C-h b" . helm-descbinds)))
+#+end_src
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (unless (string-equal system-type "windows-nt")
     (use-package helm-projectile
       :ensure t))
@@ -192,22 +210,19 @@ Maybe I'll do that sometime.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package org-id
     :defer t)
-
+  
   (use-package org
     :load-path "~/git/org-mode/lisp"
     :bind (("C-c a"   . org-agenda)
            ("C-c C-w" . org-refile)
            ("C-c c"   . org-capture))
     :config
-    (defvar org-directory
+    (setq org-directory
       (if (string-equal system-type "windows-nt")
-          "~/../../Dropbox/org"
-        "~/Dropbox/org")
-      "The rood directory of my org files.")
-    (let ((dropbox-dir (if (string-equal system-type "windows-nt")
-                           "~/../../Dropbox/org/agenda"
-                         "~/Dropbox/org/agenda")))
-
+          "~/../../Dropbox/org"  
+        "~/Dropbox/org"))
+    (let ((dropbox-dir (concat org-directory "/agenda")))
+  
       (setq org-agenda-files
             (delq nil
                   (mapcar (lambda (x) (and (file-exists-p x) x))
@@ -915,7 +930,7 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 The hippest emacsers don't need menus, toolbars, or scrollbars. But I
 don't either.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(setq inhibit-startup-screen t)
+(setq sentence-end-double-space nil)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
