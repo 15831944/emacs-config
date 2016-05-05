@@ -1044,7 +1044,15 @@ smart-modeline-respectful, /etc/.
     :ensure t
     :config
     (set-cursor-color "red")
-    (blink-cursor-mode 1))
+    (blink-cursor-mode 1)
+    ;; maybe it's a bad idea to put this here.
+    (custom-set-faces
+     ;; custom-set-faces was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(font-lock-comment-face ((t (:foreground "gray38" :slant italic))))
+     '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 100 :width medium :foundry "PfEd" :family "Source Code Pro"))))))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
