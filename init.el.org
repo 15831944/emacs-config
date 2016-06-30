@@ -108,6 +108,23 @@ This is always helpful.
   (setq whitespace-line-column 80) ;; limit line length
   (setq whitespace-style '(face tabs empty trailing lines-tail))
 #+end_src
+** Build
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(use-package cmake-font-lock
+  :ensure t
+  :defer t)
+(use-package cmake-ide
+  :ensure t
+  :defer t)
+(use-package cmake-mode
+  :ensure t
+  :defer t)
+(use-package cmake-project
+  :ensure t
+  :defer t)
+
+
+#+end_src
 ** C/C++
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package irony
@@ -143,6 +160,19 @@ This is always helpful.
   
 #+end_src
 
+** Javascript
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(use-package tern
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+    (eval-after-load 'tern
+      '(progn
+	 (require 'tern-auto-complete)
+	 (tern-ac-setup)))))
+#+end_src
 ** Revision control
 *** Magit
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -229,6 +259,7 @@ Emacs loads in only a few seconds without this.
          ("C-c C-w"   . org-refile)
          ("C-c c"     . org-capture)
 	 ("C-c b"     . org-iswitchb)
+	 ("<M-f7>"    . visual-line-mode)
 	 ;; Bernt Hansen's keys.
 	 ("<f12>"     . org-agenda)
 	 ("<f5>"      . bh/org-todo)
@@ -262,7 +293,7 @@ Emacs loads in only a few seconds without this.
 	 ("C-c c"     . org-capture))
   :defer t
   :config
-  (let ((bh-org-mode-file (expand-file-name "~/.emacs.d/org-mode.org")))
+  (let ((bh-org-mode-file (expand-file-name "~/git/emacs-config/org-mode.org")))
     (setq org-agenda-files
           (delq nil
                 (mapcar (lambda (x) (and (file-exists-p x) x))
@@ -1065,6 +1096,18 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 #+end_src
 * Misc functions
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(defun kc:update-mobile ()
+  ""
+  (interactive)
+  (if (and (functionp 'org-mobile-push)
+	   (functionp 'org-mobile-pull))
+      (progn
+	(org-mobile-push)
+	(org-mobile-pull)
+	(save-some-buffers t)
+	(if (functionp 'kill-other-buffers)
+	    (kill-other-buffers)))))
+
 (defun kc:list-connections ()
   "Lists all Internet IPv4 connections. Ignores intranet connections."
   (interactive)
@@ -1084,3 +1127,7 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
         (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
         (split-string (shell-command-to-string kc:lc-command) "\n")))))))
 #+end_src
+
+#+results:
+: kc:list-connections
+
