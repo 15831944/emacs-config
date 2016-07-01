@@ -1111,21 +1111,23 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 (defun kc:list-connections ()
   "Lists all Internet IPv4 connections. Ignores intranet connections."
   (interactive)
-  (let ((kc:lc-column (cond ((string= system-type "windows-nt") 4)
-                            (string= system-type "gnu/linux") 5))
-        (kc:lc-command (cond ((string= system-type "windows-nt") "netstat -n -p TCP")
-                             ((string= system-type "gnu/linux") "ss -4 -t"))))
-    (remove-if
-     (lambda (x) (or (string-match-p "10.10" x) (string= "127.0.0.1" x)))
-     (mapcar
-      (lambda (x)
-        (cond ((string= system-type "windows-nt") (nth 4 x))
-              (string= system-type "gnu/linux") (nth 5 x)))
-      (mapcar
-       (lambda (x) (split-string x ":\\| \+"))
-       (remove-if
-        (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
-        (split-string (shell-command-to-string kc:lc-command) "\n")))))))
+  (let ((kc:lc-column
+	 (cond ((string-equal system-type "windows-nt") 4)
+	       ((string-equal system-type "gnu/linux") 5))
+	 )
+	(kc:lc-command
+	 (cond ((string-equal system-type "windows-nt") "netstat -n -p TCP")
+	       ((string-equal system-type "gnu/linux") "ss -4 -t"))
+	 ))
+    (remove-if (lambda (x) (or (string-match-p "10.10" x)
+			       (string-match-p "127.0.0.1" x)))
+	       (mapcar
+		(lambda (x) (nth kc:lc-column x))
+		(mapcar
+		 (lambda (x) (split-string x ":\\| \+"))
+		 (remove-if
+		  (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
+		  (split-string (shell-command-to-string kc:lc-command) "\n")))))))
 #+end_src
 
 #+results:
