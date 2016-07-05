@@ -90,8 +90,7 @@ global. It's generally no help in eshell, jabber, or ERC.
                                              company-bbdb
                                              company-elisp
                                              company-gtags
-                                             company-irony
-                                             company-shell))))
+                                             company-irony))))
   
 #+end_src
 This is always helpful.
@@ -858,241 +857,249 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 : kill-other-buffers
 ** Windows specific
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (if (string-equal system-type "windows-nt") (progn
-                                                (defun align-set-size ()
-                                                  "Stretch from bottom to top."
-                                                  (interactive)
-                                                  (if (string-equal (window-system) "w32")
-                                                      (set-frame-size (selected-frame) 680 1050 t)))
-  
-                                                (defun align-window ()
-                                                  "Fix window positioning."
-                                                  (interactive)
-                                                  (if (equal (getenv "emacs_alignment") "right")
-                                                      (align-window-right)
-                                                    (align-window-left))
-                                                  ;; (align-set-size)
-                                                  )
-  
-                                                (defun align-window-left ()
-                                                  "Align window to left window edge."
-                                                  (interactive)
-                                                  (set-frame-position (selected-frame) 1 340)
-                                                  ;;(set-frame-position (selected-frame) 2587 494)
-                                                  )
-  
-                                                (defun align-window-right ()
-                                                  "Align window to right window edge."
-                                                  (interactive)
-                                                  ;;  (set-frame-position (selected-frame) -1 320)
-                                                  (set-frame-position (selected-frame) 1921 0)
-                                                  (align-set-size))
-  
-                                                (defvar kc:mprPattern "Mr"
-                                                  "Send2Mach files aresearched for this pattern.")
-  
-                                                (defun kc:mprCheck ()
-                                                  "Check for undeployed machine programs."
-                                                  (interactive)
-                                                  (find-grep-dired "O:/CNCDXF/WEEKE/SEND2MACH"  kc:mprPattern))
-  
-                                                (fset 'remember-parens
-                                                      "\C-so\C-m(\C-e)\274")
-  
-                                                ;; (fset 'export-weeke-flatbed-programs
-                                                ;;    [?% ?m ?. ?* ?m ?p ?r return ?C ?\C-a ?\C-k ?u ?: ?/ return ?R ?\M-b ?\C-k ?S ?T ?E ?R tab return ?g])
-  
-                                                ;; (defun ewfp ()
-                                                ;;   ""
-                                                ;;   (interactive)
-                                                ;;   (if (and (file-exists-p "U:/"))
-                                                ;;       (execute-kbd-macro (symbol-function 'export-weeke-flatbed-programs))
-                                                ;;     (message "Not the \"*Find*\" buffer, or BHP008 is not online.")) )
-  
-                                                (defvar kc:drives '("G" "H" "K" "O" "R" "S" "Y")
-                                                  "Network drives.")
-  
-                                                (defun kc:off-to-the-u (export-machine-backup-dir &optional u)
-                                                  "Exports, then backs up machine programs (only to `U:/' right now) from a Dired `*Find*' buffer."
-                                                  (interactive "DBackup directory: ")
-                                                  (if (not (file-exists-p "U:/"))
-                                                      (progn
-                                                        (ding)
-                                                        (message "BHP008 is currently offline."))
-  
+(if (string-equal system-type "windows-nt") (progn
+                                              (defun align-set-size ()
+                                                "Stretch from bottom to top."
+                                                (interactive)
+                                                (if (string-equal (window-system) "w32")
+                                                    (set-frame-size (selected-frame) 680 1050 t)))
+
+                                              (defun align-window ()
+                                                "Fix window positioning."
+                                                (interactive)
+                                                (if (equal (getenv "emacs_alignment") "right")
+                                                    (align-window-right)
+                                                  (align-window-left))
+                                                ;; (align-set-size)
+                                                )
+
+                                              (defun align-window-left ()
+                                                "Align window to left window edge."
+                                                (interactive)
+                                                (set-frame-position (selected-frame) 1 340)
+                                                ;;(set-frame-position (selected-frame) 2587 494)
+                                                )
+
+                                              (defun align-window-right ()
+                                                "Align window to right window edge."
+                                                (interactive)
+                                                ;;  (set-frame-position (selected-frame) -1 320)
+                                                (set-frame-position (selected-frame) 1921 0)
+                                                (align-set-size))
+
+                                              (defvar kc:mprPattern "Mr"
+                                                "Send2Mach files aresearched for this pattern.")
+
+                                              (defun kc:mprCheck ()
+                                                "Check for undeployed machine programs."
+                                                (interactive)
+                                                (find-grep-dired "O:/CNCDXF/WEEKE/SEND2MACH"  kc:mprPattern))
+
+                                              (fset 'remember-parens
+                                                    "\C-so\C-m(\C-e)\274")
+
+                                              ;; (fset 'export-weeke-flatbed-programs
+                                              ;;    [?% ?m ?. ?* ?m ?p ?r return ?C ?\C-a ?\C-k ?u ?: ?/ return ?R ?\M-b ?\C-k ?S ?T ?E ?R tab return ?g])
+
+                                              ;; (defun ewfp ()
+                                              ;;   ""
+                                              ;;   (interactive)
+                                              ;;   (if (and (file-exists-p "U:/"))
+                                              ;;       (execute-kbd-macro (symbol-function 'export-weeke-flatbed-programs))
+                                              ;;     (message "Not the \"*Find*\" buffer, or BHP008 is not online.")) )
+
+                                              (defvar kc:drives '("G" "H" "K" "O" "R" "S" "Y")
+                                                "Network drives.")
+
+                                              (defun kc:off-to-the-u (export-machine-backup-dir &optional u)
+                                                "Exports, then backs up machine programs (only to `U:/' right now) from a Dired `*Find*' buffer."
+                                                (interactive "DBackup directory: ")
+                                                (if (not (file-exists-p "U:/"))
+                                                    (progn
+                                                      (ding)
+                                                      (message "BHP008 is currently offline."))
+
+                                                  (progn
+                                                    (loop for n in (dired-get-marked-files) do
+                                                          (copy-file n "U:/" t)
+                                                          (message (format "Copying `%s'" n)))
+                                                    (if (y-or-n-p "Backup files? ")
+                                                        (progn
+                                                          (loop for n in (dired-get-marked-files) do
+                                                                (rename-file n export-machine-backup-dir t))
+                                                          (message (format "Backed up to `%s'" export-machine-backup-dir))
+                                                          (revert-buffer))
+                                                      (message "Not backing up.")))))
+
+                                              (defun kc:off-to-the-machines (export-machine-backup-dir &optional u)
+                                                ""
+                                                (interactive "DBackup directory: ")
+                                                (setq kc:drives '("I" "J" "L" "M" "N" "T"))
+                                                (loop for n in (dired-get-marked-files) do
+                                                      (loop for m in kc:drives do
+                                                            (if (file-exists-p (concat m ":\\"))
+                                                                (progn
+                                                                  (copy-file n (concat m ":\\") t)
+                                                                  (message (format "Copying %s to %s" n (concat m ":\\")))))))
+                                                (if (y-or-n-p "Backup files? ")
                                                     (progn
                                                       (loop for n in (dired-get-marked-files) do
-                                                            (copy-file n "U:/" t)
-                                                            (message (format "Copying `%s'" n)))
-                                                      (if (y-or-n-p "Backup files? ")
-                                                          (progn
-                                                            (loop for n in (dired-get-marked-files) do
-                                                                  (rename-file n export-machine-backup-dir t))
-                                                            (message (format "Backed up to `%s'" export-machine-backup-dir))
-                                                            (revert-buffer))
-                                                        (message "Not backing up.")))))
-  
-                                                (defun kc:off-to-the-machines (export-machine-backup-dir &optional u)
-                                                  ""
-                                                  (interactive "DBackup directory: ")
-                                                  (setq kc:drives '("I" "J" "L" "M" "N" "T"))
-                                                  (loop for n in (dired-get-marked-files) do
-                                                        (loop for m in kc:drives do
-                                                              (if (file-exists-p (concat m ":\\"))
-                                                                  (progn
-                                                                    (copy-file n (concat m ":\\") t)
-                                                                    (message (format "Copying %s to %s" n (concat m ":\\")))))))
-                                                  (if (y-or-n-p "Backup files? ")
-                                                      (progn
-                                                        (loop for n in (dired-get-marked-files) do
-                                                              (rename-file n export-machine-backup-dir t))
-                                                        (message (format "Backed up to `%s'" export-machine-backup-dir))
-                                                        (revert-buffer))
-                                                    (message "Not backing up.")))
-  
-  
-                                                ;; (fset 'fix-Q1s
-                                                ;;    [?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?s ?t ?r ?i ?n ?g return ?Q ?3 return ?Q ?1 return])
-  
-                                                (defun kc:make-all-Qs-Q1 ()
-                                                  "When there is a single column of parts, Striker starts from Q3.  I made this function for such occasions.  It's bound to C-c q."
-                                                  (interactive)
-                                                  (setq file-to-delete (concat buffer-file-name "~"))
-                                                  (if (and
-                                                       (> (length file-to-delete) 1)
-                                                       (not (string-match "dir.*" (prin1-to-string major-mode)))
-                                                       (string-match "Gcode-.*" (prin1-to-string major-mode))
-                                                       (not (eq (search-forward-regexp "Q3") nil)))
-                                                      (progn
-                                                        (beginning-of-buffer)
-                                                        (replace-string "Q3" "Q1")
-                                                        (save-buffer)
-                                                        (kill-buffer (current-buffer))
-                                                        (if (file-exists-p file-to-delete)
-                                                            (delete-file file-to-delete t)
-                                                          (message "Something isn't right"))
-                                                        (message "Q3s replaced."))
+                                                            (rename-file n export-machine-backup-dir t))
+                                                      (message (format "Backed up to `%s'" export-machine-backup-dir))
+                                                      (revert-buffer))
+                                                  (message "Not backing up.")))
+
+
+                                              ;; (fset 'fix-Q1s
+                                              ;;    [?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?s ?t ?r ?i ?n ?g return ?Q ?3 return ?Q ?1 return])
+
+                                              (defun kc:make-all-Qs-Q1 ()
+                                                "When there is a single column of parts, Striker starts from Q3.  I made this function for such occasions.  It's bound to C-c q."
+                                                (interactive)
+                                                (setq file-to-delete (concat buffer-file-name "~"))
+                                                (if (and
+                                                     (> (length file-to-delete) 1)
+                                                     (not (string-match "dir.*" (prin1-to-string major-mode)))
+                                                     (string-match "Gcode-.*" (prin1-to-string major-mode))
+                                                     (not (eq (search-forward-regexp "Q3") nil)))
                                                     (progn
-                                                      (message "We didn't find any Q3s.")
-                                                      (if (string-match "text.*" (prin1-to-string major-mode))
-                                                          (kill-buffer (current-buffer))))))
-  
-  
-  
-                                                (defun kc:check-for-network-drives ()
-                                                  "Checks which drives are online and offline."
-                                                  (interactive)
-                                                  (setq drives kc:drives)
-                                                  (setq online-drives ())
-                                                  (setq offline-drives ())
+                                                      (beginning-of-buffer)
+                                                      (replace-string "Q3" "Q1")
+                                                      (save-buffer)
+                                                      (kill-buffer (current-buffer))
+                                                      (if (file-exists-p file-to-delete)
+                                                          (delete-file file-to-delete t)
+                                                        (message "Something isn't right"))
+                                                      (message "Q3s replaced."))
                                                   (progn
-                                                    (while drives
-                                                      (if (file-exists-p (concat (car drives) ":/"))
-                                                          (add-to-list 'online-drives (car drives) t)
-                                                        (add-to-list 'offline-drives (car drives) t))
-                                                      (setq drives (cdr drives)))
-                                                    (message (prin1-to-string online-drives))))
-  
-                                                (defun eshell/op (file)
-                                                  "Invoke (w32-shell-execute \"Open\" file) and substitute
-      slashes for backslashes"
-                                                  (w32-shell-execute "Open"
-                                                                     (subst-char-in-string ?\\ ?/ (expand-file-name file)))
-                                                  nil)
-  
-                                                (defun run-bgbd-command ()
-                                                  ""
-                                                  (let ((command-in-file "C:\\Users\\juntunenkc\\Dropbox\\.bgbd")
-                                                        (command-out-file "C:/Users/juntunenkc/Dropbox/out.bgbd")
-                                                        (command-input "")
-                                                        (command-output ""))
-                                                    (if (file-exists-p "C:/Users/juntunenkc/Dropbox/.bgbd")
-                                                        (progn
-                                                          (setq command-input (shell-command-to-string (concat "powershell cat " command-in-file)))
-                                                          (message "Here comes a temp-buffer.")
-                                                          (with-temp-buffer
-                                                            (setq command-output (shell-command-to-string command-input))
-                                                            (insert command-output)
-                                                            (write-file command-out-file)
-                                                            (kill-buffer (current-buffer)))
-                                                          (delete-file command-in-file t))
-                                                      (message (format "%s not found." command-in-file)))))
-  
-                                                (defun bgbd ()
-                                                  ""
-                                                  (interactive)
+                                                    (message "We didn't find any Q3s.")
+                                                    (if (string-match "text.*" (prin1-to-string major-mode))
+                                                        (kill-buffer (current-buffer))))))
+
+
+
+                                              (defun kc:check-for-network-drives ()
+                                                "Checks which drives are online and offline."
+                                                (interactive)
+                                                (setq drives kc:drives)
+                                                (setq online-drives ())
+                                                (setq offline-drives ())
+                                                (progn
+                                                  (while drives
+                                                    (if (file-exists-p (concat (car drives) ":/"))
+                                                        (add-to-list 'online-drives (car drives) t)
+                                                      (add-to-list 'offline-drives (car drives) t))
+                                                    (setq drives (cdr drives)))
+                                                  (message (prin1-to-string online-drives))))
+
+                                              (defun eshell/op (file)
+                                                "Invoke (w32-shell-execute \"Open\" file) and substitute
+    slashes for backslashes"
+                                                (w32-shell-execute "Open"
+                                                                   (subst-char-in-string ?\\ ?/ (expand-file-name file)))
+                                                nil)
+
+                                              (defun run-bgbd-command ()
+                                                ""
+                                                (let ((command-in-file "C:\\Users\\juntunenkc\\Dropbox\\.bgbd")
+                                                      (command-out-file "C:/Users/juntunenkc/Dropbox/out.bgbd")
+                                                      (command-input "")
+                                                      (command-output ""))
                                                   (if (file-exists-p "C:/Users/juntunenkc/Dropbox/.bgbd")
-                                                      (delete-file "C:/Users/juntunenkc/Dropbox/.bgbd"))
-                                                  (setq bgbd-timer (run-at-time "1 sec" 15
-                                                                                (lambda ()
-                                                                                  (if (file-exists-p "C:/Users/juntunenkc/Dropbox/.bgbd")
-                                                                                      (progn
-                                                                                        (run-bgbd-command))
+                                                      (progn
+                                                        (setq command-input (shell-command-to-string (concat "powershell cat " command-in-file)))
+                                                        (message "Here comes a temp-buffer.")
+                                                        (with-temp-buffer
+                                                          (setq command-output (shell-command-to-string command-input))
+                                                          (insert command-output)
+                                                          (write-file command-out-file)
+                                                          (kill-buffer (current-buffer)))
+                                                        (delete-file command-in-file t))
+                                                    (message (format "%s not found." command-in-file)))))
+
+                                              (defun bgbd ()
+                                                ""
+                                                (interactive)
+                                                (if (file-exists-p "C:/Users/juntunenkc/Dropbox/.bgbd")
+                                                    (delete-file "C:/Users/juntunenkc/Dropbox/.bgbd"))
+                                                (setq bgbd-timer (run-at-time "1 sec" 15
+                                                                              (lambda ()
+                                                                                (if (file-exists-p "C:/Users/juntunenkc/Dropbox/.bgbd")
                                                                                     (progn
-                                                                                      ))))))
-  
-                                                (defun bgbd-stop ()
-                                                  ""
-                                                  (interactive)
-                                                  (cancel-timer bgbd-timer))
-  
-                                                ;; (fset 'take-proc-snapshot
-                                                ;;       [?g ?\C-x ?h ?\M-w ?\C-x ?\C-f ?. ?. ?/ ?. ?. ?/ ?D ?r ?o tab ?p ?r ?o ?c ?. ?s ?n ?a ?p ?s ?o backspace ?h ?o ?t return ?\C-y ?\C-x ?\C-s ?\C-x ?k return])
-  
-                                                ;; (setq proc-snapshot-timer
-                                                ;;       (run-at-time "1 sec" (* 60 60)
-                                                ;;                    (lambda ()
-                                                ;;                      (progn
-                                                ;;                        (delete-file "C:/Users/juntunenkc/Dropbox/proc.snapshot" nil)
-                                                ;;                        (switch-to-buffer "*Proced*")
-                                                ;;                        (execute-kbd-macro 'take-proc-snapshot))
-                                                ;;                      )
-                                                ;;                    ))
-  
-                                                ;; (cancel-timer proc-snapshot-timer)
-  
-  
-  ;;; Setting keys
-                                                ;; (global-set-key "\C-ce" 'kc:off-to-the-machines)
-                                                ;; (global-set-key "\C-cd" 'kc:check-for-network-drives)
-                                                ;; (global-set-key "\C-cq" 'kc:make-all-Qs-Q1)
-                                                ;; (global-set-key "\C-cm" 'kc:mprCheck)
-                                                ;; (global-set-key "\C-c(" 'remember-parens)
-  
-                                                ;; (defun kc:test ()
-                                                ;;   ""
-                                                ;;   (interactive)
-                                                ;;   (progn
-                                                ;;     (beginning-of-buffer)
-                                                ;;     (save-excursion
-                                                ;;     (if (not (eq (search-forward-regexp "Q1") nil))
-                                                ;;         (message "stuff!")))))
-                                                (defun kc/kill-vistaepx64 ()
-                                                  ""
-                                                  (interactive)
-                                                  (mapc 'kc/sub-kill-vstaepx64 (list-system-processes)))
-  
-                                                (defun kc/sub-kill-vstaepx64 (args)
-                                                  ""
-                                                  (if (string= "vsta_epx64.exe" (cdr (assoc 'comm (process-attributes args))))
-                                                      (if (> args 0)
-                                                          (signal-process args 9))))
-                                                (align-window)
-                                                ))
+                                                                                      (run-bgbd-command))
+                                                                                  (progn
+                                                                                    ))))))
+
+                                              (defun bgbd-stop ()
+                                                ""
+                                                (interactive)
+                                                (cancel-timer bgbd-timer))
+
+                                              ;; (fset 'take-proc-snapshot
+                                              ;;       [?g ?\C-x ?h ?\M-w ?\C-x ?\C-f ?. ?. ?/ ?. ?. ?/ ?D ?r ?o tab ?p ?r ?o ?c ?. ?s ?n ?a ?p ?s ?o backspace ?h ?o ?t return ?\C-y ?\C-x ?\C-s ?\C-x ?k return])
+
+                                              ;; (setq proc-snapshot-timer
+                                              ;;       (run-at-time "1 sec" (* 60 60)
+                                              ;;                    (lambda ()
+                                              ;;                      (progn
+                                              ;;                        (delete-file "C:/Users/juntunenkc/Dropbox/proc.snapshot" nil)
+                                              ;;                        (switch-to-buffer "*Proced*")
+                                              ;;                        (execute-kbd-macro 'take-proc-snapshot))
+                                              ;;                      )
+                                              ;;                    ))
+
+                                              ;; (cancel-timer proc-snapshot-timer)
+
+
+;;; Setting keys
+                                              ;; (global-set-key "\C-ce" 'kc:off-to-the-machines)
+                                              ;; (global-set-key "\C-cd" 'kc:check-for-network-drives)
+                                              ;; (global-set-key "\C-cq" 'kc:make-all-Qs-Q1)
+                                              ;; (global-set-key "\C-cm" 'kc:mprCheck)
+                                              ;; (global-set-key "\C-c(" 'remember-parens)
+
+                                              ;; (defun kc:test ()
+                                              ;;   ""
+                                              ;;   (interactive)
+                                              ;;   (progn
+                                              ;;     (beginning-of-buffer)
+                                              ;;     (save-excursion
+                                              ;;     (if (not (eq (search-forward-regexp "Q1") nil))
+                                              ;;         (message "stuff!")))))
+                                              (defun kc/kill-vistaepx64 ()
+                                                ""
+                                                (interactive)
+                                                (mapc 'kc/sub-kill-vstaepx64 (list-system-processes)))
+
+                                              (defun kc/sub-kill-vstaepx64 (args)
+                                                ""
+                                                (if (string= "vsta_epx64.exe" (cdr (assoc 'comm (process-attributes args))))
+                                                    (if (> args 0)
+                                                        (signal-process args 9))))
+                                              ;; load .els I use in windows
+                                              (progn
+                                                (load-file "~/.emacs.d/site-lisp/w32-browser.el")
+                                                (load-file "~/.emacs.d/site-lisp/cnc-opt.el")
+                                                (define-key dired-mode-map "b" 'dired-w32-browser))
+                                              ;; put the window on the desired monitor
+                                              (align-window)))
 #+end_src
 * Jabber
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (use-package jabber
-    :ensure t
-    :defer t
-    :bind ("C-x j c" . jabber-connect-all)
-    :config
-    (setq jabber-account-list
-          '(("shfengoli@gmail.com"
-             (:network-server . "talk.google.com")
-             (:port . 5222)
-             (:connection-type . starttls)))))
-  
+(use-package jabber
+  :init
+  (add-hook 'jabber-chat-mode-hook 'visual-line-mode)
+  (add-hook 'jabber-chat-mode-hook 'variable-pitch-mode)
+  :ensure t
+  :defer t
+  :bind ("C-x j c" . jabber-connect-all)
+  :config
+  (setq jabber-account-list
+        '(("shfengoli@gmail.com"
+           (:network-server . "talk.google.com")
+           (:port . 5222)
+           (:connection-type . starttls)))))
+
 #+end_src
 * Misc functions
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
