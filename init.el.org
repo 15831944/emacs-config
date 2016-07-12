@@ -801,13 +801,15 @@ smart-modeline-respectful, /etc/.
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (setq backup-directory-alist
-	`((".*" . ,temporary-file-directory)))
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
 
-  (setq auto-save-file-name-transforms
-	`((".*" ,temporary-file-directory t)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
-  (global-auto-revert-mode t)
+(global-auto-revert-mode t)
+(add-hook 'dired-mode-hook '(lambda ()
+                              (define-key dired-mode-map "r" 'revert-buffer)))
 #+end_src
 
 This ruined me. I can no longer get along without [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][this]].
