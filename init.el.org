@@ -23,14 +23,14 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (require 'package)
-  
+
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/") t)
-  
+
   (setq package-user-dir
         (expand-file-name "elpa" (expand-file-name "~/.emacs.d")))
   (package-initialize)
-  
+
   (unless inhibit-startup-screen (package-refresh-contents))
 #+end_src
 
@@ -45,7 +45,7 @@ Anything that needs to be =require='d before =use-package= goes here.
 Elisp is so cool.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) my/packages)
-  
+
   (eval-when-compile
     (require 'use-package))
   (require 'diminish)
@@ -68,11 +68,11 @@ global. It's generally no help in eshell, jabber, or ERC.
   (use-package company-anaconda
     :ensure t
     :defer t)
-  
+
   (use-package company-shell
     :ensure t
     :defer t)
-  
+
   (use-package company
     :ensure t
     :defer t
@@ -91,7 +91,7 @@ global. It's generally no help in eshell, jabber, or ERC.
                                              company-elisp
                                              company-gtags
                                              company-irony))))
-  
+
 #+end_src
 This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -156,7 +156,7 @@ This is always helpful.
     (progn
       (add-hook 'python-mode-hook 'anaconda-mode)
       (add-hook 'python-mode-hook 'eldoc-mode)))
-  
+
 #+end_src
 
 ** Javascript
@@ -233,7 +233,7 @@ I dig helm. I don't care much for ido.
       (use-package helm-projectile
         :ensure t
         :defer t))
-  
+
 #+end_src
 * Org Mode
 On org-agenda-files, the documentation says:
@@ -250,66 +250,73 @@ Way down there is =bh-org-mode-file=. The =bh= is for [[http://doc.norang.ca/org
 The idea is to have a separate org-config, because it's so huge. My
 Emacs loads in only a few seconds without this.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(use-package org
-  :init (setq org-directory (concat dropbox-dir "org/")
-	      agenda-dir (concat org-directory "agenda/"))
-  :load-path ("~/git/org-mode/lisp" "~/git/org-mode/contrib/lisp")
-  :bind (("C-c a"     . org-agenda)
-         ("C-c C-w"   . org-refile)
-         ("C-c c"     . org-capture)
-	 ("C-c b"     . org-iswitchb)
-	 ("<M-f7>"    . visual-line-mode)
-	 ;; Bernt Hansen's keys.
-	 ("<f12>"     . org-agenda)
-	 ("<f5>"      . bh/org-todo)
-	 ("<S-f5>"    . bh/widen)
-	 ("<f7>"      . bh/set-truncate-lines)
-	 ("<f8>"      . org-cycle-agenda-files)
-	 ("<f9> <f9>" . bh/show-org-agenda)
-	 ("<f9> b"    . bbdb)
-	 ("<f9> c"    . calendar)
-	 ("<f9> f"    . boxquote-insert-file)
-	 ("<f9> g"    . gnus)
-	 ("<f9> h"    . bh/hide-other)
-	 ("<f9> n"    . bh/toggle-next-task-display)
-	 ("<f9> I"    . bh/punch-in)
-	 ("<f9> O"    . bh/punch-out)
-	 ("<f9> o"    . bh/make-org-scratch)
-	 ("<f9> r"    . boxquote-region)
-	 ("<f9> s"    . bh/switch-to-scratch)
-	 ("<f9> t"    . bh/insert-inactive-timestamp)
-	 ("<f9> T"    . bh/toggle-insert-inactive-timestamp)
-	 ("<f9> v"    . visible-mode)
-	 ("<f9> l"    . org-toggle-link-display)
-	 ("<f9> SPC"  . bh/clock-in-last-task)
-	 ("C-<f9>"    . previous-buffer)
-	 ("M-<f9>"    . org-toggle-inline-images)
-	 ("C-x n r"   . narrow-to-region)
-	 ("C-<f10>"   . next-buffer)
-	 ("<f11>"     . org-clock-goto)
-	 ("C-<f11>"   . org-clock-in)
-	 ("C-s-<f12>" . bh/save-then-publish)
-	 ("C-c c"     . org-capture))
-  :defer t
-  :config
-  (let ((bh-org-mode-file (expand-file-name "~/git/emacs-config/org-mode.org")))
-    (setq org-agenda-files
-          (delq nil
-                (mapcar (lambda (x) (and (file-exists-p x) x))
-                        (directory-files
-                         (expand-file-name agenda-dir) t org-agenda-file-regexp))))
-    ;; load org config
-    (if (file-exists-p bh-org-mode-file)
-	(org-babel-load-file bh-org-mode-file))))
+  (use-package org
+    :init (setq org-directory (concat dropbox-dir "org/")
+                agenda-dir (concat org-directory "agenda/"))
+    :load-path ("~/git/org-mode/lisp" "~/git/org-mode/contrib/lisp")
+    :bind (("C-c a"     . org-agenda)
+           ("C-c C-w"   . org-refile)
+           ("C-c c"     . org-capture)
+           ("C-c b"     . org-iswitchb)
+           ("<M-f7>"    . visual-line-mode)
+           ;; Bernt Hansen's keys.
+           ("<f12>"     . org-agenda)
+           ("<f5>"      . bh/org-todo)
+           ("<S-f5>"    . bh/widen)
+           ("<f7>"      . bh/set-truncate-lines)
+           ("<f8>"      . org-cycle-agenda-files)
+           ("<f9> <f9>" . bh/show-org-agenda)
+           ("<f9> b"    . bbdb)
+           ("<f9> c"    . calendar)
+           ("<f9> f"    . boxquote-insert-file)
+           ("<f9> g"    . gnus)
+           ("<f9> h"    . bh/hide-other)
+           ("<f9> n"    . bh/toggle-next-task-display)
+           ("<f9> I"    . bh/punch-in)
+           ("<f9> O"    . bh/punch-out)
+           ("<f9> o"    . bh/make-org-scratch)
+           ("<f9> r"    . boxquote-region)
+           ("<f9> s"    . bh/switch-to-scratch)
+           ("<f9> t"    . bh/insert-inactive-timestamp)
+           ("<f9> T"    . bh/toggle-insert-inactive-timestamp)
+           ("<f9> v"    . visible-mode)
+           ("<f9> l"    . org-toggle-link-display)
+           ("<f9> SPC"  . bh/clock-in-last-task)
+           ("C-<f9>"    . previous-buffer)
+           ("M-<f9>"    . org-toggle-inline-images)
+           ("C-x n r"   . narrow-to-region)
+           ("C-<f10>"   . next-buffer)
+           ("<f11>"     . org-clock-goto)
+           ("C-<f11>"   . org-clock-in)
+           ("C-s-<f12>" . bh/save-then-publish)
+           ("C-c c"     . org-capture))
+    :defer t
+    :config
+    (let ((bh-org-mode-file (cond ((string= system-type "windows-nt")
+                                   (expand-file-name "~/git/emacs-config/org-mode.el"))
+                                  ((string= system-type "gnu/linux")
+                                   (expand-file-name "~/git/emacs-config/org-mode.org"))))
+          (org-config-load-command (cond ((string= system-type "windows-nt")
+                                          'load-file)
+                                         ((string= system-type "gnu/linux")
+                                          'org-babel-load-file))))
+      (setq org-agenda-files
+            (delq nil
+                  (mapcar (lambda (x) (and (file-exists-p x) x))
+                          (directory-files
+                           (expand-file-name agenda-dir) t org-agenda-file-regexp))))
+      ;; load org config
+      (if (file-exists-p bh-org-mode-file)
+          (funcall org-config-load-command bh-org-mode-file))))
 
-(use-package org-id)
+  (use-package org-id)
 
-(use-package org-habit)
+  (use-package org-habit)
 
-(use-package org-mobile
-  :config
-  (setq org-mobile-directory (concat dropbox-dir "orgmobile/")
-        org-mobile-inbox-for-pull (concat dropbox-dir "mobile-org/inbox.org")))
+  (use-package org-mobile
+    :config
+    (setq org-mobile-directory (concat dropbox-dir "orgmobile/")
+          org-mobile-inbox-for-pull (concat dropbox-dir "mobile-org/inbox.org")))
 
 #+end_src
 
@@ -330,7 +337,7 @@ just unacceptible. :-(
     ;;       (setq powerline-default-separator 'contour)
     ;;       (setq powerline-height 25))
     ;;   (setq powerline-default-separator-dir '(right . left)))
-  
+
     ;; ;; first reset the faces that already exist
     ;; (set-face-attribute 'mode-line nil
     ;;                     :foreground (face-attribute 'default :foreground)
@@ -348,7 +355,7 @@ just unacceptible. :-(
     ;; (set-face-attribute 'powerline-inactive1 nil
     ;;                     :background (face-attribute 'default :background)
     ;;                     :box `(:line-width -2 :color ,(face-attribute 'fringe :background)))
-  
+
     ;; ;; these next faces are for the status indicator
     ;; ;; read-only buffer
     ;; (make-face 'mode-line-read-only-face)
@@ -359,7 +366,7 @@ just unacceptible. :-(
     ;; (set-face-attribute 'mode-line-read-only-inactive-face nil
     ;;                     :foreground (face-attribute 'default :foreground)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; modified buffer
     ;; (make-face 'mode-line-modified-face)
     ;; (make-face 'mode-line-modified-inactive-face)
@@ -371,7 +378,7 @@ just unacceptible. :-(
     ;;                     :foreground (face-attribute 'default :background)
     ;;                     :background "#e5786d"
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; unmodified buffer
     ;; (make-face 'mode-line-unmodified-face)
     ;; (make-face 'mode-line-unmodified-inactive-face)
@@ -381,7 +388,7 @@ just unacceptible. :-(
     ;; (set-face-attribute 'mode-line-unmodified-inactive-face nil
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; the remote indicator
     ;; (make-face 'mode-line-remote-face)
     ;; (make-face 'mode-line-remote-inactive-face)
@@ -393,7 +400,7 @@ just unacceptible. :-(
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :background (face-attribute 'default :background)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; the current file name
     ;; (make-face 'mode-line-filename-face)
     ;; (make-face 'mode-line-filename-inactive-face)
@@ -405,7 +412,7 @@ just unacceptible. :-(
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :background (face-attribute 'default :background)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; the major mode name
     ;; (make-face 'mode-line-major-mode-face)
     ;; (make-face 'mode-line-major-mode-inactive-face)
@@ -416,7 +423,7 @@ just unacceptible. :-(
     ;;                     :box `(:line-width -2 :color ,(face-attribute 'fringe :background))
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :inherit 'powerline-inactive1)
-  
+
     ;; ;; the minor mode name
     ;; (make-face 'mode-line-minor-mode-face)
     ;; (make-face 'mode-line-minor-mode-inactive-face)
@@ -427,7 +434,7 @@ just unacceptible. :-(
     ;;                     :box `(:line-width -2 :color ,(face-attribute 'fringe :background))
     ;;                     :foreground (face-attribute 'powerline-inactive1 :background)
     ;;                     :inherit 'powerline-inactive1)
-  
+
     ;; ;; the position face
     ;; (make-face 'mode-line-position-face)
     ;; (make-face 'mode-line-position-inactive-face)
@@ -438,7 +445,7 @@ just unacceptible. :-(
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :background (face-attribute 'default :background)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; the 80col warning face
     ;; (make-face 'mode-line-80col-face)
     ;; (make-face 'mode-line-80col-inactive-face)
@@ -450,7 +457,7 @@ just unacceptible. :-(
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :background (face-attribute 'default :background)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; the buffer percentage face
     ;; (make-face 'mode-line-percentage-face)
     ;; (make-face 'mode-line-percentage-inactive-face)
@@ -460,7 +467,7 @@ just unacceptible. :-(
     ;; (set-face-attribute 'mode-line-percentage-inactive-face nil
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :inherit 'mode-line-inactive)
-  
+
     ;; ;; the directory face
     ;; (make-face 'mode-line-shell-dir-face)
     ;; (make-face 'mode-line-shell-dir-inactive-face)
@@ -470,7 +477,7 @@ just unacceptible. :-(
     ;; (set-face-attribute 'mode-line-shell-dir-inactive-face nil
     ;;                     :foreground (face-attribute 'font-lock-comment-face :foreground)
     ;;                     :inherit 'powerline-inactive1)
-  
+
     ;; (defun shorten-directory (dir max-length)
     ;;   "Show up to `max-length' characters of a directory name `dir'."
     ;;   (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
@@ -483,7 +490,7 @@ just unacceptible. :-(
     ;;     (when path
     ;;       (setq output (concat ".../" output)))
     ;;     output))
-  
+
     ;; (defpowerline dennis-powerline-narrow
     ;;   (let (real-point-min real-point-max)
     ;;     (save-excursion
@@ -497,8 +504,8 @@ just unacceptible. :-(
     ;;                   'help-echo "mouse-1: Remove narrowing from the current buffer"
     ;;                   'local-map (make-mode-line-mouse-map
     ;;                               'mouse-1 'mode-line-widen)))))
-  
-  
+
+
     ;; (defpowerline dennis-powerline-vc
     ;;   (when (and (buffer-file-name (current-buffer)) vc-mode)
     ;;     (if window-system
@@ -508,13 +515,13 @@ just unacceptible. :-(
     ;;                     (char-to-string #xe0a0)
     ;;                     backend
     ;;                     (vc-working-revision (buffer-file-name (current-buffer)) backend)))))))
-  
+
     ;; (setq-default
     ;;  mode-line-format
     ;;  '("%e"
     ;;    (:eval
     ;;     (let* ((active (powerline-selected-window-active))
-  
+
     ;;            ;; toggle faces between active and inactive
     ;;            (mode-line (if active 'mode-line 'mode-line-inactive))
     ;;            (face1 (if active 'powerline-active1 'powerline-inactive1))
@@ -530,7 +537,7 @@ just unacceptible. :-(
     ;;            (percentage-face (if active 'mode-line-percentage-face 'mode-line-percentage-inactive-face))
     ;;            (remote-face (if active 'mode-line-remote-face 'mode-line-remote-inactive-face))
     ;;            (shell-dir-face (if active 'mode-line-shell-dir-face 'mode-line-shell-dir-inactive-face))
-  
+
     ;;            ;; get the separators
     ;;            (separator-left (intern (format "powerline-%s-%s"
     ;;                                            (powerline-current-separator)
@@ -538,7 +545,7 @@ just unacceptible. :-(
     ;;            (separator-right (intern (format "powerline-%s-%s"
     ;;                                             (powerline-current-separator)
     ;;                                             (cdr powerline-default-separator-dir))))
-  
+
     ;;            ;; the right side
     ;;            (rhs (list
     ;;                  (dennis-powerline-vc minor-mode-face 'r)
@@ -562,7 +569,7 @@ just unacceptible. :-(
     ;;                    (funcall separator-left position-face percentage-face))
     ;;                  (powerline-raw " " percentage-face)
     ;;                  (powerline-raw "%6p" percentage-face 'r)))
-  
+
     ;;            ;; the left side
     ;;            (lhs (list
     ;;                  ;; this is the modified status indicator
@@ -617,7 +624,7 @@ just unacceptible. :-(
     ;;                    (powerline-minor-modes minor-mode-face 'l))
     ;;                  (unless (bound-and-true-p show-dir-in-mode-line?)
     ;;                    (dennis-powerline-narrow major-mode-face 'l)))))
-  
+
     ;;       ;; concatenate it all together
     ;;       (concat (powerline-render lhs)
     ;;               (powerline-fill face1 (powerline-width rhs))
@@ -1141,4 +1148,3 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 
 #+results:
 : kc:list-connections
-
