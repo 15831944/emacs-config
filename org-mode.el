@@ -836,10 +836,27 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 ; Inline images in HTML instead of producting links to the image
 (setq org-html-inline-images t)
 ; Do not use sub or superscripts - I currently don't need this functionality in my documents
-(setq org-export-with-sub-superscripts nil)
+(setq org-export-with-sub-superscripts t)
 ; Use org.css from the norang website for export document stylesheets
-(setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
+;; (setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
+(setq org-html-head-extra "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css\" />\n<style>
+.footnum, .footref {
+font-size: 100%
+} 
+pre.src {
+    background-color: #fcfcfc;
+    display: block;
+    font-family: Consolas,\"Andale Mono WT\",\"Andale Mono\",\"Lucida Console\",\"Lucida Sans Typewriter\",\"DejaVu Sans Mono\",\"Bitstream Vera Sans Mono\",\"Liberation Mono\",\"Nimbus Mono L\",Monaco,\"Courier New\",Courier,monospace;
+    color: lightgray;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 1px 0px 24px 0px;
+    overflow: auto;
+    padding: 12px;
+    white-space: pre;
+}</style>")
 (setq org-html-head-include-default-style nil)
+(setq org-export-with-tables t)
 ; Do not generate internal css formatting for HTML exports
 (setq org-export-htmlize-output-type (quote css))
 ; Export with LaTeX fragments
