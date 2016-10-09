@@ -670,6 +670,22 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 : SSH_AUTH_SOCK nil --> /tmp/ssh-NTkRr2af1PnJ/agent.2777
 
 * UI stuff
+Found on this [[http://www.lunaryorn.com/posts/center-buffer-text-in-emacs.html][blog]].
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(use-package visual-fill-column
+  :ensure t
+  :defer t
+  :bind (("C-c t v" . visual-fill-column-mode))
+  :init
+  (dolist (hook '(visual-line-mode-hook
+                  prog-mode-hook
+                  text-mode-hook))
+    (add-hook hook #'visual-fill-column-mode))
+  :config (setq-default visual-fill-column-center-text t
+                        visual-fill-column-fringes-outside-margins nil))
+
+#+end_src
+
 The hippest emacsers don't need menus, toolbars, or scrollbars. But I
 don't either.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
