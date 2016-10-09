@@ -1,8 +1,4 @@
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; This is just Bernt Hansen's org-mode.org tweaked to my general
-;; liking, and tangled out.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Key Bindings
 ;; I set these up `use-package' style.
 ;; (global-set-key (kbd "<f12>") 'org-agenda)
@@ -57,7 +53,7 @@
   ;; now refresh window display (an idiom from simple.el):
   (save-excursion
     (set-window-start (selected-window)
-		      (window-start (selected-window)))))
+                      (window-start (selected-window)))))
 
 (defun bh/make-org-scratch ()
   (interactive)
@@ -480,14 +476,14 @@ A prefix arg forces clock in of the default task."
     ; Build the bbdb link if we have a bbdb record, otherwise just return the name
     (setq caller (cond ((and rec (vectorp rec))
                         (let ((name (bbdb-record-name rec))
-			      (company (bbdb-record-company rec)))
+                              (company (bbdb-record-company rec)))
                           (concat "[[bbdb:"
                                   name "]["
                                   name "]]"
                                   (when company
                                     (concat " - " company)))))
-		       (rec)
-		       (t "NameOfCaller")))
+                       (rec)
+                       (t "NameOfCaller")))
     (insert caller)))
 
 (setq org-agenda-span 'day)
@@ -836,27 +832,10 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 ; Inline images in HTML instead of producting links to the image
 (setq org-html-inline-images t)
 ; Do not use sub or superscripts - I currently don't need this functionality in my documents
-(setq org-export-with-sub-superscripts t)
+(setq org-export-with-sub-superscripts nil)
 ; Use org.css from the norang website for export document stylesheets
-;; (setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
-(setq org-html-head-extra "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css\" />\n<style>
-.footnum, .footref {
-font-size: 100%
-} 
-pre.src {
-    background-color: #fcfcfc;
-    display: block;
-    font-family: Consolas,\"Andale Mono WT\",\"Andale Mono\",\"Lucida Console\",\"Lucida Sans Typewriter\",\"DejaVu Sans Mono\",\"Bitstream Vera Sans Mono\",\"Liberation Mono\",\"Nimbus Mono L\",Monaco,\"Courier New\",Courier,monospace;
-    color: lightgray;
-    font-size: 12px;
-    line-height: 1.5;
-    margin: 1px 0px 24px 0px;
-    overflow: auto;
-    padding: 12px;
-    white-space: pre;
-}</style>")
+(setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
 (setq org-html-head-include-default-style nil)
-(setq org-export-with-tables t)
 ; Do not generate internal css formatting for HTML exports
 (setq org-export-htmlize-output-type (quote css))
 ; Export with LaTeX fragments
@@ -1333,7 +1312,7 @@ so change the default 'F' binding in the agenda to allow both"
                     (or (not (org-get-at-bol 'org-hd-marker))
                         (org-with-point-at (org-get-at-bol 'org-hd-marker)
                           (or (not (bh/is-project-p))
-			      (bh/is-project-subtree-p)))))
+                              (bh/is-project-subtree-p)))))
           (forward-visible-line 1))
         (when (< (point) (point-max))
           (add-to-list 'bh/project-list (copy-marker (org-get-at-bol 'org-hd-marker)) 'append))
@@ -1798,7 +1777,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 (add-hook 'message-mode-hook 'orgstruct++-mode 'append)
 (add-hook 'message-mode-hook 'turn-on-auto-fill 'append)
-(add-hook 'message-mode-hook 'bbdb-define-all-aliases 'append)
+;; (add-hook 'message-mode-hook 'bbdb-define-all-aliases 'append)
 (add-hook 'message-mode-hook 'orgtbl-mode 'append)
 (add-hook 'message-mode-hook 'turn-on-flyspell 'append)
 (add-hook 'message-mode-hook
@@ -1852,7 +1831,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (setq org-emphasis-alist (quote (("*" bold "<b>" "</b>")
                                  ("/" italic "<i>" "</i>")
                                  ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
-				 ("+" strikethrough "<strike></strike>")
+                                 ("+" strikethrough "<strike></strike>")
                                  ("=" org-code "<code>" "</code>" verbatim)
                                  ("~" org-verbatim "<code>" "</code>" verbatim))))
 
