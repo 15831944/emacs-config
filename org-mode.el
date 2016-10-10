@@ -91,7 +91,7 @@
               ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
               ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
-(setq org-directory "~/git/org")
+(setq org-directory "~/../../Dropbox/org")
 (setq org-default-notes-file "~/git/org/refile.org")
 
 ;; I use C-c c to start capture mode
@@ -835,6 +835,25 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (setq org-export-with-sub-superscripts nil)
 ; Use org.css from the norang website for export document stylesheets
 (setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
+;; (setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
+;; (setq org-html-head-extra "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css\" />\n<style>
+;; .footnum, .footref {
+;; font-size: 100%
+;; } 
+;; pre.src {
+;;     background-color: #fcfcfc;
+;;     display: block;
+;;     font-family: Consolas,\"Andale Mono WT\",\"Andale Mono\",\"Lucida Console\",\"Lucida Sans Typewriter\",\"DejaVu Sans Mono\",\"Bitstream Vera Sans Mono\",\"Liberation Mono\",\"Nimbus Mono L\",Monaco,\"Courier New\",Courier,monospace;
+;;     color: lightgray;
+;;     font-size: 12px;
+;;     line-height: 1.5;
+;;     margin: 1px 0px 24px 0px;
+;;     overflow: auto;
+;;     padding: 12px;
+;;     white-space: pre;
+;; }</style>")
+(setq org-html-head-extra "")
+
 (setq org-html-head-include-default-style nil)
 ; Do not generate internal css formatting for HTML exports
 (setq org-export-htmlize-output-type (quote css))
@@ -855,7 +874,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       ; norang-extra are images and css files that need to be included
       ; norang is the top-level project that gets published
       (quote (("pub"
-               :base-directory "~/git/pub"
+               :base-directory "~/git/kcjuntunen.github.io/"
                :publishing-directory "/sudo:/var/www/html/"
                :recursive t
                :table-of-contents nil
