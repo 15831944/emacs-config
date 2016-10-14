@@ -813,7 +813,7 @@ smart-modeline-respectful, /etc/.
   (use-package zenburn-theme
     :ensure t
     :config
-    (set-cursor-color "red")
+    (set-cursor-color "yellow")
     (blink-cursor-mode 1)
     ;; maybe it's a bad idea to put this here.
     (custom-set-faces
