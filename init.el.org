@@ -733,6 +733,16 @@ Try this once; never look back.
     :bind ("C-c j" . avy-goto-word-or-subword-1))
 #+end_src
 
+Try and stop doing =C-x o=, eh? The caveat is that =M-p= is bound to =magit-section-backward-sibling= when in a Magit window.
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(use-package ace-window
+  :ensure t
+  :defer t
+  :bind ("M-p" . ace-window)
+  )
+#+end_src
+
+This feature is useful in VisualStudio, so I'll have it in Emacs too.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package diff-hl
     :ensure t
