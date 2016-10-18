@@ -737,12 +737,15 @@ Try this once; never look back.
     :bind ("C-c j" . avy-goto-word-or-subword-1))
 #+end_src
 
-Try and stop doing =C-x o=, eh? The caveat is that =M-p= is bound to =magit-section-backward-sibling= when in a Magit window.
+Somewhere it seemed like =M-p= was the recommended binding. This conflicts with up/down scroll with
+company, =previous-command= in eshell and erc, =magit-section-backward-sibling=, and probably lots
+of other things. Since my plan is to stop using =other-window=, not necessarily =C-x o=, I'll just
+rebind it.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package ace-window
   :ensure t
   :defer t
-  :bind ("M-p" . ace-window)
+  :bind ("C-x o" . ace-window)
   )
 #+end_src
 
