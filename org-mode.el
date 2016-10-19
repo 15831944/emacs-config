@@ -120,8 +120,9 @@
 (defun bh/remove-empty-drawer-on-clock-out ()
   (interactive)
   (save-excursion
-    (beginning-of-line 0)
-    (org-remove-empty-drawer-at "LOGBOOK" (point))))
+    (search-forward "LOGBOOK")
+    (beginning-of-line 1)
+    (org-remove-empty-drawer-at (point))))
 
 (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
 
