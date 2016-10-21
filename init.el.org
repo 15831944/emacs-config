@@ -14,11 +14,11 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 : /home/juntunenkc/.emacs.d/custom.el
 * Env stuff
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (setq user-full-name    "K. C. Juntunen"
-        user-mail-address "juntunen.kc@gmail.com"
-        dropbox-dir       (if (string= system-type "windows-nt")
-                              "~/../../Dropbox/"
-                            "~/Dropbox/"))
+(setq user-full-name    "K. C. Juntunen"
+      user-mail-address "juntunen.kc@gmail.com"
+      dropbox-dir       (if (string= system-type "windows-nt")
+                            "~/../../Dropbox/"
+                          "~/Dropbox/"))
 #+end_src
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
