@@ -1,7 +1,7 @@
 #+Title: My emacs config
 * Prolegomena
 There are things I like and things I don't like about [[https://github.com/bbatsov/prelude][Prelude]]. The
-things I like, I really, really like. I wabt to reimplement them all
+things I like, I really, really like. I want to reimplement them all
 with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 
 * Custom file
