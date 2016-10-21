@@ -532,7 +532,7 @@ smart-modeline-respectful, /etc/.
 (use-package leuven-theme
   :ensure t
   :config
-  (set-cursor-color "yellow")
+  (set-cursor-color "red")
   (blink-cursor-mode 1)
   (setq blink-cursor-interval .125
         blink-cursor-blinks 10000))
