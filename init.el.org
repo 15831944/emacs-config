@@ -14,9 +14,12 @@ with Wiegley's [[https://github.com/jwiegley/use-package][use-package]] gizmo.
 : /home/juntunenkc/.emacs.d/custom.el
 * Env stuff
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(setq at-home (not (and (string= system-type "windows-nt")
+			(string= window-system "w32"))))
+
 (setq user-full-name    "K. C. Juntunen"
       user-mail-address "juntunen.kc@gmail.com"
-      dropbox-dir       (if (string= system-type "windows-nt")
+      dropbox-dir       (if (not at-home)
                             "~/../../Dropbox/"
                           "~/Dropbox/"))
 #+end_src
@@ -162,6 +165,7 @@ This is always helpful.
 ** Javascript
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package tern
+  :if at-home
   :ensure t
   :defer t
   :init
@@ -169,7 +173,7 @@ This is always helpful.
   (eval-after-load 'tern
     '(progn
        (require 'tern-auto-complete)
-       (tern-ac-setup)))))
+       (tern-ac-setup))))
 #+end_src
 ** Revision control
 *** Magit
@@ -228,10 +232,10 @@ I dig helm. I don't care much for ido.
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(unless (string-equal system-type "windows-nt")
-  (use-package helm-projectile
-    :ensure t
-    :defer t))
+(use-package helm-projectile
+  :if at-home
+  :ensure t
+  :defer t)
 
 #+end_src
 * Org Mode
@@ -374,6 +378,20 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 : SSH_AUTH_SOCK nil --> /tmp/ssh-NTkRr2af1PnJ/agent.2777
 
 * UI stuff
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(use-package unicode-fonts
+  :ensure t
+  :defer t)
+
+(use-package emojify
+  :ensure t
+  :defer t
+  :config
+  (setq emojify-display-style 'unicode)
+  (global-emojify-mode t))
+#+end_src
+
 Found on this [[http://www.lunaryorn.com/posts/center-buffer-text-in-emacs.html][blog]].
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package visual-fill-column
@@ -522,21 +540,18 @@ helps a bit, I think.
   :bind ([remap zap-to-char] . zop-to-char))
 #+end_src
 
-I think this is a nice theme, but I could never get my tweaks to stick
+I think =zenburn-theme= is a nice theme, but I could never get my tweaks to stick
 when I used Prelude. I'm moody about themes. I'm sure I'll be
 switching from this to wombat, to leuven, to
 smart-modeline-respectful, /etc/.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(setq at-home (not (and (string= system-type "windows-nt")
-			(string= window-system "w32"))))
-
 (use-package leuven-theme
   :if at-home
   :ensure t
   :config
   (setq blink-cursor-interval .125
 	blink-cursor-blinks 10000
-	setq powerline-default-separator 'zigzag)
+	powerline-default-separator 'zigzag)
   (set-cursor-color "red")
   (blink-cursor-mode 1))
 
@@ -546,7 +561,7 @@ smart-modeline-respectful, /etc/.
   :config
   (setq blink-cursor-interval .125
 	blink-cursor-blinks 10000
-	setq powerline-default-separator 'wave)
+	powerline-default-separator 'wave)
   (set-cursor-color "yellow")
   (blink-cursor-mode 1))
 #+end_src
@@ -610,7 +625,7 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 : kill-other-buffers
 ** Windows specific
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(if (string-equal system-type "windows-nt")
+(if (not at-home)
     (progn
       (defun align-set-size ()
         "Stretch from bottom to top."
