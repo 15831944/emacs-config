@@ -904,6 +904,26 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 		 (remove-if
 		  (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
 		  (split-string (shell-command-to-string kc:lc-command) "\n")))))))
+
+(defun get-office-temp-from-thingspeak ()
+  ""
+  (interactive)
+  (let* ((channel "100117")
+	(th-url (concat "http://api.thingspeak.com/channels/" channel "/feeds.xml?results=1"))
+	(b nil)
+	(temp 0.0))
+    (save-excursion
+    (setq temp (string-to-number
+		(caddr
+		 (assq 'field6
+		       (assq 'feed
+			     (assq 'feeds (cddar
+					   (progn
+					     (setq b (url-retrieve-synchronously th-url))
+					     (switch-to-buffer b)
+					     (xml-parse-region (point-min) (point-max)))))))))))
+    (kill-buffer b)
+    (format "%.1f°" temp)))
 #+end_src
 
 #+results:
