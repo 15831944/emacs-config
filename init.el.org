@@ -906,8 +906,7 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 		  (split-string (shell-command-to-string kc:lc-command) "\n")))))))
 
 (defun get-office-temp-from-thingspeak ()
-  ""
-  (interactive)
+  "Get temperature value."
   (let* ((channel "100117")
 	(th-url (concat "http://api.thingspeak.com/channels/" channel "/feeds.xml?results=1"))
 	(b nil)
@@ -923,7 +922,12 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 					     (switch-to-buffer b)
 					     (xml-parse-region (point-min) (point-max)))))))))))
     (kill-buffer b)
-    (format "%.1f°" temp)))
+    temp))
+
+(defun return-temp ()
+  "Returns office temperature formated as a nice string."
+  (interactive)
+  (format "%.1f°" (get-office-temp-from-thingspeak)))
 #+end_src
 
 #+results:
