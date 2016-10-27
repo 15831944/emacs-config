@@ -330,8 +330,7 @@ just unacceptible. :-(
 (use-package powerline
   :ensure t
   :config
-  (powerline-default-theme)
-  (setq powerline-default-separator 'contour))
+  (powerline-default-theme))
 #+end_src
 
 #+results:
@@ -528,13 +527,28 @@ when I used Prelude. I'm moody about themes. I'm sure I'll be
 switching from this to wombat, to leuven, to
 smart-modeline-respectful, /etc/.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(setq at-home (not (and (string= system-type "windows-nt")
+			(string= window-system "w32"))))
+
 (use-package leuven-theme
+  :if at-home
   :ensure t
   :config
-  (set-cursor-color "red")
-  (blink-cursor-mode 1)
   (setq blink-cursor-interval .125
-        blink-cursor-blinks 10000))
+	blink-cursor-blinks 10000
+	setq powerline-default-separator 'zigzag)
+  (set-cursor-color "red")
+  (blink-cursor-mode 1))
+
+(use-package abyss-theme
+  :if (not at-home)
+  :ensure t
+  :config
+  (setq blink-cursor-interval .125
+	blink-cursor-blinks 10000
+	setq powerline-default-separator 'wave)
+  (set-cursor-color "yellow")
+  (blink-cursor-mode 1))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
