@@ -496,13 +496,13 @@ Likewise.
   :bind ("C-." . helm-imenu-anywhere))
 #+end_src
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp :tangle no
 (use-package move-text
+  :ensure t
   :defer t
-  :bind (
-         ;; ("M-up"   . move-text-up)
-         ;; ("M-down" . move-text-down)
-         ))
+  :bind
+  ("M-up"   . move-text-up)
+  ("M-down" . move-text-down))
 #+end_src
 
 
@@ -623,6 +623,33 @@ Yet another [[http://emacsredux.com/blog/2013/03/30/kill-other-buffers/][gold nu
 
 #+RESULTS:
 : kill-other-buffers
+
+Today (<2016-10-28 Fri>), I thought it would be cool to make an =eval-and-replace= function. It
+looked like this:
+#+begin_src emacs-lisp :tangle no
+(defun eval-and-replace (s-expression)
+  ""
+  (interactive "P")
+  (let* ((result (eval-last-sexp s-expression)))
+    (backward-kill-sexp)
+    (insert (format "%S" result))))
+#+end_src
+
+Turns out Bozhidar Batsov already [[http://emacsredux.com/blog/2013/06/21/eval-and-replace/][made one]], and his is better, of course:
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(global-set-key (kbd "C-c e") 'eval-and-replace)
+#+end_src
+
 ** Windows specific
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (if (not at-home)
