@@ -20,16 +20,15 @@ Also:
 * Env stuff
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defvar at-home (not (and (string= system-type "windows-nt")
-			    (string= window-system "w32")))
+                            (string= window-system "w32")))
     "If this is a Windows machine, it's probably not mine")
 
   (defvar dropbox-dir "~/Dropbox" "My Dropbox directory.")
 
   (setq user-full-name    "K. C. Juntunen"
-	user-mail-address "juntunen.kc@gmail.com"
-	dropbox-dir       (if (not at-home)
-			      "~/../../Dropbox/"
-			    "~/Dropbox/"))
+        user-mail-address "juntunen.kc@gmail.com"
+        dropbox-dir       (if (not at-home)
+                              "~/../../Dropbox/"))
 #+end_src
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -67,10 +66,11 @@ Elisp is so cool.
 ** General
 I need to learn to make this not stomp on eldoc like it does sometimes.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(use-package flycheck
-  :ensure t
-  :defer t
-  :config (global-flycheck-mode 1))
+  (use-package flycheck
+    :ensure t
+    :defer t
+    :config
+    (add-hook 'prog-mode-hook 'flycheck-mode))
 #+end_src
 The more the merrier. I eventually want it to be a little less than
 global. It's generally no help in eshell, jabber, or ERC.
@@ -106,11 +106,11 @@ global. It's generally no help in eshell, jabber, or ERC.
 #+end_src
 This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(use-package smartparens
-  :ensure t
-  :defer t
-  :config (smartparens-global-mode 1)
-  (sp-use-paredit-bindings))
+  (use-package smartparens
+    :ensure t
+    :defer t
+    :config (sp-use-paredit-bindings)
+    (add-hook 'prog-mode-hook 'smartparens-strict-mode))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -910,62 +910,63 @@ Turns out Bozhidar Batsov already [[http://emacsredux.com/blog/2013/06/21/eval-a
 #+end_src
 * Misc functions
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(defun kc:update-mobile ()
-  ""
-  (interactive)
-  (if (and (functionp 'org-mobile-push)
-	   (functionp 'org-mobile-pull))
-      (progn
-	(org-mobile-push)
-	(org-mobile-pull)
-	(save-some-buffers t)
-	(if (functionp 'kill-other-buffers)
-	    (kill-other-buffers)))))
+  (defun kc:update-mobile ()
+    ""
+    (interactive)
+    (if (and (functionp 'org-mobile-push)
+             (functionp 'org-mobile-pull))
+        (progn
+          (org-mobile-push)
+          (org-mobile-pull)
+          (save-some-buffers t)
+          (if (functionp 'kill-other-buffers)
+              (kill-other-buffers)))))
 
-(defun kc:list-connections ()
-  "Lists all Internet IPv4 connections. Ignores intranet connections."
-  (interactive)
-  (let ((kc:lc-column
-	 (cond ((string-equal system-type "windows-nt") 4)
-	       ((string-equal system-type "gnu/linux") 5))
-	 )
-	(kc:lc-command
-	 (cond ((string-equal system-type "windows-nt") "netstat -n -p TCP")
-	       ((string-equal system-type "gnu/linux") "ss -4 -t"))
-	 ))
-    (remove-if (lambda (x) (or (string-match-p "10.10" x)
-			       (string-match-p "127.0.0.1" x)))
-	       (mapcar
-		(lambda (x) (nth kc:lc-column x))
-		(mapcar
-		 (lambda (x) (split-string x ":\\| \+"))
-		 (remove-if
-		  (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
-		  (split-string (shell-command-to-string kc:lc-command) "\n")))))))
+  (defun kc:list-connections ()
+    "Lists all Internet IPv4 connections. Ignores intranet connections."
+    (interactive)
+    (let ((kc:lc-column
+           (cond ((string-equal system-type "windows-nt") 4)
+                 ((string-equal system-type "gnu/linux") 5))
+           )
+          (kc:lc-command
+           (cond ((string-equal system-type "windows-nt") "netstat -n -p TCP")
+                 ((string-equal system-type "gnu/linux") "ss -4 -t"))
+           ))
+      (remove-if (lambda (x) (or (string-match-p "10.10" x)
+                                 (string-match-p "127.0.0.1" x)))
+                 (mapcar
+                  (lambda (x) (nth kc:lc-column x))
+                  (mapcar
+                   (lambda (x) (split-string x ":\\| \+"))
+                   (remove-if
+                    (lambda (x) (if (and (string-match-p "STAB" x)) nil t))
+                    (split-string (shell-command-to-string kc:lc-command) "\n")))))))
 
-(defun get-office-temp-from-thingspeak ()
-  "Get temperature value."
-  (let* ((channel "100117")
-	(th-url (concat "http://api.thingspeak.com/channels/" channel "/feeds.xml?results=1"))
-	(b nil)
-	(temp 0.0))
-    (save-excursion
-    (setq temp (string-to-number
-		(caddr
-		 (assq 'field6
-		       (assq 'feed
-			     (assq 'feeds (cddar
-					   (progn
-					     (setq b (url-retrieve-synchronously th-url))
-					     (switch-to-buffer b)
-					     (xml-parse-region (point-min) (point-max)))))))))))
-    (kill-buffer b)
-    temp))
+  (defun get-office-temp-from-thingspeak ()
+    "Get temperature value."
+    (let* ((channel "100117")
+          (th-url (concat "http://api.thingspeak.com/channels/" channel "/feeds.xml?results=1"))
+          (b nil)
+          (temp 0.0))
+      (save-excursion
+      (setq temp (string-to-number
+                  (caddr
+                   (assq 'field6
+                         (assq 'feed
+                               (assq 'feeds
+                                     (cddar
+                                      (progn
+                                        (setq b (url-retrieve-synchronously th-url))
+                                        (switch-to-buffer b)
+                                        (xml-parse-region (point-min) (point-max)))))))))))
+      (kill-buffer b)
+      temp))
 
-(defun return-temp ()
-  "Returns office temperature formated as a nice string."
-  (interactive)
-  (format "%.1f°" (get-office-temp-from-thingspeak)))
+  (defun return-temp ()
+    "Returns office temperature formated as a nice string."
+    (interactive)
+    (format "%.1f°" (get-office-temp-from-thingspeak)))
 #+end_src
 
 #+results:
