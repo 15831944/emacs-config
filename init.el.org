@@ -100,9 +100,10 @@ This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package smartparens
   :ensure t
-  :defer t
-  :config (smartparens-global-mode 1)
-  (sp-use-paredit-bindings))
+  :config
+  (add-hook 'lisp-mode-hook 'smartparens-strict-mode)
+  (add-hook 'lisp-interaction-mode-hook 'smartparens-strict-mode)
+  (sp-use-smartparens-bindings))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -381,15 +382,13 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package unicode-fonts
-  :ensure t
-  :defer t)
+  :ensure t)
 
 (use-package emojify
   :ensure t
-  :defer t
   :config
   (setq emojify-display-style 'unicode)
-  (global-emojify-mode t))
+  (add-hook 'jabber-activity-mode-hook 'emojify-mode))
 #+end_src
 
 Found on this [[http://www.lunaryorn.com/posts/center-buffer-text-in-emacs.html][blog]].
