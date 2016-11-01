@@ -107,20 +107,12 @@ global. It's generally no help in eshell, jabber, or ERC.
 #+end_src
 This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-<<<<<<< HEAD
   (use-package smartparens
     :ensure t
-    :defer t
-    :config (sp-use-paredit-bindings)
-    (add-hook 'prog-mode-hook 'smartparens-strict-mode))
-=======
-(use-package smartparens
-  :ensure t
-  :config
-  (add-hook 'lisp-mode-hook 'smartparens-strict-mode)
-  (add-hook 'lisp-interaction-mode-hook 'smartparens-strict-mode)
-  (sp-use-smartparens-bindings))
->>>>>>> cf8a396cc9ec16a6397aa44417abf3a1c89a7f45
+    :config
+    (add-hook 'lisp-mode-hook 'smartparens-strict-mode)
+    (add-hook 'lisp-interaction-mode-hook 'smartparens-strict-mode)
+    (sp-use-smartparens-bindings))
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
