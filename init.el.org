@@ -28,7 +28,8 @@ Also:
   (setq user-full-name    "K. C. Juntunen"
         user-mail-address "juntunen.kc@gmail.com"
         dropbox-dir       (if (not at-home)
-                              "~/../../Dropbox/"))
+                              "~/../../Dropbox/"
+                            "~/Dropbox"))
 #+end_src
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -404,7 +405,7 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
   :ensure t
   :config
   (setq emojify-display-style 'unicode)
-  (add-hook 'jabber-activity-mode-hook 'emojify-mode))
+  (add-hook 'jabber-chat-mode-hook 'emojify-mode))
 #+end_src
 
 Found on this [[http://www.lunaryorn.com/posts/center-buffer-text-in-emacs.html][blog]].
