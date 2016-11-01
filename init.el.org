@@ -106,11 +106,20 @@ global. It's generally no help in eshell, jabber, or ERC.
 #+end_src
 This is always helpful.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+<<<<<<< HEAD
   (use-package smartparens
     :ensure t
     :defer t
     :config (sp-use-paredit-bindings)
     (add-hook 'prog-mode-hook 'smartparens-strict-mode))
+=======
+(use-package smartparens
+  :ensure t
+  :config
+  (add-hook 'lisp-mode-hook 'smartparens-strict-mode)
+  (add-hook 'lisp-interaction-mode-hook 'smartparens-strict-mode)
+  (sp-use-smartparens-bindings))
+>>>>>>> cf8a396cc9ec16a6397aa44417abf3a1c89a7f45
 #+end_src
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
@@ -389,15 +398,13 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package unicode-fonts
-  :ensure t
-  :defer t)
+  :ensure t)
 
 (use-package emojify
   :ensure t
-  :defer t
   :config
   (setq emojify-display-style 'unicode)
-  (global-emojify-mode t))
+  (add-hook 'jabber-activity-mode-hook 'emojify-mode))
 #+end_src
 
 Found on this [[http://www.lunaryorn.com/posts/center-buffer-text-in-emacs.html][blog]].
