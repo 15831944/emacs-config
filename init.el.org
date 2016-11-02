@@ -67,11 +67,16 @@ Elisp is so cool.
 ** General
 I need to learn to make this not stomp on eldoc like it does sometimes.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (use-package flycheck
-    :ensure t
-    :defer t
-    :config
-    (add-hook 'prog-mode-hook 'flycheck-mode))
+(use-package flycheck
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'python-mode-hook 'flycheck-mode))
+
+(use-package nlinum
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'nlinum-mode))
 #+end_src
 The more the merrier. I eventually want it to be a little less than
 global. It's generally no help in eshell, jabber, or ERC.
