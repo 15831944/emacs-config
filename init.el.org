@@ -20,16 +20,16 @@ Also:
 * Env stuff
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (defvar at-home (not (and (string= system-type "windows-nt")
-                            (string= window-system "w32")))
+			    (string= window-system "w32")))
     "If this is a Windows machine, it's probably not mine")
 
   (defvar dropbox-dir "~/Dropbox" "My Dropbox directory.")
 
   (setq user-full-name    "K. C. Juntunen"
-        user-mail-address "juntunen.kc@gmail.com"
-        dropbox-dir       (if (not at-home)
-                              "~/../../Dropbox/"
-                            "~/Dropbox"))
+	user-mail-address "juntunen.kc@gmail.com"
+	dropbox-dir       (if (not at-home)
+			      "~/../../Dropbox/"
+			    "~/Dropbox/"))
 #+end_src
 * Install packages
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
