@@ -392,6 +392,17 @@ I'll be stealing a bunch of these from [[https://github.com/bbatsov/prelude/blob
 #+RESULTS:
 : SSH_AUTH_SOCK nil --> /tmp/ssh-NTkRr2af1PnJ/agent.2777
 
+It's sort of annoying to always do this manually.
+#+begin_src elisp
+  (defun my/ssh-add-ids ()
+    "Add all the id_ files in ~/.ssh to the ssh-agent keyring."
+    (dolist (id
+             (directory-files (expand-file-name "~/.ssh") nil "^id.*[^b]$" t))
+      (if (not (string-match-p "^.*pub$" id))
+          (shell-command (concat "ssh-add " id)))))
+
+  (my/ssh-add-ids)
+#+end_src
 * UI stuff
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
