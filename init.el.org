@@ -396,6 +396,7 @@ It's sort of annoying to always do this manually.
 #+begin_src elisp
   (defun my/ssh-add-ids ()
     "Add all the id_ files in ~/.ssh to the ssh-agent keyring."
+    (interactive)
     (dolist (id
              (directory-files (expand-file-name "~/.ssh") nil "^id.*[^b]$" t))
       (if (not (string-match-p "^.*pub$" id))
