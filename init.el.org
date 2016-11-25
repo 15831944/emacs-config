@@ -465,7 +465,7 @@ Try this once; never look back.
 (use-package avy
   :ensure t
   :defer t
-  :bind ("C-c j" . avy-goto-word-or-subword-1))
+  :bind ("C-c j" . avy-goto-char-timer))
 #+end_src
 
 Somewhere it seemed like =M-p= was the recommended binding. This conflicts with up/down scroll with
