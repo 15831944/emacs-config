@@ -435,7 +435,6 @@ you should place your code here."
 							yas-snippet-dirs
 							'("~/.emacs.d/snippets/"
 								"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
-				;; (define-key c++-mode-map (kbd "C-<tab>") 'yas-expand)
 	      (setq epa-pinentry-mode 'loopback))
 		(setq dropbox-dir "~/../../Dropbox"))
 
@@ -479,6 +478,7 @@ you should place your code here."
 	(global-set-key (kbd "C-=") 'er/expand-region)
 	(global-set-key (kbd "M-]") 'sp-forward-slurp-sexp)
 	(global-set-key (kbd "M-[") 'sp-forward-barf-sexp)
+	(global-set-key (kbd "C-<tab>") 'yas-expand)
 
 	(setq blink-cursor-blinks 10000
 				blink-cursor-mode t
