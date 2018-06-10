@@ -429,11 +429,7 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-	(defvar at-home (not (and (string= system-type "windows-nt")
-														(string= window-system "w32")))
-		"If this is a windows machine, it's probably not mine")
-
-	(if at-home
+	(if (spacemacs/system-is-linux)
 			(progn
 				(setq yas-global-mode t
 							yas-snippet-dirs
@@ -452,7 +448,7 @@ you should place your code here."
 	(defvar kc/notes-file (concat dropbox-dir "/org/notes.org")
 		"My notes file.")
 
-	(defvar kc/agenda-files-file (if at-home ".agenda_files"
+	(defvar kc/agenda-files-file (if (spacemacs/system-is-linux) ".agenda_files"
 																 ".agenda_work_files")
 		"List of agenda files.")
 
