@@ -35,17 +35,72 @@ values."
 			:variables
 			org-agenda-span 'day
 			org-directory (concat dropbox-dir "/org")
-			agenda-dir (concat org-directory "/agenda")
-			org-agenda-files (expand-file-name (concat agenda-dir "/.agenda_files"))
+			kc/agenda-dir (concat org-directory "/agenda")
 			org-agenda-file-regexp "\\`[^.].*\\.org\\'"
+			org-use-fast-todo-selection t
+			org-treat-S-cursor-todo-selection-as-state-change nil
 			kc/org-all-agenda-files (directory-files
-															 (expand-file-name agenda-dir) t org-agenda-file-regexp)
+															 (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
 			org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 1)))
-			:config
-			(progn
-				(require 'org-projectile)
-				(require 'calfw)
-				(require 'calfw-org)))
+			org-todo-keywords
+			(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+							(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")))
+			org-todo-keyword-faces
+			(quote (("TODO" :foreground "red" :weight bold)
+							("NEXT" :foreground "blue" :weight bold)
+							("DONE" :foreground "forest green" :weight bold)
+							("WAITING" :foreground "orange" :weight bold)
+							("HOLD" :foreground "magenta" :weight bold)
+							("CANCELLED" :foreground "forest green" :weight bold)
+							("MEETING" :foreground "forest green" :weight bold)
+							("PHONE" :foreground "forest green" :weight bold)))
+			org-todo-state-tags-triggers
+			(quote (("CANCELLED" ("CANCELLED" . t))
+							("WAITING" ("WAITING" . t))
+							("HOLD" ("WAITING") ("HOLD" . t))
+							(done ("WAITING") ("HOLD"))
+							("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+							("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+							("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+			kc/refile-file (concat kc/agenda-dir "/refile.org")
+			kc/diary-file (concat org-directory "/diary.org")
+			kc/notes-file (concat org-directory "/notes.org")
+			org-capture-templates
+			'(("t" "todo" entry
+				 (file kc/refile-file)
+				 "* TODO %?
+	:PROPERTIES:
+	:Captured: %U
+	:Prev_Loc: %a
+	:END:" :clock-in t :clock-resume t)
+				("p" "Phone call" entry
+				 (file kc/refile-file)
+				 "* PHONE %?
+	:PROPERTIES:
+	:Captured: %U
+	:Prev_Loc: %a
+	:END:" :clock-in t :clock-resume t)
+				("j" "Journal" entry
+				 (file+olp+datetree kc/diary-file)
+				 "* %?
+	:PROPERTIES:
+	:Captured: %U
+	:Prev_Loc: %a
+	:END:" :clock-in t :clock-resume t)
+				("n" "Note" entry
+				 (file kc/notes-file)
+				 "* %? :NOTE:
+	:PROPERTIES:
+	:Captured: %U
+	:Prev_Loc: %a
+	:END:" :clock-in t :clock-resume t)
+				("m" "Meeting" entry
+				 (file kc/notes-file)
+				 "* MEETING %?
+	:PROPERTIES:
+	:Captured: %U
+	:Prev_Loc: %a
+	:END:" :clock-in t :clock-resume t)))
 		 (gnus
 			:defer t)
 		 (jabber
@@ -59,9 +114,6 @@ values."
 		 ;; 	:defer t)
 		 (c-c++
 		 	:defer t
-			:keymap
-			(kbd "C-<tab>") 'yas/expand
-			;; (define-key c++-mode-map (kbd "C-<tab>") 'yas/expand)
 		 	:variables
 		 	c-c++-default-mode-for-headers 'c++-mode
 		 	c-c++-enable-clang-support t)
@@ -382,41 +434,32 @@ you should place your code here."
 		"If this is a windows machine, it's probably not mine")
 
 	(if at-home
-			(setq yas-global-mode t
-						yas-snippet-dirs
-						'("~/.emacs.d/snippets/"
-							"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
+			(progn
+				(setq yas-global-mode t
+							yas-snippet-dirs
+							'("~/.emacs.d/snippets/"
+								"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
+				;; (define-key c++-mode-map (kbd "C-<tab>") 'yas-expand)
+	      (setq epa-pinentry-mode 'loopback))
 		(setq dropbox-dir "~/../../Dropbox"))
 
-	(defvar agenda-dir (concat dropbox-dir "/org/agenda")
+	(defvar kc/agenda-dir (concat dropbox-dir "/org/agenda")
 		"The location of my agenda files.")
 
-	(setq org-todo-keywords
-				(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-								(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+	(defvar kc/diary-file (concat dropbox-dir "/org/diary.org")
+		"My diary file.")
 
-	(setq org-todo-keyword-faces
-				(quote (("TODO" :foreground "red" :weight bold)
-								("NEXT" :foreground "blue" :weight bold)
-								("DONE" :foreground "forest green" :weight bold)
-								("WAITING" :foreground "orange" :weight bold)
-								("HOLD" :foreground "magenta" :weight bold)
-								("CANCELLED" :foreground "forest green" :weight bold)
-								("MEETING" :foreground "forest green" :weight bold)
-								("PHONE" :foreground "forest green" :weight bold))))
+	(defvar kc/notes-file (concat dropbox-dir "/org/notes.org")
+		"My notes file.")
 
-	(setq org-use-fast-todo-selection t)
+	(defvar kc/agenda-files-file (if at-home ".agenda_files"
+																 ".agenda_work_files")
+		"List of agenda files.")
 
-	(setq org-treat-S-cursor-todo-selection-as-state-change nil)
+	(defvar kc/agenda-files (concat dropbox-dir "/org/agenda/" kc/agenda-files-file)
+		"Full path of my list of agenda files.")
 
-	(setq org-todo-state-tags-triggers
-				(quote (("CANCELLED" ("CANCELLED" . t))
-								("WAITING" ("WAITING" . t))
-								("HOLD" ("WAITING") ("HOLD" . t))
-								(done ("WAITING") ("HOLD"))
-								("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-								("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-								("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+	(setq org-agenda-files (concat kc/agenda-dir "/" kc/agenda-files-file))
 
 	(setq org-ref-bibliography-notes (concat dropbox-dir "/bibliography/notes.org")
 				org-ref-default-bibliography `(,(concat dropbox-dir "/bibliography/references.bib"))
@@ -441,8 +484,6 @@ you should place your code here."
 	(global-set-key (kbd "M-]") 'sp-forward-slurp-sexp)
 	(global-set-key (kbd "M-[") 'sp-forward-barf-sexp)
 
-	(setq epa-pinentry-mode 'loopback)
-
 	(setq blink-cursor-blinks 10000
 				blink-cursor-mode t
 				blink-cursor-interval .2)
@@ -463,7 +504,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm helm-core yasnippet-snippets yapfify xterm-color ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill twittering-mode toc-org symon string-inflection spaceline-all-the-icons smeargle sicp shell-pop restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer orgit org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file neotree nameless mwim multi-term move-text magit-svn magit-gitflow macrostep lorem-ipsum live-py-mode link-hint jabber indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate google-c-style golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy font-lock+ flycheck-rtags flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav elfeed-web elfeed-org elfeed-goodies editorconfig dumb-jump disaster diminish define-word cython-mode counsel-projectile company-statistics company-rtags company-c-headers company-anaconda column-enforce-mode clean-aindent-mode clang-format centered-cursor-mode calfw-org calfw bbdb auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell)))
+   '(flycheck-pos-tip helm helm-core magit yasnippet-snippets yapfify xterm-color ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill twittering-mode toc-org symon string-inflection spaceline-all-the-icons smeargle sicp shell-pop restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pos-tip pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer orgit org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file neotree nameless mwim multi-term move-text magit-svn magit-gitflow macrostep lorem-ipsum live-py-mode link-hint jabber indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate google-c-style golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit ghub fuzzy font-lock+ flycheck-rtags flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav elfeed-web elfeed-org elfeed-goodies editorconfig dumb-jump disaster diminish define-word cython-mode counsel-projectile company-statistics company-rtags company-c-headers company-anaconda column-enforce-mode clean-aindent-mode clang-format centered-cursor-mode calfw-org calfw bbdb auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
