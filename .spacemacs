@@ -42,9 +42,12 @@ values."
 			kc/org-all-agenda-files (directory-files
 															 (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
 			org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 1)))
+			org-agenda-clockreport-parameter-plist '(:link t :maxlevel 1)
 			org-todo-keywords
-			(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-							(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")))
+			(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c/!)")
+							(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING")))
+			org-agenda-skip-scheduled-if-done t
+			org-agenda-skip-deadline-if-done t
 			org-todo-keyword-faces
 			(quote (("TODO" :foreground "red" :weight bold)
 							("NEXT" :foreground "blue" :weight bold)
