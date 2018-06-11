@@ -397,6 +397,34 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 	(defvar dropbox-dir "~/Dropbox" "My dropbox directory.")
 
+	(if (spacemacs/system-is-linux)
+			(progn
+				(setq yas-global-mode t
+							yas-snippet-dirs
+							'("~/.emacs.d/snippets/"
+								"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
+	      (setq epa-pinentry-mode 'loopback))
+		(setq dropbox-dir "~/../../Dropbox")
+		(setq epg-gpg-home-directory "C:/Users/juntunenkc/AppData/Roaming/gnupg"
+					epg-gpg-program "C:/Users/juntunenkc/volume/PF/GnuPG/gpg2.exe"
+					epg-gpgconf-program "C:/Users/juntunenkc/volume/PF/GnuPG/gpgconf.exe"))
+
+	(defvar kc/agenda-dir (concat dropbox-dir "/org/agenda")
+		"The location of my agenda files.")
+
+	(defvar kc/diary-file (concat dropbox-dir "/org/diary.org")
+		"My diary file.")
+
+	(defvar kc/notes-file (concat dropbox-dir "/org/notes.org")
+		"My notes file.")
+
+	(defvar kc/agenda-files-file (if (spacemacs/system-is-linux) ".agenda_files"
+																 ".agenda_work_files")
+		"List of agenda files.")
+
+	(defvar kc/agenda-files (concat dropbox-dir "/org/agenda/" kc/agenda-files-file)
+		"Full path of my list of agenda files.")
+
 	(defun my/ssh-refresh ()
 		"Reset the environment variable SSH_AUTH_SOCK."
 		(interactive)
@@ -429,30 +457,6 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-	(if (spacemacs/system-is-linux)
-			(progn
-				(setq yas-global-mode t
-							yas-snippet-dirs
-							'("~/.emacs.d/snippets/"
-								"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
-	      (setq epa-pinentry-mode 'loopback))
-		(setq dropbox-dir "~/../../Dropbox"))
-
-	(defvar kc/agenda-dir (concat dropbox-dir "/org/agenda")
-		"The location of my agenda files.")
-
-	(defvar kc/diary-file (concat dropbox-dir "/org/diary.org")
-		"My diary file.")
-
-	(defvar kc/notes-file (concat dropbox-dir "/org/notes.org")
-		"My notes file.")
-
-	(defvar kc/agenda-files-file (if (spacemacs/system-is-linux) ".agenda_files"
-																 ".agenda_work_files")
-		"List of agenda files.")
-
-	(defvar kc/agenda-files (concat dropbox-dir "/org/agenda/" kc/agenda-files-file)
-		"Full path of my list of agenda files.")
 
 	(setq org-agenda-files (concat kc/agenda-dir "/" kc/agenda-files-file))
 
