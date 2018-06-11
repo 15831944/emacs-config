@@ -447,8 +447,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
 						(message "Adding ssh ID: %s" id)
 						(shell-command (concat "ssh-add ~/.ssh/" id))))))
 
-	(my/ssh-refresh)
-	(my/ssh-add-ids))
+	(if (spacemacs/system-is-linux)
+			(progn
+				(my/ssh-refresh)
+				(my/ssh-add-ids))))
 
 (defun dotspacemacs/user-config ()
 	"Configuration function for user code.
