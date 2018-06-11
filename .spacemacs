@@ -55,7 +55,7 @@ values."
 							("MEETING" :foreground "forest green" :weight bold)
 							("PHONE" :foreground "forest green" :weight bold)))
 			org-todo-state-tags-triggers
-			(quote (("CANCELLED" ("CANCELLED" . t))
+			(quote (("CANCELLED" ("ARCHIVE" . t))
 							("WAITING" ("WAITING" . t))
 							("HOLD" ("WAITING") ("HOLD" . t))
 							(done ("WAITING") ("HOLD"))
