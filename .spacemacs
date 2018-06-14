@@ -39,7 +39,7 @@ values."
 			org-agenda-file-regexp "\\`[^.].*\\.org\\'"
 			org-use-fast-todo-selection t
 			org-treat-S-cursor-todo-selection-as-state-change nil
-			org-ellipsis "…"
+			org-ellipsis "⤵"
 			kc/org-all-agenda-files (directory-files
 															 (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
 			org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 1)))
