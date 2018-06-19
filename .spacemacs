@@ -42,7 +42,7 @@ values."
 			org-ellipsis "⤵"
 			kc/org-all-agenda-files (directory-files
 															 (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
-			org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 1)))
+			org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
 			org-catch-invisible-edits 'smart
 			org-agenda-clockreport-parameter-plist '(:link t :maxlevel 1 :fileskip0 t)
 			org-deadline-warning-days 45
