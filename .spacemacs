@@ -117,9 +117,10 @@ values."
 			:variables
 			jabber-history-enabled t
 			jabber-alert-message-wave (concat dropbox-dir "/imrcv.wav")
+			jabber-alert-presence-wave (concat dropbox-dir "/dooropen.wav")
 			jabber-alert-message-hooks
 			(quote
-			 (jabber-message-wave jabber-message-echo jabber-message-scroll))
+			 (jabber-message-wave jabber-presence-wave jabber-message-echo jabber-message-scroll))
 			)
 		 ;; (javascript
 		 ;; 	:defer t)
