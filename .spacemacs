@@ -50,6 +50,7 @@ values."
 			org-agenda-skip-scheduled-if-done t
 			org-agenda-skip-deadline-if-done t
 			org-agenda-skip-timestamp-if-done t
+			org-agenda-log-mode-items '(closed)
 			org-todo-keywords
 			(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c/!)")
 							(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING")))
