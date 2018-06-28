@@ -51,12 +51,15 @@ values."
 			org-agenda-skip-deadline-if-done t
 			org-agenda-skip-timestamp-if-done t
 			org-agenda-log-mode-items '(closed)
+			org-columns-default-format "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM"
+			org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+																		("STYLE_ALL" . "habit")))
 			org-todo-keywords
-			(quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c/!)")
+			(quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
 							(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING")))
 			org-todo-keyword-faces
 			(quote (("TODO" :foreground "red" :weight bold)
-							("NEXT" :foreground "blue" :weight bold)
+							("WIP" :foreground "blue" :weight bold)
 							("DONE" :foreground "forest green" :weight bold)
 							("WAITING" :foreground "orange" :weight bold)
 							("HOLD" :foreground "magenta" :weight bold)
@@ -69,7 +72,7 @@ values."
 							("HOLD" ("WAITING") ("HOLD" . t))
 							(done ("WAITING") ("HOLD"))
 							("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-							("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+							("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
 							("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
 			kc/refile-file (concat kc/agenda-dir "/refile.org")
 			kc/diary-file (concat org-directory "/diary.org")
