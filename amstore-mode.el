@@ -96,16 +96,17 @@
 					;; prompt for path here.
 					)))))
 
-		(defun amstore/get-heading-names ()
-			""
-			(interactive)
-			(setq hdg (nth 4 (org-heading-components)))
-			;; (string-match "\\([Zz][0-9]\\{5,6\\}\\|[A-Za-z]\\{3,4\\}[0-9]\\{4\\}\\(-[0-9]\\{2\\}\\)*\\)" hdg)
-			(string-match "\\(^.*\\)[[:space:]]" hdg)
-			(setq h1 (match-string 1 hdg))
-			(string-match "(\\(.*\\))" hdg)
-			(setq h2 (match-string 1 hdg))
-			(format "hdg: `%s' 1: `%s', 2: `%s'" hdg h1 h2))))
+(defun amstore/get-heading-names ()
+	""
+	(interactive)
+	(setq hdg (nth 4 (org-heading-components)))
+	;; (string-match "\\([Zz][0-9]\\{5,6\\}\\|[A-Za-z]\\{3,4\\}[0-9]\\{4\\}\\(-[0-9]\\{2\\}\\)*\\)" hdg)
+	(string-match "\\(^.*\\)[[:space:]]" hdg)
+	(setq h1 (match-string 1 hdg))
+	(string-match "(\\(.*\\))" hdg)
+	(setq h2 (match-string 1 hdg))
+	(format "hdg: `%s' 1: `%s', 2: `%s'" hdg h1 h2))
+
 (defun amstore/maybe-remove-property (prop)
 	""
 	(if (and (not (eq prop nil)) (yes-or-no-p (format "Remove \"%s\" from properties? " prop)))
