@@ -67,8 +67,10 @@ and try a few extensions. Failing that, ask for a filename."
 	"Try to get names from a more complex headline."
 	(interactive)
 	(setq hdg (nth 4 (org-heading-components)))
-	(string-match "\\(^.*\\)[[:space:]]" hdg)
+	(string-match "^\\([^(]*\\)[[:space:]]" hdg)
 	(setq h1 (match-string 1 hdg))
+	(or (> (length h1) 3)
+			(setq h1 nil))
 	(string-match "(\\(.*\\))" hdg)
 	(setq h2 (match-string 1 hdg))
 	(list hdg h1 h2))
