@@ -93,7 +93,7 @@
 				(if (and to-open (file-exists-p to-open))
 						(progn
 							(org-set-property "MODEL" to-open)
-							(w32-browser-open to-open))
+							(w32-browser to-open))
 					(setq to-open (read-file-name "Enter path of associated file:"))
 					(if (not (file-exists-p to-open))
 							(error (format "File `%s' doesn't exist!" to-open))
