@@ -50,7 +50,7 @@ and try a few extensions. Failing that, ask for a filename."
 						(exts '("SLDDRW" "SLDASM" "SLDPRT" "PDF"))
 						(headingtext (nth 4 (org-heading-components))))
 				(if (and path headingtext)
-						(while (not (and to-open (file-exists-p to-open)))
+						(while (and exts (not (and to-open (file-exists-p to-open))))
 							(setq to-open (concat path headingtext "." (car exts))
 										exts (cdr exts))))
 				(if (and to-open (file-exists-p to-open))
