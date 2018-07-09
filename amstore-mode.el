@@ -94,8 +94,11 @@
 						(progn
 							(org-set-property "MODEL" to-open)
 							(w32-browser-open to-open))
-					;; prompt for path here.
-					)))))
+					(setq to-open (read-file-name "Enter path of associated file:"))
+					(if (not (file-exists-p to-open))
+							(error (format "File `%s' doesn't exist!" to-open))
+						(org-set-property "MODEL" to-open)
+						(w32-browser to-open)))))))
 
 (defun amstore/get-heading-names ()
 	""
