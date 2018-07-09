@@ -30,13 +30,17 @@
 						map))
 
 (defun amstore/org-buffer-prop (prop)
-	"Return the value of a buffer PROPerty."
+	"Return the value of a buffer PROPerty.
+
+There has to already be a function for this, but I couldn't find it."
 	(if (string-match (concat "^#\\+\\(" prop "\\):[ \t]*\\(.*\\)") (buffer-string) 0)
 			(match-string 2 (buffer-string))
 		nil))
 
 (defun amstore/org-headline-w32-browser ()
-	""
+	"Looks first in the `PROPERTIES' drawer for a path under `MODEL'.
+Failing that, look in whatever path we can inherit, concatenate with the heading,
+and try a few extensions. Failing that, ask for a filename."
 	(interactive)
 	(let ((to-open (org-entry-get (point) "MODEL" t nil)))
 		(if (and to-open (file-exists-p to-open))
