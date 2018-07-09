@@ -64,28 +64,15 @@ and try a few extensions. Failing that, ask for a filename."
 						(w32-browser to-open)))))))
 
 (defun amstore/get-heading-names ()
-	""
+	"Try to get names from a more complex headline."
 	(interactive)
 	(setq hdg (nth 4 (org-heading-components)))
-	;; (string-match "\\([Zz][0-9]\\{5,6\\}\\|[A-Za-z]\\{3,4\\}[0-9]\\{4\\}\\(-[0-9]\\{2\\}\\)*\\)" hdg)
 	(string-match "\\(^.*\\)[[:space:]]" hdg)
 	(setq h1 (match-string 1 hdg))
 	(string-match "(\\(.*\\))" hdg)
 	(setq h2 (match-string 1 hdg))
-	(format "hdg: `%s' 1: `%s', 2: `%s'" hdg h1 h2))
+	(list hdg h1 h2))
 
-(defun amstore/maybe-remove-property (prop)
-	""
-	(if (and (not (eq prop nil)) (yes-or-no-p (format "Remove \"%s\" from properties? " prop)))
-			(org-delete-property prop)
-		nil))
-
-(defun amstore/get-runtime-each (minutes seconds qty)
-	"Convert MINUTES, SECONDS, and QTY to minutes of runtime on each part."
-	(interactive "nMinutes: \nnSeconds: \nnQty: ")
-	(insert
-	 (format "%f"
-					 (/ (+ (float minutes) (/ (float seconds) 60.0)) qty))))
 (defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
 	"Path to setup files for laser.")
 
