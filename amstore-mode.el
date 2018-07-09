@@ -35,9 +35,9 @@
 			(match-string 2 (buffer-string))
 		nil))
 
-(defun amstore/org-headline-w32-browser (&optional arg)
+(defun amstore/org-headline-w32-browser ()
 	""
-	(interactive "P")
+	(interactive)
 	(let ((to-open (org-entry-get (point) "MODEL" t nil)))
 		(if (and to-open (file-exists-p to-open))
 				(w32-browser to-open)
