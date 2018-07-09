@@ -38,7 +38,7 @@
 (defun amstore/org-headline-w32-browser (&optional arg)
 	""
 	(interactive "P")
-	(let* ((to-open (org-entry-get (point) "MODEL" t nil)))
+	(let ((to-open (org-entry-get (point) "MODEL" t nil)))
 		(if (and to-open (file-exists-p to-open))
 				(w32-browser to-open)
 			(let ((path (or (org-entry-get (point) "MDLPATH" t nil)
