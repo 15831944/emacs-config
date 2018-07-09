@@ -66,14 +66,19 @@ and try a few extensions. Failing that, ask for a filename."
 (defun amstore/get-heading-names ()
 	"Try to get names from a more complex headline."
 	(interactive)
-	(setq hdg (nth 4 (org-heading-components)))
-	(string-match "^\\([^(]*\\)[[:space:]]" hdg)
-	(setq h1 (match-string 1 hdg))
-	(or (> (length h1) 3)
-			(setq h1 nil))
-	(string-match "(\\(.*\\))" hdg)
-	(setq h2 (match-string 1 hdg))
-	(list hdg h1 h2))
+	(let ((hdg (nth 4 (org-heading-components)))
+				h1
+				h2)
+		(string-match "^\\([^(]*\\)?[[:space:]]*(\\(.*\\))" hdg)
+		(if (and (<= (match-beginning 1) (length hdg))
+						 (<= (match-beginning 2) (length hdg)))
+				(progn (setq h1 (match-string 1 hdg))
+							 (setq h2 (match-string 2 hdg))
+							 (or (> (length h1) 3)
+									 (setq h1 nil))
+							 (or (> (length h2) 3)
+									 (setq h2 nil))
+							 (list hdg (string-trim h1) (string-trim h2))))))
 
 (defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
 	"Path to setup files for laser.")
