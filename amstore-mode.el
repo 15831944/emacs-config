@@ -35,47 +35,6 @@
 			(match-string 2 (buffer-string))
 		nil))
 
-;; (defun amstore/org-headline-w32-browser (&optional arg)
-;;   "`C-c b' Open SLDDRW
-;;   `C-u C-c b' Open SLDPRT
-;;   `C-u C-u C-c b' Open SLDASM"
-;;   (interactive "P")
-;;   (let* ((path (or (org-entry-get (point) "MDLPATH" t nil)
-;;                    (amstore/org-buffer-prop "MDLPATH")))
-;;          (ext "SLDDRW")
-;;          headingtext
-;; 				 hdg
-;; 				 althdg
-;; 				 to-open
-;; 				 (prop "MDLPATH"))
-;; 		(if (and (setq to-open (org-entry-get (point) "MODEL" nil nil))
-;; 						 (file-exists-p to-open))
-;; 				(progn
-;; 					(setq prop "MODEL")
-;; 					(w32-browser to-open))
-
-;; 			(case arg
-;; 				(4 (setq ext "SLDPRT"))
-;; 				(8 (setq ext "SLDASM"))
-;; 				(16 (setq ext (org-entry-get (point) "EXT" nil))))
-;; 			(setq headingtext (nth 4 (org-heading-components)))
-;; 			;; (string-match "\\([Zz][0-9]\\{5,6\\}\\|[A-Za-z]\\{3,4\\}[0-9]\\{4\\}\\(-[0-9]\\{2\\}\\)*\\)" headingtext)
-;; 			(string-match "^.*\ " headingtext)
-;; 			(setq hdg (match-string 1 headingtext))
-;; 			(setq to-open (concat path "\\" hdg "." ext))
-;; 			(if (file-exists-p to-open)
-;; 					(progn
-;; 						(org-set-property "MODEL" to-open)
-;; 						(w32-browser to-open))
-;; 				(string-match "(\\(.*\\))" headingtext)
-;; 				(setq althdg (match-string 1 headingtext))
-;; 				(setq to-open (concat path "\\" althdg "." ext))
-;; 				(if (file-exists-p to-open)
-;; 						(progn
-;; 							(org-set-property "MODEL" to-open)
-;; 							(w32-browser to-open)))
-;; 				))))
-
 (defun amstore/org-headline-w32-browser (&optional arg)
 	""
 	(interactive "P")
