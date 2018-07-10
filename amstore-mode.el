@@ -34,6 +34,7 @@
             (define-key map (kbd "C-c g") 'amstore-get-headline-part-runtime)
             (define-key map (kbd "C-c G") 'amstore-get-part-runtime)
             (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
+            (define-key map (kbd "C-c m") 'amstore-copy-metal-path-to-clipboard)
             map))
 
 (defun amstore--org-buffer-prop (prop)
@@ -135,10 +136,17 @@ The display format can be changed by populating ARG."
   "Copy the job number in this entry to the system clipboard."
   (interactive)
   (let ((entry (org-get-entry)))
-         (string-match "- Job Number: \\(.*\\)" entry)
-         (if (setq match (match-string 1 entry))
-             (w32-set-clipboard-data match)
-           (error "Couldn't find a job number."))))
+    (string-match "- Job Number: \\(.*\\)" entry)
+    (if (setq match (match-string 1 entry))
+        (w32-set-clipboard-data match)
+      (error "Couldn't find a job number."))))
+
+;;;###autoload
+(defun amstore-copy-metal-path-to-clipboard ()
+  "Copy the metal CAD path to w32 clipboard."
+  (interactive)
+  (w32-set-clipboard-data amstore--mtl-path)
+  (message (format "Copied `%s' to w32 clipboard")))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'amstore-mode)
