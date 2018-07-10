@@ -87,9 +87,6 @@ heading, and try a few extensions. Failing that, ask for a filename."
           (setq h2 nil))
       (string-trim (or h1 h2)))))
 
-(defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
-  "Path to setup files for laser.")
-
 ;;;###autoload
 (defun amstore-get-part-runtime (part &optional arg)
   "Calculate the runtime for one PART from its STP file.
