@@ -3,15 +3,14 @@
 ;; Copyright (C) 2018 K. C. Juntunen
 
 ;; Author   : K. C. Juntunen <juntunen.kc@gmail.com>
-;; URL      :
-;; Package-Version:
+;; URL      : https://github.com/kcjuntunen/emacs-config/blob/master/amstore-mode.el
 ;; Version  : 0.1
-;; Keywords :
 
 ;; This file is NOT part of GNU Emacs.
 
 ;;; Commentary:
-
+;; This is a handy collection of functions for org-mode to make me a bit more productive
+;; at work.
 
 ;;; Code:
 (require 'org)
