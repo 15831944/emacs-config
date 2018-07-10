@@ -411,18 +411,19 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 	(defvar dropbox-dir "~/Dropbox" "My dropbox directory.")
-
-	(if (spacemacs/system-is-linux)
-			(progn
-				(setq yas-global-mode t
-							yas-snippet-dirs
-							'("~/.emacs.d/snippets/"
-								"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
-	      (setq epa-pinentry-mode 'loopback))
+	(cond
+	 ((spacemacs/system-is-linux)
+		(setq yas-global-mode t
+					yas-snippet-dirs
+					'("~/.emacs.d/snippets/"
+						"~/.emacs.d/layers/+completion/auto-completion/local/snippets"))
+		(setq epa-pinentry-mode 'loopback))
+	 ((spacemacs/system-is-mswindows)
+		(setq w32-get-true-file-attributes nil)
 		(setq dropbox-dir "~/../../Dropbox")
 		(setq epg-gpg-home-directory "C:/Users/juntunenkc/AppData/Roaming/gnupg"
 					epg-gpg-program "C:/Users/juntunenkc/volume/PF/GnuPG/gpg2.exe"
-					epg-gpgconf-program "C:/Users/juntunenkc/volume/PF/GnuPG/gpgconf.exe"))
+					epg-gpgconf-program "C:/Users/juntunenkc/volume/PF/GnuPG/gpgconf.exe")))
 
 	(defvar kc/agenda-dir (concat dropbox-dir "/org/agenda")
 		"The location of my agenda files.")
@@ -462,10 +463,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
 						(message "Adding ssh ID: %s" id)
 						(shell-command (concat "ssh-add ~/.ssh/" id))))))
 
-	(if (spacemacs/system-is-linux)
-			(progn
-				(my/ssh-refresh)
-				(my/ssh-add-ids))))
+	(when (spacemacs/system-is-linux)
+		(my/ssh-refresh)
+		(my/ssh-add-ids)))
 
 (defun dotspacemacs/user-config ()
 	"Configuration function for user code.
