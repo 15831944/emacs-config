@@ -51,7 +51,7 @@ and try a few extensions. Failing that, ask for a filename."
             (exts '("SLDDRW" "SLDASM" "SLDPRT" "PDF"))
             (headingtext (cond ((string-equal (org-entry-get (point) "Type") "Request")
                                 (amstore-get-heading-names))
-															 (t (nth 4 (org-heading-components))))))
+                               (t (nth 4 (org-heading-components))))))
         (if (and path headingtext)
             (while (and exts (not (and to-open (file-exists-p to-open))))
               (setq to-open (concat path headingtext "." (car exts))
@@ -75,14 +75,17 @@ and try a few extensions. Failing that, ask for a filename."
         h2)
     (string-match "^\\([^(]*\\)?[[:space:]]*(\\(.*\\))" hdg)
     (when (and (<= (match-beginning 1) (length hdg))
-							 (<= (match-beginning 2) (length hdg)))
+               (<= (match-beginning 2) (length hdg)))
       (setq h1 (match-string 1 hdg))
       (setq h2 (match-string 2 hdg))
       (or (> (length h1) 3)
           (setq h1 nil))
       (or (> (length h2) 3)
           (setq h2 nil))
-			(string-trim (or h1 h2)))))
+      (string-trim (or h1 h2)))))
+
+(defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
+  "Path to setup files for laser.")
 
 ;;;###autoload
 (defun amstore-get-part-runtime (part &optional arg)
