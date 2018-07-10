@@ -14,7 +14,6 @@
 
 ;;; Code:
 (require 'org)
-(require 'evil)
 (require 'subr-x)
 (require 'w32-browser)
 
@@ -117,7 +116,8 @@ The display format can be changed by populating ARG."
         (setq per-part-time (/ (+ minutes (/ seconds 60)) qty))
         (if arg
             (progn
-              (evil-delete-line (line-beginning-position) (1- (line-end-position)))
+              (beginning-of-line)
+              (kill-line)
               (insert
                (format "| %s | %f | %d |" part per-part-time qty)))
           (insert
