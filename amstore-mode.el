@@ -18,8 +18,12 @@
 (require 'subr-x)
 (require 'w32-browser)
 
-(defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
+(defvar amstore--stp-path "G:/STRIKER LASER PROGRAMS/STP"
   "Path to setup files for laser.")
+
+(defvar amstore--mtl-path "S:\\shared\\general\\Metals\\METAL MANUFACTURING\\"
+  "Path to metal department models and drawings. This is here only because it's
+  convienient to copy it to the w32 clipboard all the time.")
 
 ;;;###autoload
 (define-minor-mode amstore-mode
@@ -98,7 +102,7 @@ The display format can be changed by populating ARG."
         (minutes)
         (seconds)
         (per-part-time)
-        (filepath (concat stp-path "/" part ".txt")))
+        (filepath (concat amstore--stp-path "/" part ".txt")))
     (with-temp-buffer
       (insert-file-contents filepath)
       (string-match countregex (buffer-string))
