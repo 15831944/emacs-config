@@ -490,7 +490,7 @@ you should place your code here."
 	(setq erc-lurker-hide-list '("JOIN" "PART" "QUIT")
 				erc-lurker-threshold-time 3600)
 
-	(setq-default indent-tabs-mode t)
+	(setq-default indent-tabs-mode nil)
 
 	(setq gc-cons-threshold 50000000)
 	(put 'helm-make-build-dir 'safe-local-variable 'stringp)
