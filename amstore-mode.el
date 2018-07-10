@@ -15,6 +15,7 @@
 
 
 ;;; Code:
+(require 'w32-browser)
 
 (defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
 	"Path to setup files for laser.")
@@ -24,12 +25,12 @@
 	"A container for handy, Amstore-related functions."
 	:lighter " ∀"
 	:keymap (let ((map (make-sparse-keymap)))
-						(define-key map (kbd "C-c b") 'amstore/org-headline-w32-browser)
-						(define-key map (kbd "C-c g") 'amstore/get-headline-part-runtime)
-						(define-key map (kbd "C-c G") 'amstore/get-part-runtime)
+						(define-key map (kbd "C-c b") 'amstore-org-headline-w32-browser)
+						(define-key map (kbd "C-c g") 'amstore-get-headline-part-runtime)
+						(define-key map (kbd "C-c G") 'amstore-get-part-runtime)
 						map))
 
-(defun amstore/org-buffer-prop (prop)
+(defun amstore--org-buffer-prop (prop)
 	"Return the value of a buffer PROPerty.
 
 There has to already be a function for this, but I couldn't find it."
@@ -37,7 +38,8 @@ There has to already be a function for this, but I couldn't find it."
 			(match-string 2 (buffer-string))
 		nil))
 
-(defun amstore/org-headline-w32-browser ()
+;;;###autoload
+(defun amstore-org-headline-w32-browser ()
 	"Looks first in the `PROPERTIES' drawer for a path under `MODEL'.
 Failing that, look in whatever path we can inherit, concatenate with the heading,
 and try a few extensions. Failing that, ask for a filename."
@@ -46,10 +48,10 @@ and try a few extensions. Failing that, ask for a filename."
 		(if (and to-open (file-exists-p to-open))
 				(w32-browser to-open)
 			(let ((path (or (org-entry-get (point) "MDLPATH" t nil)
-											(amstore/org-buffer-prop "MDLPATH")))
+											(amstore--org-buffer-prop "MDLPATH")))
 						(exts '("SLDDRW" "SLDASM" "SLDPRT" "PDF"))
 						(headingtext (cond ((string-equal (org-entry-get (point) "Type") "Request")
-																(nth 1 (amstore/get-heading-names)))
+																(nth 1 (amstore-get-heading-names)))
 															 (t (nth 4 (org-heading-components))))))
 				(if (and path headingtext)
 						(while (and exts (not (and to-open (file-exists-p to-open))))
@@ -65,7 +67,7 @@ and try a few extensions. Failing that, ask for a filename."
 						(org-set-property "MODEL" to-open)
 						(w32-browser to-open)))))))
 
-(defun amstore/get-heading-names ()
+(defun amstore-get-heading-names ()
 	"Try to get names from a more complex headline."
 	(interactive)
 	(let ((hdg (nth 4 (org-heading-components)))
@@ -85,7 +87,7 @@ and try a few extensions. Failing that, ask for a filename."
 (defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
 	"Path to setup files for laser.")
 
-(defun amstore/get-part-runtime (part &optional arg)
+(defun amstore-get-part-runtime (part &optional arg)
 	"Get PART.STP and calculate runtime."
 	(interactive "sPart number: \nP")
 	(let ((timeregex "TOTAL TIME\\ *:\\ *\\([0-9.]*\\) minutes\\ *\\([0-9.]*\\)")
@@ -114,11 +116,11 @@ and try a few extensions. Failing that, ask for a filename."
 					(insert
 					 (format "%f - Qty: %d " per-part-time qty)))))))
 
-(defun amstore/get-headline-part-runtime (&optional arg)
+(defun amstore-get-headline-part-runtime (&optional arg)
 	""
 	(interactive "P")
 	(let ((part (org-get-heading t t t t)))
-		(amstore/get-part-runtime part arg)))
+		(amstore-get-part-runtime part arg)))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'amstore-mode)
