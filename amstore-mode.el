@@ -29,6 +29,7 @@
             (define-key map (kbd "C-c b") 'amstore-org-headline-w32-browser)
             (define-key map (kbd "C-c g") 'amstore-get-headline-part-runtime)
             (define-key map (kbd "C-c G") 'amstore-get-part-runtime)
+            (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
             map))
 
 (defun amstore--org-buffer-prop (prop)
@@ -127,6 +128,16 @@ The display format can be changed by populating ARG."
   (interactive "P")
   (let ((part (org-get-heading t t t t)))
     (amstore-get-part-runtime part arg)))
+
+;;;###autoload
+(defun amstore-copy-job-number-to-clipboard ()
+  "Copy the job number in this entry to the system clipboard."
+  (interactive)
+  (let ((entry (org-get-entry)))
+         (string-match "- Job Number: \\(.*\\)" entry)
+         (if (setq match (match-string 1 entry))
+             (w32-set-clipboard-data match)
+           (error "Couldn't find a job number."))))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'amstore-mode)
