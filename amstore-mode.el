@@ -66,6 +66,7 @@ and try a few extensions. Failing that, ask for a filename."
             (org-set-property "MODEL" to-open)
             (w32-browser to-open)))))))
 
+;;;###autoload
 (defun amstore-get-heading-names ()
   "Try to get names from a more complex headline."
   (interactive)
@@ -83,9 +84,7 @@ and try a few extensions. Failing that, ask for a filename."
           (setq h2 nil))
 			(string-trim (or h1 h2)))))
 
-(defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
-  "Path to setup files for laser.")
-
+;;;###autoload
 (defun amstore-get-part-runtime (part &optional arg)
   "Get PART.STP and calculate runtime."
   (interactive "sPart number: \nP")
@@ -115,6 +114,7 @@ and try a few extensions. Failing that, ask for a filename."
           (insert
            (format "%f - Qty: %d " per-part-time qty)))))))
 
+;;;###autoload
 (defun amstore-get-headline-part-runtime (&optional arg)
   ""
   (interactive "P")
