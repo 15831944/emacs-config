@@ -1,4 +1,4 @@
-;;; amstore-mode.el --- a minor mode to contain functions for work -*- coding: utf-8-unix -*-
+;;; amstore-mode.el --- a minor mode to contain functions for work -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 K. C. Juntunen
 
@@ -14,6 +14,9 @@
 
 
 ;;; Code:
+(require 'org)
+(require 'evil)
+(require 'subr-x)
 (require 'w32-browser)
 
 (defvar stp-path "G:/STRIKER LASER PROGRAMS/STP"
@@ -30,7 +33,7 @@
             map))
 
 (defun amstore--org-buffer-prop (prop)
-  "Return the value of a buffer PROPerty.
+  "Return the value of a buffer property named PROP.
 
 There has to already be a function for this, but I couldn't find it."
   (if (string-match (concat "^#\\+\\(" prop "\\):[ \t]*\\(.*\\)") (buffer-string) 0)
@@ -39,9 +42,9 @@ There has to already be a function for this, but I couldn't find it."
 
 ;;;###autoload
 (defun amstore-org-headline-w32-browser ()
-  "Looks first in the `PROPERTIES' drawer for a path under `MODEL'.
-Failing that, look in whatever path we can inherit, concatenate with the heading,
-and try a few extensions. Failing that, ask for a filename."
+  "Look first in the `PROPERTIES' drawer for a path under `MODEL'.
+Failing that, look in whatever path we can inherit, concatenate with the
+heading, and try a few extensions. Failing that, ask for a filename."
   (interactive)
   (let ((to-open (org-entry-get (point) "MODEL" t nil)))
     (if (and to-open (file-exists-p to-open))
@@ -89,7 +92,8 @@ and try a few extensions. Failing that, ask for a filename."
 
 ;;;###autoload
 (defun amstore-get-part-runtime (part &optional arg)
-  "Get PART.STP and calculate runtime."
+  "Calculate the runtime for one PART from its STP file.
+The display format can be changed by populating ARG."
   (interactive "sPart number: \nP")
   (let ((timeregex "TOTAL TIME\\ *:\\ *\\([0-9.]*\\) minutes\\ *\\([0-9.]*\\)")
         (countregex "Parts/Sheet:[ \t]*\\([0-9]*\\)")
@@ -119,7 +123,8 @@ and try a few extensions. Failing that, ask for a filename."
 
 ;;;###autoload
 (defun amstore-get-headline-part-runtime (&optional arg)
-  ""
+  "Calculate the runtime for one part with the same name as an org headline.
+The display format can be changed by populating ARG."
   (interactive "P")
   (let ((part (org-get-heading t t t t)))
     (amstore-get-part-runtime part arg)))
@@ -128,3 +133,4 @@ and try a few extensions. Failing that, ask for a filename."
 (add-hook 'org-mode-hook 'amstore-mode)
 
 (provide 'amstore-mode)
+;;; amstore-mode.el ends here
