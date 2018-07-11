@@ -163,7 +163,7 @@ The display format can be changed by populating ARG."
   "Copy the metal CAD path to w32 clipboard."
   (interactive)
   (w32-set-clipboard-data amstore--mtl-path)
-  (message (format "Copied `%s' to w32 clipboard")))
+  (message (format "Copied `%s' to w32 clipboard" amstore--mtl-path)))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'amstore-mode)
