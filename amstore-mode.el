@@ -89,7 +89,11 @@ heading, and try a few extensions. Failing that, ask for a filename."
           (setq h1 nil))
       (or (> (length h2) 3)
           (setq h2 nil))
-      (string-trim (or h1 h2)))))
+      (cond
+       ((conforming-part-number-p h1)
+        (string-trim h1))
+       ((conforming-part-number-p h2)
+        (string-trim h2))))))
 
 ;;;###autoload
 (defun amstore-get-part-runtime (part &optional arg)
@@ -112,7 +116,7 @@ The display format can be changed by populating ARG."
       (setq seconds (string-to-number (match-string 2 (buffer-string)))))
     (save-excursion
       (if (not (> qty 0))
-          (error "I'm retarded!")
+          (error "Couldn't find qty or qty was 0")
         (setq per-part-time (/ (+ minutes (/ seconds 60)) qty))
         (if arg
             (progn
@@ -132,6 +136,19 @@ The display format can be changed by populating ARG."
     (amstore-get-part-runtime part arg)))
 
 ;;;###autoload
+(defun conforming-part-number-p (partnum)
+  "Return t if PARTNUM is conforming."
+  (let ((conforming-old-regexp "^\\([Zz][0-9]\\{5,6\\}\\)[[:space:]]?\\(.*\\)?")
+        (conforming-new-regexp "^\\([A-Za-z]\\{3,4\\}\\)\\([0-9]\\{4\\}\\)-?.*"))
+    (cond
+     ((string-match conforming-new-regexp partnum)
+      t)
+     ((string-match conforming-old-regexp partnum)
+      t)
+     (t
+      nil))))
+
+;;;###autoload
 (defun amstore-copy-job-number-to-clipboard ()
   "Copy the job number in this entry to the system clipboard."
   (interactive)
@@ -139,7 +156,7 @@ The display format can be changed by populating ARG."
     (string-match "- Job Number: \\(.*\\)" entry)
     (if (setq match (match-string 1 entry))
         (w32-set-clipboard-data match)
-      (error "Couldn't find a job number."))))
+      (error "Couldn't find a job number"))))
 
 ;;;###autoload
 (defun amstore-copy-metal-path-to-clipboard ()
