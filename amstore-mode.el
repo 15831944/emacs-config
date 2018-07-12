@@ -44,6 +44,21 @@ There has to already be a function for this, but I couldn't find it."
       (match-string 2 (buffer-string))
     nil))
 
+(defun amstore--sanitize-path (path)
+  "Make PATH all proper."
+  (cond
+   (path
+    (with-temp-buffer
+      (insert path)
+      (replace-string "\\" "/" nil (point-min) (point-max))
+      (setq match (string-match "/$" (buffer-string)))
+      (unless match
+        (goto-char (point-max))
+        (insert "/"))
+      (buffer-string)))
+   (t
+    nil)))
+
 ;;;###autoload
 (defun amstore-org-headline-w32-browser ()
   "Look first in the `PROPERTIES' drawer for a path under `MODEL'.
@@ -53,8 +68,8 @@ heading, and try a few extensions. Failing that, ask for a filename."
   (let ((to-open (org-entry-get (point) "MODEL" t nil)))
     (if (and to-open (file-exists-p to-open))
         (w32-browser to-open)
-      (let ((path (or (org-entry-get (point) "MDLPATH" t nil)
-                      (amstore--org-buffer-prop "MDLPATH")))
+      (let ((path (amstore--sanitize-path (or (org-entry-get (point) "MDLPATH" t nil)
+                                              (amstore--org-buffer-prop "MDLPATH"))))
             (exts '("SLDDRW" "SLDASM" "SLDPRT" "PDF"))
             (headingtext (cond ((string-equal (org-entry-get (point) "Type") "Request")
                                 (amstore-get-heading-names))
@@ -67,11 +82,30 @@ heading, and try a few extensions. Failing that, ask for a filename."
             (progn
               (org-set-property "MODEL" to-open)
               (w32-browser to-open))
-          (setq to-open (read-file-name (format "Enter path of `%s': " headingtext)))
+          (setq to-open (read-file-name
+                         (format "Enter path of `%s': " headingtext)
+                         amstore--mtl-path))
           (if (not (file-exists-p to-open))
               (error (format "File `%s' doesn't exist!" to-open))
             (org-set-property "MODEL" to-open)
             (w32-browser to-open)))))))
+
+;;;###autoload
+(defun amstore-open-containing-dir ()
+  "Open the path associated with this org heading."
+  (interactive)
+  (let ((model (org-entry-get (point) "MODEL" t nil)))
+    (setq path (with-temp-buffer
+                 (insert model)
+                 (goto-char (point-max))
+                 (set-mark (point-max))
+                 (search-backward "/")
+                 (forward-char)
+                 (delete-active-region)
+                 (buffer-string)))
+    (when (and path (file-exists-p path))
+      (message (format "Opening `%s'" path))
+      (w32-browser path))))
 
 ;;;###autoload
 (defun amstore-get-heading-names ()
