@@ -34,6 +34,7 @@
             (define-key map (kbd "C-c G") 'amstore-get-part-runtime)
             (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
             (define-key map (kbd "C-c m") 'amstore-copy-metal-path-to-clipboard)
+            (define-key map (kbd "C-c x") 'amstore-open-related-xls)
             map))
 
 (defun amstore--org-buffer-prop (prop)
@@ -160,6 +161,20 @@ The display format can be changed by populating ARG."
                (format "| %s | %f | %d |" part per-part-time qty)))
           (insert
            (format "%f - Qty: %d " per-part-time qty)))))))
+
+;;;###autoload
+(defun amstore-open-related-xls ()
+  ""
+  (interactive)
+  (let ((xls-open (org-entry-get (point) "XLS" t nil)))
+    (unless xls-open
+      (setq to-open (read-file-name
+                     (format "Enter path of `%s': " headingtext)
+                     amstore--mtl-path)))
+    (when xls-open
+      (if (file-exists-p xls-open)
+          (w32-browser xls-open)
+        (error (format "Couldn't find `%s'" xls-open))))))
 
 ;;;###autoload
 (defun amstore-get-headline-part-runtime (&optional arg)
