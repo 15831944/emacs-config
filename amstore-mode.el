@@ -166,7 +166,8 @@ The display format can be changed by populating ARG."
 (defun amstore-open-related-xls ()
   ""
   (interactive)
-  (let ((xls-open (org-entry-get (point) "XLS" t nil)))
+  (let ((xls-open (org-entry-get (point) "XLS" t nil))
+        (headingtext (nth 4 (org-heading-components))))
     (unless xls-open
       (setq to-open (read-file-name
                      (format "Enter path of `%s': " headingtext)
