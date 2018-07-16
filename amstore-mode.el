@@ -173,9 +173,10 @@ The display format can be changed by populating ARG."
                      (format "Enter path of `%s': " headingtext)
                      amstore--mtl-path)))
     (when xls-open
-      (if (file-exists-p xls-open)
-          (w32-browser xls-open)
-        (error (format "Couldn't find `%s'" xls-open))))))
+      (if (not (file-exists-p xls-open))
+          (error (format "Couldn't find `%s'" xls-open))
+        (org-set-property "XLS" xls-open)
+        (w32-browser xls-open)))))
 
 ;;;###autoload
 (defun amstore-get-headline-part-runtime (&optional arg)
