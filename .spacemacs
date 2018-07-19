@@ -112,7 +112,16 @@ values."
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
-  :END:" :clock-in t :clock-resume t)))
+  :END:" :clock-in t :clock-resume t))
+      org-clock-in-switch-to-state
+      (defun kc/clock-in-to-wip (kw)
+        "Switch from TODO to WIP when clocking in."
+        (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+          (cond
+           ((member (org-get-todo-state) (list "TODO"))
+            "WIP")
+           (t
+            kw)))))
      (gnus
       :defer t)
      (jabber
