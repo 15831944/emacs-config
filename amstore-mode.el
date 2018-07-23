@@ -91,6 +91,15 @@ heading, and try a few extensions. Failing that, ask for a filename."
             (org-set-property "MODEL" to-open)
             (w32-browser to-open)))))))
 
+(defun amstore--get-link-path (prop)
+  "Look for a link under PROP and return the path."
+  (let ((link (org-entry-get (point) prop)))
+    (string-match "\\[\\[file:\\(.*\\)\\]\\[\\(.*\\)\\]\\]" link)
+    (with-temp-buffer
+      (insert (match-string 1 link))
+      (replace-string "\\" "/" nil (point-min) (point-max) nil)
+      (buffer-string))))
+
 ;;;###autoload
 (defun amstore-open-containing-dir ()
   "Open the path associated with this org heading."
