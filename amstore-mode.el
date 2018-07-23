@@ -66,7 +66,8 @@ There has to already be a function for this, but I couldn't find it."
 Failing that, look in whatever path we can inherit, concatenate with the
 heading, and try a few extensions. Failing that, ask for a filename."
   (interactive)
-  (let ((to-open (org-entry-get (point) "MODEL" t nil)))
+  (let ((to-open (or (org-entry-get (point) "MODEL" t nil)
+                     (amstore--get-link-path "SLDDRW"))))
     (if (and to-open (file-exists-p to-open))
         (w32-browser to-open)
       (let ((path (amstore--sanitize-path (or (org-entry-get (point) "MDLPATH" t nil)
