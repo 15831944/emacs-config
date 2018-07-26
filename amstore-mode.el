@@ -95,11 +95,12 @@ heading, and try a few extensions. Failing that, ask for a filename."
 (defun amstore--get-link-path (prop)
   "Look for a link under PROP and return the path."
   (let ((link (org-entry-get (point) prop)))
-    (string-match "\\[\\[file:\\(.*\\)\\]\\[\\(.*\\)\\]\\]" link)
-    (with-temp-buffer
-      (insert (match-string 1 link))
-      (replace-string "\\" "/" nil (point-min) (point-max) nil)
-      (buffer-string))))
+    (when link
+        (string-match "\\[\\[file:\\(.*\\)\\]\\[\\(.*\\)\\]\\]" link)
+      (with-temp-buffer
+        (insert (match-string 1 link))
+        (replace-string "\\" "/" nil (point-min) (point-max) nil)
+        (buffer-string)))))
 
 ;;;###autoload
 (defun amstore-open-containing-dir ()
@@ -135,9 +136,9 @@ heading, and try a few extensions. Failing that, ask for a filename."
       (or (> (length h2) 3)
           (setq h2 nil))
       (cond
-       ((conforming-part-number-p h1)
+       ((or (conforming-part-number-p h1) (not h2))
         (string-trim h1))
-       ((conforming-part-number-p h2)
+       ((or (conforming-part-number-p h2) (not h1))
         (string-trim h2))))))
 
 ;;;###autoload
@@ -214,7 +215,7 @@ The display format can be changed by populating ARG."
   "Copy the job number in this entry to the system clipboard."
   (interactive)
   (let ((entry (org-get-entry)))
-    (string-match "- Job Number: \\(.*\\)" entry)
+    (string-match "Job Number: \\(.*\\)" entry)
     (if (not (setq match (match-string 1 entry)))
         (error "Couldn't find a job number")
       (w32-set-clipboard-data match)
