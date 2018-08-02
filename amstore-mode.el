@@ -35,6 +35,7 @@
             (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
             (define-key map (kbd "C-c m") 'amstore-copy-metal-path-to-clipboard)
             (define-key map (kbd "C-c x") 'amstore-open-related-xls)
+            (define-key map (kbd "C-c d") 'amstore-open-pdf)
             map))
 
 (defun amstore--org-buffer-prop (prop)
@@ -91,6 +92,17 @@ heading, and try a few extensions. Failing that, ask for a filename."
               (error (format "File `%s' doesn't exist!" to-open))
             (org-set-property "MODEL" to-open)
             (w32-browser to-open)))))))
+
+;;;###autoload
+(defun amstore-open-pdf ()
+  "Open a PDF, if we have one."
+  (interactive)
+  (let ((to-open (amstore--get-link-path "Drawing")))
+    (if (not to-open)
+        (if (not to-open)
+            (error (format "No drawing link found." to-open))
+          (error (format "File `%s' doesn't exist!" to-open)))
+      (w32-browser to-open))))
 
 (defun amstore--get-link-path (prop)
   "Look for a link under PROP and return the path."
