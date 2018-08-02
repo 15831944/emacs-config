@@ -35,7 +35,7 @@
             (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
             (define-key map (kbd "C-c m") 'amstore-copy-metal-path-to-clipboard)
             (define-key map (kbd "C-c x") 'amstore-open-related-xls)
-            (define-key map (kbd "C-c d") 'amstore-open-pdf)
+            (define-key map (kbd "C-c d") 'amstore-open-drawing)
             map))
 
 (defun amstore--org-buffer-prop (prop)
@@ -94,7 +94,7 @@ heading, and try a few extensions. Failing that, ask for a filename."
             (w32-browser to-open)))))))
 
 ;;;###autoload
-(defun amstore-open-pdf ()
+(defun amstore-open-drawing ()
   "Open a PDF, if we have one."
   (interactive)
   (let ((to-open (amstore--get-link-path "Drawing")))
