@@ -187,7 +187,7 @@ The display format can be changed by populating ARG."
 
 ;;;###autoload
 (defun amstore-open-related-xls ()
-  ""
+  "Open an XLS[X] file, if we have one."
   (interactive)
   (let ((xls-open (org-entry-get (point) "XLS" t nil))
         (headingtext (nth 4 (org-heading-components))))
