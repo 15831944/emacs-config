@@ -21,8 +21,8 @@
   "Path to setup files for laser.")
 
 (defvar amstore--mtl-path "S:\\shared\\general\\Metals\\METAL MANUFACTURING"
-  "Path to metal department models and drawings. This is here only because it's
-  convienient to copy it to the w32 clipboard all the time.")
+  "Path to metal department models and drawings.
+This is here only because it's convienient to copy it to the w32 clipboard all the time.")
 
 ;;;###autoload
 (define-minor-mode amstore-mode
