@@ -108,7 +108,7 @@ heading, and try a few extensions. Failing that, ask for a filename."
   (interactive)
   (let ((model (org-entry-get (point) "MODEL" t nil)))
     (setq path (with-temp-buffer
-                 (insert model)
+                 (insert (amstore--sanitize-path model t))
                  (goto-char (point-max))
                  (set-mark (point-max))
                  (search-backward "/")
