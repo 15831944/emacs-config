@@ -51,8 +51,7 @@ There has to already be a function for this, but I couldn't find it."
   (cond
    (path
     (with-temp-buffer
-      (insert path)
-      (replace-string "\\" "/" nil (point-min) (point-max))
+      (insert (subst-char-in-string ?\\ ?/ path t))
       (setq match (string-match "/$" (buffer-string)))
       (unless (or match filename)
         (goto-char (point-max))
@@ -112,22 +111,21 @@ heading, and try a few extensions. Failing that, ask for a filename."
         (string-match "\\[\\[file:\\(.*\\)\\]\\[\\(.*\\)\\]\\]" link)
       (with-temp-buffer
         (insert (match-string 1 link))
-        (replace-string "\\" "/" nil (point-min) (point-max) nil)
-        (buffer-string)))))
+        (subst-char-in-string ?\\ ?/ (buffer-string))))))
 
 ;;;###autoload
 (defun amstore-open-containing-dir ()
   "Open the path associated with this org heading."
   (interactive)
-  (let ((model (org-entry-get (point) "MODEL" t nil)))
-    (setq path (with-temp-buffer
-                 (insert (amstore--sanitize-path model t))
-                 (goto-char (point-max))
-                 (set-mark (point-max))
-                 (search-backward "/")
-                 (forward-char)
-                 (delete-active-region)
-                 (buffer-string)))
+  (let* ((model (org-entry-get (point) "MODEL" t nil))
+         (path (with-temp-buffer
+                      (insert (amstore--sanitize-path model t))
+                      (goto-char (point-max))
+                      (set-mark (point-max))
+                      (search-backward "/")
+                      (forward-char)
+                      (delete-active-region)
+                      (buffer-string))))
     (when (and path (file-exists-p path))
       (message (format "Opening `%s'" path))
       (w32-browser path))))
