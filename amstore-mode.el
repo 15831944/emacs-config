@@ -91,6 +91,7 @@ heading, and try a few extensions. Failing that, ask for a filename."
           (if (not (file-exists-p to-open))
               (error (format "File `%s' doesn't exist!" to-open))
             (org-set-property "MODEL" to-open)
+            (org-set-property "SLDDRW" (format "[[file:%s][%s]]" to-open headingtext))
             (w32-browser to-open)))))))
 
 ;;;###autoload
