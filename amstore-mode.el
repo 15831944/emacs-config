@@ -45,7 +45,7 @@ There has to already be a function for this, but I couldn't find it."
       (match-string 2 (buffer-string))
     nil))
 
-(defun amstore--sanitize-path (path)
+(defun amstore--sanitize-path (path &optional filename)
   "Make PATH all proper."
   (cond
    (path
@@ -53,7 +53,7 @@ There has to already be a function for this, but I couldn't find it."
       (insert path)
       (replace-string "\\" "/" nil (point-min) (point-max))
       (setq match (string-match "/$" (buffer-string)))
-      (unless match
+      (unless (or match filename)
         (goto-char (point-max))
         (insert "/"))
       (buffer-string)))
