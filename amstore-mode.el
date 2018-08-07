@@ -84,9 +84,9 @@ heading, and try a few extensions. Failing that, ask for a filename."
             (progn
               (org-set-property "MODEL" to-open)
               (w32-browser to-open))
-          (setq to-open (read-file-name
-                         (format "Enter path of `%s': " headingtext)
-                         amstore--mtl-path))
+          (setq to-open (amstore--sanitize-path (read-file-name
+                          (format "Enter path of `%s': " headingtext)
+                          amstore--mtl-path) t))
           (if (not (file-exists-p to-open))
               (error (format "File `%s' doesn't exist!" to-open))
             (org-set-property "MODEL" to-open)
