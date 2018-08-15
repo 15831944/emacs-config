@@ -44,13 +44,14 @@ values."
                                (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
       org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
       org-catch-invisible-edits 'smart
-      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 1 :fileskip0 t)
+      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 1 :fileskip0 t :formula %)
       org-deadline-warning-days 45
       org-agenda-window-setup 'current-window
       org-agenda-skip-scheduled-if-done t
       org-agenda-skip-deadline-if-done t
       org-agenda-skip-timestamp-if-done t
-      org-agenda-log-mode-items '(closed)
+      org-agenda-log-mode-items '(closed clock)
+      org-clock-continuously t
       org-columns-default-format "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM"
       org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit")))
