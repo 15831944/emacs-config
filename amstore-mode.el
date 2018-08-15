@@ -81,17 +81,22 @@ heading, and try a few extensions. Failing that, ask for a filename."
             (setq to-open (concat path headingtext "." (car exts))
                   exts (cdr exts))))
         (if (and to-open (file-exists-p to-open))
-            (progn
-              (org-set-property "MODEL" to-open)
-              (w32-browser to-open))
+            (amstore--open to-open headingtext)
           (setq to-open (amstore--sanitize-path (read-file-name
                           (format "Enter path of `%s': " headingtext)
                           amstore--mtl-path) t))
           (if (not (file-exists-p to-open))
               (error (format "File `%s' doesn't exist!" to-open))
-            (org-set-property "MODEL" to-open)
-            (org-set-property "SLDDRW" (format "[[file:%s][%s]]" to-open headingtext))
-            (w32-browser to-open)))))))
+            (amstore--open to-open headingtext)))))))
+
+(defun amstore--open (path &optional description)
+  "Store PATH as a org-link, and fill the DESCRIPTION if there is one.
+Otherwise, we'll just use the file-name-base for a description."
+  (let* ((descr (if description description
+                  (file-name-base path))))
+    (org-set-property "MODEL" path)
+    (org-set-property "SLDDRW" (format "[[file:%s][%s]]" path descr))
+    (w32-browser path)))
 
 ;;;###autoload
 (defun amstore-open-drawing ()
