@@ -96,7 +96,8 @@ Otherwise, we'll just use the file-name-base for a description."
                   (file-name-base path))))
     (org-set-property "MODEL" path)
     (org-set-property "SLDDRW" (format "[[file:%s][%s]]" path descr))
-    (w32-browser path)))
+    (w32-browser path)
+    (message (format "Opening '%s'..." path))))
 
 ;;;###autoload
 (defun amstore-open-drawing ()
