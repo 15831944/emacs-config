@@ -33,6 +33,7 @@ This is here only because it's convienient to copy it to the w32 clipboard all t
             (define-key map (kbd "C-c g") 'amstore-get-headline-part-runtime)
             (define-key map (kbd "C-c G") 'amstore-get-part-runtime)
             (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
+            (define-key map (kbd "C-c J") 'amstore-copy-item)
             (define-key map (kbd "C-c m") 'amstore-copy-metal-path-to-clipboard)
             (define-key map (kbd "C-c x") 'amstore-open-related-xls)
             (define-key map (kbd "C-c d") 'amstore-open-drawing)
@@ -226,6 +227,21 @@ The display format can be changed by populating ARG."
       t)
      (t
       nil))))
+
+;;;###autoload
+(defun amstore-copy-item (&optional arg)
+  "Copy the pertinant headline bit to w32 clipboard."
+  (interactive "P")
+  (let* ((headingtext (nth 4 (org-heading-components)))
+         (job)
+         (entry (org-get-entry))
+         (to-copy headingtext))
+    (when arg
+      (string-match "Job Number: \\(.*\\)" entry)
+      (when (setq match (match-string 1 entry))
+        (setq to-copy (format "%s %s" match headingtext))))
+    (w32-set-clipboard-data headingtext)
+    (message (format "Copied `%s' to w32 clipboard." to-copy))))
 
 ;;;###autoload
 (defun amstore-copy-job-number-to-clipboard ()
