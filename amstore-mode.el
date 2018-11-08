@@ -84,8 +84,8 @@ heading, and try a few extensions. Failing that, ask for a filename."
         (if (and to-open (file-exists-p to-open))
             (amstore--open to-open headingtext)
           (setq to-open (amstore--sanitize-path (read-file-name
-                          (format "Enter path of `%s': " headingtext)
-                          amstore--mtl-path) t))
+                                                 (format "Enter path of `%s': " headingtext)
+                                                 amstore--mtl-path) t))
           (if (not (file-exists-p to-open))
               (error (format "File `%s' doesn't exist!" to-open))
             (amstore--open to-open headingtext)))))))
@@ -115,7 +115,7 @@ Otherwise, we'll just use the file-name-base for a description."
   "Look for a link under PROP and return the path."
   (let ((link (org-entry-get (point) prop)))
     (when link
-        (string-match "\\[\\[file:\\(.*\\)\\]\\[\\(.*\\)\\]\\]" link)
+      (string-match "\\[\\[file:\\(.*\\)\\]\\[\\(.*\\)\\]\\]" link)
       (with-temp-buffer
         (insert (match-string 1 link))
         (subst-char-in-string ?\\ ?/ (buffer-string))))))
@@ -126,13 +126,13 @@ Otherwise, we'll just use the file-name-base for a description."
   (interactive)
   (let* ((model (org-entry-get (point) "MODEL" t nil))
          (path (with-temp-buffer
-                      (insert (amstore--sanitize-path model t))
-                      (goto-char (point-max))
-                      (set-mark (point-max))
-                      (search-backward "/")
-                      (forward-char)
-                      (delete-active-region)
-                      (buffer-string))))
+                 (insert (amstore--sanitize-path model t))
+                 (goto-char (point-max))
+                 (set-mark (point-max))
+                 (search-backward "/")
+                 (forward-char)
+                 (delete-active-region)
+                 (buffer-string))))
     (when (and path (file-exists-p path))
       (message (format "Opening `%s'" path))
       (w32-browser path))))
