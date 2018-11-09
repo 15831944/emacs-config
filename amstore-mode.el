@@ -243,7 +243,7 @@ The display format can be changed by populating ARG."
       (string-match "Job Number: \\(.*\\)" entry)
       (when (setq match (match-string 1 entry))
         (setq to-copy (format "%s %s" match headingtext))))
-    (w32-set-clipboard-data headingtext)
+    (w32-set-clipboard-data to-copy)
     (message (format "Copied `%s' to w32 clipboard." to-copy))))
 
 ;;;###autoload
