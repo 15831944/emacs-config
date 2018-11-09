@@ -24,6 +24,9 @@
   "Path to metal department models and drawings.
 This is here only because it's convienient to copy it to the w32 clipboard all the time.")
 
+(defvar amstore--tea-alarm-sound "c:/users/juntunenkc/dropbox/BEEP2.WAV"
+  "Path to an alarm sound.")
+
 ;;;###autoload
 (define-minor-mode amstore-mode
   "A container for handy, Amstore-related functions."
@@ -260,6 +263,20 @@ The display format can be changed by populating ARG."
   (interactive)
   (w32-set-clipboard-data amstore--mtl-path)
   (message (format "Copied `%s' to w32 clipboard." amstore--mtl-path)))
+
+;;;###autoload
+(defun amstore-steep-tea (&optional min)
+  "Steep tea for 3 minutes by default. An argument for MIN is a number of minutes."
+  (interactive "P")
+  (let ((minutes 3)
+        (timeword "minute"))
+    (if (and min (integerp min) (> min 0))
+        (setq minutes min))
+    (if (> min 1)
+        (setq timeword "minutes"))
+    (message (format "Setting a timer for %d %s." minutes timeword))
+    (run-at-time (format "%d min" minutes) nil
+                 #'play-sound-file amstore--tea-alarm-sound)))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'amstore-mode)
