@@ -27,19 +27,23 @@ This is here only because it's convienient to copy it to the w32 clipboard all t
 (defvar amstore--tea-alarm-sound "c:/users/juntunenkc/dropbox/BEEP2.WAV"
   "Path to an alarm sound.")
 
+(defvar amstore--tea-timers nil
+  "A list of tea timers we started.")
+
 ;;;###autoload
 (define-minor-mode amstore-mode
   "A container for handy, Amstore-related functions."
   :lighter " ∀"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-c b") 'amstore-org-headline-w32-browser)
+            (define-key map (kbd "C-c d") 'amstore-open-drawing)
             (define-key map (kbd "C-c g") 'amstore-get-headline-part-runtime)
             (define-key map (kbd "C-c G") 'amstore-get-part-runtime)
             (define-key map (kbd "C-c j") 'amstore-copy-job-number-to-clipboard)
             (define-key map (kbd "C-c J") 'amstore-copy-item)
             (define-key map (kbd "C-c m") 'amstore-copy-metal-path-to-clipboard)
+            (define-key map (kbd "C-c t") 'amstore-steep-tea)
             (define-key map (kbd "C-c x") 'amstore-open-related-xls)
-            (define-key map (kbd "C-c d") 'amstore-open-drawing)
             map))
 
 (defun amstore--org-buffer-prop (prop)
@@ -269,14 +273,25 @@ The display format can be changed by populating ARG."
   "Steep tea for 3 minutes by default. An argument for MIN is a number of minutes."
   (interactive "P")
   (let ((minutes 3)
-        (timeword "minute"))
+        (timeword "minute")
+        (new-timer))
     (if (and min (integerp min) (> min 0))
         (setq minutes min))
-    (if (> min 1)
+    (if (> minutes 1)
         (setq timeword "minutes"))
     (message (format "Setting a timer for %d %s." minutes timeword))
-    (run-at-time (format "%d min" minutes) nil
-                 #'play-sound-file amstore--tea-alarm-sound)))
+    (setq new-timer
+          (run-at-time (format "%d min" minutes) nil
+                       #'play-sound-file amstore--tea-alarm-sound))
+    (if amstore--tea-timers
+        (push new-timer amstore--tea-timers)
+      (setq amstore--tea-timers `(,new-timer)))))
+
+(defun amstore-cancel-timers ()
+  "Cancel tea timer(s)."
+  (interactive)
+  (while amstore--tea-timers
+    (cancel-timer (pop amstore--tea-timers))))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'amstore-mode)
