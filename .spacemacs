@@ -518,9 +518,16 @@ you should place your code here."
 
   (blink-cursor-mode 1)
   (delete-selection-mode 1)
+  (smartparens-global-mode 1)
+  (server-start)
 
-  (load (expand-file-name "~/.personal.el")))
+  (load (expand-file-name "~/.personal.el"))
+  (org-clock-persistence-insinuate)
+  (add-hook 'jabber-chat-mode-hook 'flyspell-mode)
+  (add-hook 'jabber-chat-mode-hook 'visual-line-mode))
 
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
