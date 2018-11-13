@@ -16,6 +16,7 @@
 (require 'org)
 (require 'subr-x)
 (require 'w32-browser)
+(require 'delsel)
 
 (defvar amstore--stp-path "G:/STRIKER LASER PROGRAMS/STP"
   "Path to setup files for laser.")
@@ -59,15 +60,16 @@ There has to already be a function for this, but I couldn't find it."
     nil))
 
 (defun amstore--sanitize-path (path &optional filename)
-  "Make PATH all proper."
+  "Make PATH all proper. If FILENAME is non-nil, output a sanitized filename."
   (cond
    (path
     (with-temp-buffer
       (insert (subst-char-in-string ?\\ ?/ path t))
-      (setq match (string-match "/$" (buffer-string)))
-      (unless (or match filename)
-        (goto-char (point-max))
-        (insert "/"))
+      (let ((match (string-match "/$" (buffer-string))))
+        (setq match (string-match "/$" (buffer-string)))
+        (unless (or match filename)
+          (goto-char (point-max))
+          (insert "/")))
       (buffer-string)))
    (t
     nil)))
@@ -103,7 +105,7 @@ heading, and try a few extensions. Failing that, ask for a filename."
 
 (defun amstore--open (path &optional description)
   "Store PATH as a org-link, and fill the DESCRIPTION if there is one.
-Otherwise, we'll just use the file-name-base for a description."
+Otherwise, we'll just use the `file-name-base' for a description."
   (let* ((descr (if description description
                   (file-name-base path))))
     (org-set-property "MODEL" path)
@@ -118,7 +120,7 @@ Otherwise, we'll just use the file-name-base for a description."
   (let ((to-open (amstore--get-link-path "Drawing")))
     (if (not to-open)
         (if (not to-open)
-            (error (format "No drawing link found." to-open))
+            (error "No drawing link found!")
           (error (format "File `%s' doesn't exist!" to-open)))
       (w32-browser to-open))))
 
@@ -209,7 +211,7 @@ The display format can be changed by populating ARG."
   (let ((xls-open (org-entry-get (point) "XLS" t nil))
         (headingtext (nth 4 (org-heading-components))))
     (unless xls-open
-      (setq to-open (read-file-name
+      (setq xls-open (read-file-name
                      (format "Enter path of `%s': " headingtext)
                      amstore--mtl-path)))
     (when xls-open
@@ -241,10 +243,11 @@ The display format can be changed by populating ARG."
 
 ;;;###autoload
 (defun amstore-copy-item (&optional arg)
-  "Copy the pertinant headline bit to w32 clipboard."
+  "Copy the pertinant headline bit to w32 clipboard.
+If there's an ARG, copy the heading and the job number."
   (interactive "P")
   (let* ((headingtext (nth 4 (org-heading-components)))
-         (job)
+         (match)
          (entry (org-get-entry))
          (to-copy headingtext))
     (when arg
@@ -258,7 +261,8 @@ The display format can be changed by populating ARG."
 (defun amstore-copy-job-number-to-clipboard ()
   "Copy the job number in this entry to the system clipboard."
   (interactive)
-  (let ((entry (org-get-entry)))
+  (let ((entry (org-get-entry))
+        (match))
     (string-match "Job Number: \\(.*\\)" entry)
     (if (not (setq match (match-string 1 entry)))
         (error "Couldn't find a job number")
@@ -312,3 +316,4 @@ The display format can be changed by populating ARG."
 
 (provide 'amstore-mode)
 ;;; amstore-mode.el ends here
+
