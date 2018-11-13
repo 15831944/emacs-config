@@ -17,6 +17,7 @@
 (require 'subr-x)
 (require 'w32-browser)
 (require 'delsel)
+(require 'alert)
 
 (defvar amstore--stp-path "G:/STRIKER LASER PROGRAMS/STP"
   "Path to setup files for laser.")
@@ -30,10 +31,6 @@ This is here only because it's convienient to copy it to the w32 clipboard all t
 
 (defvar amstore--tea-timers nil
   "A list of tea timers we started.")
-
-(defface tea-face
-  '((t . (:height 3.0)))
-  "Tea alert face.")
 
 ;;;###autoload
 (define-minor-mode amstore-mode
@@ -297,13 +294,9 @@ If there's an ARG, copy the heading and the job number."
 
 (defun amstore--alert (sound &optional message)
   "Alert the user with SOUND and MESSAGE."
-  (let ((buffer (get-buffer-create "\*Tea"))
-        (msg (or message "Tea is ready!")))
+  (let ((msg (or message "Tea is ready!")))
     (play-sound-file sound)
-    (switch-to-buffer buffer)
-    (put-text-property 0 (length msg) 'face 'tea-face msg)
-    (insert msg)
-    (display-buffer buffer)))
+    (alert msg :style 'mode-line)))
 
 (defun amstore-cancel-timers ()
   "Cancel tea timer(s)."
@@ -316,4 +309,3 @@ If there's an ARG, copy the heading and the job number."
 
 (provide 'amstore-mode)
 ;;; amstore-mode.el ends here
-
