@@ -209,8 +209,8 @@ The display format can be changed by populating ARG."
         (headingtext (nth 4 (org-heading-components))))
     (unless xls-open
       (setq xls-open (read-file-name
-                     (format "Enter path of `%s': " headingtext)
-                     amstore--mtl-path)))
+                      (format "Enter path of `%s': " headingtext)
+                      amstore--mtl-path)))
     (when xls-open
       (if (not (file-exists-p xls-open))
           (error (format "Couldn't find `%s'" xls-open))
@@ -279,7 +279,8 @@ If there's an ARG, copy the heading and the job number."
   (interactive "P")
   (let ((minutes 3)
         (timeword "minute")
-        (new-timer))
+        (new-timer)
+        (start-time (elt (split-string (time-stamp-string) " ") 1)))
     (if (and min (integerp min) (> min 0))
         (setq minutes min))
     (if (> minutes 1)
@@ -287,7 +288,8 @@ If there's an ARG, copy the heading and the job number."
     (message (format "Setting a timer for %d %s." minutes timeword))
     (setq new-timer
           (run-at-time (format "%d min" minutes) nil
-                       #'amstore--alert amstore--tea-alarm-sound))
+                       #'amstore--alert amstore--tea-alarm-sound
+                       (format "Tea started at %s is ready." start-time)))
     (if amstore--tea-timers
         (push new-timer amstore--tea-timers)
       (setq amstore--tea-timers `(,new-timer)))))
