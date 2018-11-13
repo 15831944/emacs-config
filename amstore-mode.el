@@ -30,6 +30,10 @@ This is here only because it's convienient to copy it to the w32 clipboard all t
 (defvar amstore--tea-timers nil
   "A list of tea timers we started.")
 
+(defface tea-face
+  '((t . (:height 3.0)))
+  "Tea alert face.")
+
 ;;;###autoload
 (define-minor-mode amstore-mode
   "A container for handy, Amstore-related functions."
@@ -282,10 +286,20 @@ The display format can be changed by populating ARG."
     (message (format "Setting a timer for %d %s." minutes timeword))
     (setq new-timer
           (run-at-time (format "%d min" minutes) nil
-                       #'play-sound-file amstore--tea-alarm-sound))
+                       #'amstore--alert amstore--tea-alarm-sound))
     (if amstore--tea-timers
         (push new-timer amstore--tea-timers)
       (setq amstore--tea-timers `(,new-timer)))))
+
+(defun amstore--alert (sound &optional message)
+  "Alert the user with SOUND and MESSAGE."
+  (let ((buffer (get-buffer-create "\*Tea"))
+        (msg (or message "Tea is ready!")))
+    (play-sound-file sound)
+    (switch-to-buffer buffer)
+    (put-text-property 0 (length msg) 'face 'tea-face msg)
+    (insert msg)
+    (display-buffer buffer)))
 
 (defun amstore-cancel-timers ()
   "Cancel tea timer(s)."
