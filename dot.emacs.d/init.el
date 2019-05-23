@@ -68,10 +68,10 @@
 ;; 	   ("C-c w"   . helm-wikipedia-suggest)
 ;; 	   ("SPC"     . helm-all-mark-rings)))
 
-(use-package helm-descbinds
-  :ensure t
-  :defer t
-  :bind (("C-h b" . helm-descbinds)))
+;; (use-package helm-descbinds
+;;   :ensure t
+;;   :defer t
+;;   :bind (("C-h b" . helm-descbinds)))
 
 (use-package which-key
   :ensure t
