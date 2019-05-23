@@ -168,8 +168,9 @@
     "fed" '(edit-init-file :which-key "Edit init file")
 
     "gs" '(magit-status :which-key "Magit Status")
-    "aoa" '(org-agenda :which-key "Org Agenda")
-    "am" '(eshell :which-key "Eshell")
+    "aoa" '(org-agenda-list :which-key "Org Agenda")
+    "aoc" '(calc-dispatch :which-key "Org Agenda")
+    "'" '(eshell :which-key "Eshell")
     "qq"  'save-buffers-kill-emacs)
   :commands counsel-describe-face)
 
