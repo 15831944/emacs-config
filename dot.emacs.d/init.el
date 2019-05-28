@@ -1,26 +1,25 @@
-(defconst kc/emacs-start-time (current-time))
+﻿(defconst kc/emacs-start-time (current-time))
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-(menu-bar-mode -1)
+(if (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+(if (fboundp 'tooltip-mode)
+    (tooltip-mode -1))
+(if (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1))
 (setq sentence-end-double-space nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-(defmacro kc/start-time (name)
-  `(defvar ,(intern (concat "d/time-" name)) (current-time)))
-
-(defmacro kc/end-time (name)
-  `(message "`%s' execution took %.5f seconds."
-            ,name
-	    (float-time (time-subtract (current-time) ,(intern (concat "d/time-" name))))))
-
-(add-to-list 'default-frame-alist '(font . "Anka/Coder Condensed:style=Regular"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
+(add-to-list 'default-frame-alist (cons 'font
+					(if (string-equal (window-system) "x")
+					    "Anka/Coder Condensed:style=Regular"
+					  "Consolas")))
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -28,53 +27,16 @@
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
 ;; (package-initialize)
-(bind-key (kbd "C-x ;") 'comment-or-uncomment-region)
+;; (bind-key (kbd "C-x ;") 'comment-or-uncomment-region)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-
-;; (use-package helm
-;;   :ensure t
-;;   :diminish helm-mode
-;;   :init
-;;   (require 'helm-config)
-;;   (setq helm-M-x-fuzzy-match t
-;; 	helm-buffers-fuzzy-matching t
-;; 	helm-recentf-fuzzy-match t
-;; 	helm-locate-fuzzy-match t
-;; 	helm-semantic-fuzzy-match t
-;; 	helm-imenu-fuzzy-match t
-;; 	helm-completion-in-region-fuzzy-match t
-;; 	helm-candidate-number-list 150
-;; 	helm-split-window-in-side-p t
-;; 	helm-move-to-line-cycle-in-source t
-;; 	helm-autoresize-max-height 0
-;; 	helm-autoresize-min-height 20)
-;;   :config
-;;   (helm-mode 1)
-;;    :bind (("M-x"   . helm-M-x)
-;; 	   ("C-x C-m" . helm-M-x)
-;; 	   ("M-y"     . helm-show-kill-ring)
-;; 	   ("C-x b"   . helm-mini)
-;; 	   ("C-x C-f" . helm-find-files)
-;; 	   ("C-h f"   . helm-apropos)
-;; 	   ("C-h r"   . helm-info-emacs)
-;; 	   ("C-h C-l" . helm-locate-library)
-;; 	   :map helm-command-map
-;; 	   ("o"       . helm-occur)
-;; 	   ("g"       . helm-do-grep)
-;; 	   ("C-c w"   . helm-wikipedia-suggest)
-;; 	   ("SPC"     . helm-all-mark-rings)))
-
-;; (use-package helm-descbinds
-;;   :ensure t
-;;   :defer t
-;;   :bind (("C-h b" . helm-descbinds)))
+(setq use-package-always-defer t)
+(setq use-package-always-ensure t)
 
 (use-package which-key
-  :ensure t
   :diminish which-key
   :init
   (setq which-key-separator " ")
@@ -83,9 +45,7 @@
   (which-key-mode 1))
 
 (unless (version< emacs-version "24.4")
-  (use-package magit
-    :ensure t
-    :defer t))
+  (use-package magit))
 
 (defun edit-init-file ()
   "Open `init.el' for editing."
@@ -93,16 +53,17 @@
   (find-file "~/.emacs.d/init.el"))
 
 (use-package evil
-  :ensure t
   :config
   (evil-mode 1))
 
 (use-package general
-  :ensure t
   :config
   (general-unbind
-  :states '(normal visual emacs motion)
-  "SPC")
+    :states '(normal visual emacs motion)
+    "SPC")
+  (general-unbind
+    :states '(normal visual emacs motion)
+    ",")
 
   (general-create-definer
     kc/mode-leader-keys
@@ -114,45 +75,17 @@
     kc/leader-keys
     :states '(emacs normal visual motion insert)
     :non-normal-prefix "C-SPC"
-    :prefix "SPC"))
-
-(use-package spacemacs-theme
-  :ensure t
-  :defer t
-  :init
-  (load-theme 'spacemacs-dark t)
-  (setq spacemacs-theme-org-agenda-height nil
-	spacemacs-theme-org-height nil))
-
-(use-package spaceline
-  :ensure t
-  :demand t
-  :defer t
-  :init
-  (setq powerline-default-separator 'arrow-fade)
-  :config
-  (require 'spaceline-config)
-  (spaceline-spacemacs-theme))
-
-(use-package counsel
-  :ensure t
-  :general
-  ("M-x" 'counsel-M-x
-   "C-x C-f" 'counsel-find-file)
+    :prefix "SPC")
   (kc/leader-keys
-    "TAB" '(switch-to-prev-buffer :which-key "find files")
-    "ff"  'counsel-find-file
-    "fj"  'counsel-file-jump
-    "fl"  'counsel-locate
-    "hdF" 'counsel-describe-face
-    "hdb" 'counsel-descbinds
-    "hdf" 'counsel-describe-function
-    "hdv" 'counsel-describe-variable
+    "hdF" 'describe-face
+    "hdk" 'describe-key
+    "hdf" 'describe-function
+    "hdv" 'describe-variable
+    "hdc" 'describe-char
+    "hdo" 'describe-symbol
     "hi"  '(info :which-key "Info")
-    "h?"   '(describe-bindings :which-key "Describe bindings") 
-    "iu"  'counsel-unicode-char
-    "sr"  'counsel-rg
-    "ss"  'counsel-grep-or-swiper
+    "h?"  '(describe-bindings :which-key "Describe bindings") 
+    "iu"  'insert-char
     "wl"  '(windmove-right :which-key "move right")
     "wh"  '(windmove-left :which-key "move left")
     "wk"  '(windmove-up :which-key "move up")
@@ -160,19 +93,124 @@
     "w/"  '(split-window-right :which-key "split right")
     "w-"  '(split-window-below :which-key "split bottom")
     "wx"  '(delete-window :which-key "delete window")
-    "y"   'counsel-yank-pop
-    "SPC" 'counsel-M-x
-    "bb"  'counsel-switch-buffer
+    "lv"  'visual-line-mode
+    "lt"  'toggle-truncate-lines
+
     "bd"  'kill-this-buffer
-    "fs" '(save-buffer :which-key "Save this buffer")
+    "fs"  '(save-buffer :which-key "Save this buffer")
     "fed" '(edit-init-file :which-key "Edit init file")
 
-    "gs" '(magit-status :which-key "Magit Status")
+    "gs"  '(magit-status :which-key "Magit Status")
     "aoa" '(org-agenda-list :which-key "Org Agenda")
-    "aoc" '(calc-dispatch :which-key "Org Agenda")
-    "'" '(eshell :which-key "Eshell")
+    "aoo" 'org-agenda
+    "ac" '(calc-dispatch :which-key "Calc Dispatch")
+    "ad"  'dired
+    "'"   '(eshell :which-key "Eshell")
+    "aP"  'proced
+    
     "qq"  'save-buffers-kill-emacs)
-  :commands counsel-describe-face)
+  (kc/mode-leader-keys
+    :keymaps 'prog-mode-map
+    ";" 'comment-or-uncomment-region))
+
+(use-package spacemacs-theme
+  :init
+  (load-theme 'spacemacs-dark t)
+  (setq spacemacs-theme-org-agenda-height nil
+	spacemacs-theme-org-height nil))
+
+(use-package spaceline
+  :demand t
+  :init
+  (setq powerline-default-separator 'arrow-fade)
+  :config
+  (require 'spaceline-config)
+  (spaceline-emacs-theme))
+
+(use-package helm
+  :diminish helm-mode
+  :init
+  (require 'helm-config)
+  (setq helm-M-x-fuzzy-match t
+	helm-buffers-fuzzy-matching t
+	helm-recentf-fuzzy-match t
+	helm-locate-fuzzy-match t
+	helm-semantic-fuzzy-match t
+	helm-imenu-fuzzy-match t
+	helm-completion-in-region-fuzzy-match t
+	helm-candidate-number-list 150
+	helm-split-window-in-side-p t
+	helm-move-to-line-cycle-in-source t
+	helm-autoresize-max-height 0
+	helm-autoresize-min-height 20)
+  :config
+  (helm-mode 1)
+  :general
+  ("M-x" 'helm-M-x
+   "C-x C-f" 'helm-find-file)
+  (kc/leader-keys
+    "TAB" '(switch-to-prev-buffer :which-key "find files")
+    "ff"  'helm-find-files
+    "fl"  'helm-locate
+    "SPC" 'helm-M-x
+    "bb"  'helm-buffers-list))
+
+(use-package helm-descbinds
+  :bind (("C-h b" . helm-descbinds)))
+
+(use-package helm-org-rifle
+  :general
+  (kc/leader-keys
+    "aor" 'helm-org-rifle))
+
+(use-package avy
+  :general
+  (kc/leader-keys
+    ":" 'avy-goto-char))
+
+(use-package anzu
+  :config
+  (global-anzu-mode 1))
+  
+;; (use-package counsel
+;;   :ensure t
+;;   :general
+;;   ("M-x" 'counsel-M-x
+;;    "C-x C-f" 'counsel-find-file)
+;;   (kc/leader-keys
+;;     "TAB" '(switch-to-prev-buffer :which-key "find files")
+;;     "ff"  'counsel-find-file
+;;     "fj"  'counsel-file-jump
+;;     "fl"  'counsel-locate
+;;     "hdF" 'counsel-describe-face
+;;     "hdb" 'counsel-descbinds
+;;     "hdf" 'counsel-describe-function
+;;     "hdv" 'counsel-describe-variable
+;;     "hi"  '(info :which-key "Info")
+;;     "h?"   '(describe-bindings :which-key "Describe bindings") 
+;;     "iu"  'counsel-unicode-char
+;;     "sr"  'counsel-rg
+;;     "ss"  'counsel-grep-or-swiper
+;;     "wl"  '(windmove-right :which-key "move right")
+;;     "wh"  '(windmove-left :which-key "move left")
+;;     "wk"  '(windmove-up :which-key "move up")
+;;     "wj"  '(windmove-down :which-key "move bottom")
+;;     "w/"  '(split-window-right :which-key "split right")
+;;     "w-"  '(split-window-below :which-key "split bottom")
+;;     "wx"  '(delete-window :which-key "delete window")
+;;     "y"   'counsel-yank-pop
+;;     "SPC" 'counsel-M-x
+;;     "bb"  'counsel-switch-buffer
+;;     "bd"  'kill-this-buffer
+;;     "fs" '(save-buffer :which-key "Save this buffer")
+;;     "fed" '(edit-init-file :which-key "Edit init file")
+
+;;     "gs" '(magit-status :which-key "Magit Status")
+;;     "aoa" '(org-agenda-list :which-key "Org Agenda")
+;;     "aoc" '(calc-dispatch :which-key "Org Agenda")
+;;     "'" '(eshell :which-key "Eshell")
+;;     "qq"  'save-buffers-kill-emacs)
+;;   :commands counsel-describe-face)
 
 ;; (general-define-key
 ;; 	   :states '(normal visual insert emacs)
@@ -218,21 +256,13 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
-(use-package company-anaconda
-  :ensure t
-  :defer t)
-
-(use-package company-shell
-  :ensure t
-  :defer t)
-
 (use-package company
-  :ensure t
-  :defer t
+  :diminish company
   :init (add-hook 'after-init-hook 'global-company-mode)
   :config
   (add-hook 'prog-mode-hook 'company-mode)
-  (use-package company-irony :ensure t :defer t)
+  (use-package company-irony)
+  (use-package company-anaconda)
   (setq company-idle-delay              0
         company-minimum-prefix-length   2
         company-show-numbers            t
@@ -247,8 +277,9 @@
                                            company-shell))))
 
 (use-package smartparens
-  :ensure t
-  :config (smartparens-global-mode 1)
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode 1)
   (sp-use-paredit-bindings))
 
 (whitespace-mode 1)
@@ -256,93 +287,117 @@
 (setq whitespace-style '(face tabs empty trailing lines-tail))
 
 (use-package org-bullets
-  :ensure t
   :init
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq dropbox-dir "~/Dropbox/")
-(setq org-agenda-span 'day
-      org-directory (concat dropbox-dir "/org")
-      kc/agenda-dir (concat org-directory "")
-      org-agenda-file-regexp "\\`[^.].*\\.org\\'"
-      org-use-fast-todo-selection t
-      org-treat-S-cursor-todo-selection-as-state-change nil
-      org-ellipsis "⤵"
-      kc/org-all-agenda-files (directory-files
-                               (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
-      org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
-      org-catch-invisible-edits 'smart
-      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 1 :fileskip0 t)
-      org-deadline-warning-days 45
-      org-agenda-window-setup 'current-window
-      org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-skip-timestamp-if-done t
-      org-agenda-log-mode-items '(closed)
-      org-columns-default-format "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM"
-      org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
-                                    ("STYLE_ALL" . "habit")))
-      org-todo-keywords
-      (quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING")))
-      org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("WIP" :foreground "blue" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold)))
-      org-todo-state-tags-triggers
-      (quote (("CANCELLED" ("ARCHIVE" . t))
-              ("WAITING" ("WAITING" . t))
-              ("HOLD" ("WAITING") ("HOLD" . t))
-              (done ("WAITING") ("HOLD"))
-              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
-      kc/refile-file (concat kc/agenda-dir "/refile.org")
-      kc/diary-file (concat org-directory "/diary.org")
-      kc/notes-file (concat org-directory "/notes.org")
-      org-capture-templates
-      '(("t" "todo" entry
-         (file kc/refile-file)
-         "* TODO %?
+(use-package evil-org
+  :init
+  (require 'evil-org)
+  (require 'evil-org-agenda)
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  :config
+  (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+  (evil-org-agenda-set-keys)
+  :general
+  (kc/mode-leader-keys
+    :keymap 'org-mode-map
+    "P" 'org-set-property)
+  (kc/mode-leader-keys
+    :keymap 'org-agenda-mode-map
+    "l" 'org-agenda-log-mode))
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package org
+  :config
+  (setq org-directory (if (string-equal window-system "w32")
+			  "~/../../org"
+			"~/Dropbox/org")
+	org-agenda-span 'day
+	kc/agenda-dir (concat org-directory "")
+	org-agenda-file-regexp "\\`[^.].*\\.org\\'"
+	org-use-fast-todo-selection t
+	org-treat-S-cursor-todo-selection-as-state-change nil
+	org-ellipsis "⤵"
+	kc/org-all-agenda-files (directory-files
+				 (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
+	org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
+	org-catch-invisible-edits 'smart
+	org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :fileskip0 t :formula %
+                                                       :properties ("RequestNbr" "Billable" "SectionNbr" "TaskNbr"))
+	org-deadline-warning-days 45
+	org-agenda-window-setup 'current-window
+	org-agenda-skip-scheduled-if-done t
+	org-agenda-skip-deadline-if-done t
+	org-agenda-skip-timestamp-if-done t
+	org-agenda-log-mode-items '(closed clock state)
+	org-columns-default-format "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM"
+	org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                      ("STYLE_ALL" . "habit")))
+	org-todo-keywords
+	(quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
+		(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING")))
+	org-todo-keyword-faces
+	(quote (("TODO" :foreground "red" :weight bold)
+		("WIP" :foreground "blue" :weight bold)
+		("DONE" :foreground "forest green" :weight bold)
+		("WAITING" :foreground "orange" :weight bold)
+		("HOLD" :foreground "magenta" :weight bold)
+		("CANCELLED" :foreground "forest green" :weight bold)
+		("MEETING" :foreground "forest green" :weight bold)
+		("PHONE" :foreground "forest green" :weight bold)))
+	org-todo-state-tags-triggers
+	(quote (("CANCELLED" ("ARCHIVE" . t))
+		("WAITING" ("WAITING" . t))
+		("HOLD" ("WAITING") ("HOLD" . t))
+		(done ("WAITING") ("HOLD"))
+		("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+		("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
+		("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+	kc/refile-file (concat kc/agenda-dir "/refile.org")
+	kc/diary-file (concat org-directory "/diary.org")
+	kc/notes-file (concat org-directory "/notes.org")
+	org-capture-templates
+	'(("t" "todo" entry
+           (file kc/refile-file)
+           "* TODO %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-        ("p" "Phone call" entry
-         (file kc/refile-file)
-         "* PHONE %?
+          ("p" "Phone call" entry
+           (file kc/refile-file)
+           "* PHONE %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-        ("j" "Journal" entry
-         (file+olp+datetree kc/diary-file)
-         "* %?
+          ("j" "Journal" entry
+           (file+olp+datetree kc/diary-file)
+           "* %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-        ("n" "Note" entry
-         (file kc/notes-file)
-         "* %? :NOTE:
+          ("n" "Note" entry
+           (file kc/notes-file)
+           "* %? :NOTE:
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-        ("m" "Meeting" entry
-         (file kc/notes-file)
-         "* MEETING %?
+          ("m" "Meeting" entry
+           (file kc/notes-file)
+           "* MEETING %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)))
-
+  :general
+  (kc/mode-leader-keys
+    :keymap 'org-mode-map
+    "tic" 'org-table-insert-column
+    "tir" 'org-table-insert-row))
+;; (defvar kc/agenda-files-file ".agenda_work_files")
+;; (setq org-agenda-files (concat kc/agenda-dir "/" kc/agenda-files-file))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -350,8 +405,9 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(org-agenda-files
-   '("~/Dropbox/org/berne.org" "~/Dropbox/org/plantation.org" "~/Dropbox/org/palko.org" "~/Dropbox/org/oversight.org" "~/Dropbox/org/orsheln.org" "~/Dropbox/org/north40.org" "~/Dropbox/org/mfwestern.org" "~/Dropbox/org/kelsan.org" "~/Dropbox/org/theisen.org"))
- '(package-selected-packages '(magit use-package)))
+   '("~/Dropbox/org/work.org" "~/Dropbox/org/theisen.org" "~/Dropbox/org/plantation.org" "~/Dropbox/org/palko.org" "~/Dropbox/org/orsheln.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/north40.org" "~/Dropbox/org/mfwestern.org" "~/Dropbox/org/kelsan.org" "~/Dropbox/org/jci.org" "~/Dropbox/org/clarion.org" "~/Dropbox/org/berne.org"))
+ '(package-selected-packages
+   '(company-jedi company-anaconda pretty-symbols magit use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -365,11 +421,10 @@
   (let ((elapsed (float-time (time-subtract (current-time)
                                             kc/emacs-start-time))))
     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
-
   (add-hook 'after-init-hook
             `(lambda ()
                (let ((elapsed (float-time (time-subtract (current-time)
                                                          kc/emacs-start-time))))
                  (message "Loading %s...done (%.3fs) [after-init]"
                           ,load-file-name elapsed)))
-t))
+	    t))
