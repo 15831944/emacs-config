@@ -74,13 +74,18 @@
   (auto-save-default nil)
   (whitespace-line-column 80) ;; limit line length
   (whitespace-style '(face tabs empty trailing lines-tail))
+  (custom-file (expand-file-name "~/.emacs.d/custom.el"))
   (inhibit-startup-screen t)
+  :init
+  (add-hook 'after-init-hook '(lambda () (load-file custom-file)))
+  (add-hook 'after-init-hook '(lambda () (load-file "~/.personal.el")))
   :config
   (whitespace-mode 1)
   (show-paren-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   :hook
   (prog-mode . linum-mode))
+
 (use-package which-key
   :diminish which-key
   :custom
@@ -481,25 +486,6 @@
   "cqn" 'kc/copy-query-notes
   "cqi" 'kc/copy-query-incidents)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   (quote
-    ("c:/Users/K.C.Juntunen/OneDrive/org/superior.org" "~/../../OneDrive/org/work.org" "~/../../OneDrive/org/theisen.org" "~/../../OneDrive/org/plantation.org" "~/../../OneDrive/org/palko.org" "~/../../OneDrive/org/orsheln.org" "~/../../OneDrive/org/notes.org" "~/../../OneDrive/org/north40.org" "~/../../OneDrive/org/mfwestern.org" "~/../../OneDrive/org/kelsan.org" "~/../../OneDrive/org/jci.org" "~/../../OneDrive/org/clarion.org" "~/../../OneDrive/org/berne.org")))
- '(package-selected-packages
-   (quote
-    (csharp-mode csv-mode company-jedi company-anaconda pretty-symbols magit use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(cursor ((t (:background "red")))))
-
-(load-file "~/.personal.el")
 (defconst kc/after-init (current-time))
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
