@@ -45,8 +45,8 @@
 					  "Consolas")))
 
 (require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("org" . "http://orgmode.org/elpa/")
+(setq package-enable-at-startup nil
+      package-archives '(("org" . "http://orgmode.org/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
