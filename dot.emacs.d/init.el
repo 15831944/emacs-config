@@ -238,7 +238,7 @@
 ;;     "hdf" 'counsel-describe-function
 ;;     "hdv" 'counsel-describe-variable
 ;;     "hi"  '(info :which-key "Info")
-;;     "h?"   '(describe-bindings :which-key "Describe bindings") 
+;;     "h?"   '(describe-bindings :which-key "Describe bindings")
 ;;     "iu"  'counsel-unicode-char
 ;;     "sr"  'counsel-rg
 ;;     "ss"  'counsel-grep-or-swiper
@@ -284,8 +284,8 @@
 ;; 	   "hi" '(info :which-key "Info")
 ;; 	   "hdv" '(describe-variable :which-key "Describe variable")
 ;; 	   "hdf" '(describe-function :which-key "Describe function")
-;; 	   "hdk" '(describe-key :which-key "Describe key") 
-;; 	   "?" '(describe-bindings :which-key "Describe bindings") 
+;; 	   "hdk" '(describe-key :which-key "Describe key")
+;; 	   "?" '(describe-bindings :which-key "Describe bindings")
 
 ;; 	   "ff" '(helm-find-files :which-key "Find Files")
 ;; 	   "fs" '(save-buffer :which-key "Save this buffer")
@@ -305,7 +305,7 @@
 
 (use-package company
   :diminish company
-  :init 
+  :init
   :hook
   (prog-mode . company-mode)
   (after-init . global-company-mode)
@@ -486,12 +486,30 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auto-save-default nil)
+ '(blink-cursor-blinks 10000)
+ '(blink-cursor-delay 0.2)
+ '(blink-cursor-interval 0.2)
+ '(inhibit-startup-screen t)
+ '(make-backup-files nil)
  '(org-agenda-files
    (quote
     ("c:/Users/K.C.Juntunen/OneDrive/org/superior.org" "~/../../OneDrive/org/work.org" "~/../../OneDrive/org/theisen.org" "~/../../OneDrive/org/plantation.org" "~/../../OneDrive/org/palko.org" "~/../../OneDrive/org/orsheln.org" "~/../../OneDrive/org/notes.org" "~/../../OneDrive/org/north40.org" "~/../../OneDrive/org/mfwestern.org" "~/../../OneDrive/org/kelsan.org" "~/../../OneDrive/org/jci.org" "~/../../OneDrive/org/clarion.org" "~/../../OneDrive/org/berne.org")))
  '(package-selected-packages
    (quote
-    (csharp-mode csv-mode company-jedi company-anaconda pretty-symbols magit use-package))))
+    (csharp-mode csv-mode company-jedi company-anaconda pretty-symbols magit use-package)))
+ '(scroll-conservatively 100000)
+ '(scroll-margin 0)
+ '(scroll-preserve-screen-position 1)
+ '(scroll-step 1)
+ '(sentence-end-double-space nil)
+ '(show-paren-delay 0)
+ '(spacemacs-theme-org-agenda-height nil)
+ '(spacemacs-theme-org-height nil)
+ '(which-key-prefix-prefix "+" t)
+ '(which-key-separator " " t)
+ '(whitespace-line-column 80)
+ '(whitespace-style (quote (face tabs empty trailing lines-tail))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
