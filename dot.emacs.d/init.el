@@ -199,7 +199,7 @@
   (helm-mode 1)
   :general
   ("M-x" 'helm-M-x
-   "C-x C-f" 'helm-find-file)
+   "C-x C-f" 'helm-find-files)
   (kc/leader-keys
     "TAB" '(switch-to-prev-buffer :which-key "find files")
     "ff"  'helm-find-files
