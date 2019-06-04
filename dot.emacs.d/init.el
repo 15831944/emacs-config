@@ -74,6 +74,7 @@
   (auto-save-default nil)
   (whitespace-line-column 80) ;; limit line length
   (whitespace-style '(face tabs empty trailing lines-tail))
+  (inhibit-startup-screen t)
   :config
   (whitespace-mode 1)
   (show-paren-mode 1)
