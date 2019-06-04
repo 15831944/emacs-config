@@ -77,8 +77,9 @@
   :config
   (whitespace-mode 1)
   (show-paren-mode 1)
-  (fset 'yes-or-no-p 'y-or-n-p))
-
+  (fset 'yes-or-no-p 'y-or-n-p)
+  :hook
+  (prog-mode . linum-mode))
 (use-package which-key
   :diminish which-key
   :custom
@@ -339,29 +340,16 @@
   (require 'evil-org)
   (require 'evil-org-agenda)
   :hook
-  (org-mode . evil-org-mode)
+  (org-mode . evil-org-mode))
+
+(use-package org-variable-pitch
+  :hook
+  (org-mode . org-variable-pitch-minor-mode)
+  :custom
+  (org-variable-pitch-fixed-font "Consolas")
   :config
-  (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
-  (evil-org-agenda-set-keys)
-  :general
-  (kc/mode-leader-keys
-    :keymap 'org-mode-map
-    "P" 'org-set-property
-    "tic" 'org-table-insert-column
-    "tir" 'org-table-insert-row
-    "ti-" 'org-table-insert-hline
-    "tdc" 'org-table-delete-column)
-  (kc/leader-keys
-    :keymap 'org-agenda-mode-map
-    "TAB" '(switch-to-prev-buffer :which-key "find files")
-    "ff"  'helm-find-files
-    "fl"  'helm-locate
-    "SPC" 'helm-M-x
-    "bd"  'kill-this-buffer
-    "bb"  'helm-buffers-list)
-  (kc/mode-leader-keys
-    :keymap 'org-agenda-mode-map
-    "l" 'org-agenda-log-mode))
+  (set-face-attribute 'org-variable-pitch-face nil :family "Consolas")
+  (set-face-attribute 'variable-pitch nil :family "Segoe UI"))
 
 (use-package org
   :custom
@@ -451,8 +439,25 @@
   :general
   (kc/mode-leader-keys
     :keymap 'org-mode-map
+    "P" 'org-set-property
     "tic" 'org-table-insert-column
-    "tir" 'org-table-insert-row))
+    "tir" 'org-table-insert-row
+    "ti-" 'org-table-insert-hline
+    "tdc" 'org-table-delete-column)
+  (kc/leader-keys
+    :keymap 'org-agenda-mode-map
+    "TAB" '(switch-to-prev-buffer :which-key "find files")
+    "ff"  'helm-find-files
+    "fl"  'helm-locate
+    "SPC" 'helm-M-x
+    "bd"  'kill-this-buffer
+    "bb"  'helm-buffers-list)
+  (kc/mode-leader-keys
+    :keymap 'org-agenda-mode-map
+    "l" 'org-agenda-log-mode)
+  :config
+  (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+  (evil-org-agenda-set-keys))
 
 (defun kc/copy-query-notes ()
   "Copy a query string to the clipboard for the `notes' table for the last hour."
@@ -480,18 +485,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
  '(org-agenda-files
    (quote
     ("c:/Users/K.C.Juntunen/OneDrive/org/superior.org" "~/../../OneDrive/org/work.org" "~/../../OneDrive/org/theisen.org" "~/../../OneDrive/org/plantation.org" "~/../../OneDrive/org/palko.org" "~/../../OneDrive/org/orsheln.org" "~/../../OneDrive/org/notes.org" "~/../../OneDrive/org/north40.org" "~/../../OneDrive/org/mfwestern.org" "~/../../OneDrive/org/kelsan.org" "~/../../OneDrive/org/jci.org" "~/../../OneDrive/org/clarion.org" "~/../../OneDrive/org/berne.org")))
  '(package-selected-packages
    (quote
-    (csharp-mode csv-mode company-jedi company-anaconda pretty-symbols magit use-package)))
- '(scroll-conservatively 100000)
- '(scroll-margin 0)
- '(scroll-preserve-screen-position 1)
- '(scroll-step 1)
- '(sentence-end-double-space nil))
+    (csharp-mode csv-mode company-jedi company-anaconda pretty-symbols magit use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
