@@ -37,12 +37,18 @@
 (if (fboundp 'menu-bar-mode)
     (menu-bar-mode -1))
 
+(defvar kc/fixed-width-font (if (string-equal (window-system) "x")
+				"Anka/Coder Condensed:style=Regular"
+			      "Consolas") "Default monospace font.")
+
+(defvar kc/variable-pitch-font (if (string-equal (window-system) "x")
+				   "IBM Plex Sans"
+				 "Segoe UI") "Default variable pitch font.")
+
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 (add-to-list 'default-frame-alist (cons 'font
-					(if (string-equal (window-system) "x")
-					    "Anka/Coder Condensed:style=Regular"
-					  "Consolas")))
+					kc/fixed-width-font))
 
 (require 'package)
 (setq package-enable-at-startup nil
@@ -352,10 +358,10 @@
   :hook
   (org-mode . org-variable-pitch-minor-mode)
   :custom
-  (org-variable-pitch-fixed-font "Consolas")
+  (org-variable-pitch-fixed-font kc/fixed-width-font)
   :config
-  (set-face-attribute 'org-variable-pitch-face nil :family "Consolas")
-  (set-face-attribute 'variable-pitch nil :family "Segoe UI"))
+  (set-face-attribute 'org-variable-pitch-face nil :family kc/fixed-width-font)
+  (set-face-attribute 'variable-pitch nil :family kc/variable-pitch-font))
 
 (use-package org
   :custom
