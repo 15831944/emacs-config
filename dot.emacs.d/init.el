@@ -431,37 +431,44 @@
   (kc/diary-file (concat org-directory "/diary.org"))
   (kc/notes-file (concat org-directory "/notes.org"))
   (org-capture-templates
-	'(("t" "todo" entry
-           (file kc/refile-file)
-           "* TODO %?
+   '(("t" "todo" entry
+      (file kc/refile-file)
+      "* TODO %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-          ("p" "Phone call" entry
-           (file kc/refile-file)
-           "* PHONE %?
+     ("p" "Phone call" entry
+      (file kc/refile-file)
+      "* PHONE %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-          ("j" "Journal" entry
-           (file+olp+datetree kc/diary-file)
-           "* %?
+     ("i" "Interuption" entry
+      (file kc/refile-file)
+      "* %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-          ("n" "Note" entry
-           (file kc/notes-file)
-           "* %? :NOTE:
+     ("j" "Journal" entry
+      (file+olp+datetree kc/diary-file)
+      "* %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-          ("m" "Meeting" entry
-           (file kc/notes-file)
-           "* MEETING %?
+     ("n" "Note" entry
+      (file kc/notes-file)
+      "* %? :NOTE:
+  :PROPERTIES:
+  :Captured: %U
+  :Prev_Loc: %a
+  :END:" :clock-in t :clock-resume t)
+     ("m" "Meeting" entry
+      (file kc/notes-file)
+      "* MEETING %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
