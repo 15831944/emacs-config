@@ -100,8 +100,12 @@
   :config
   (which-key-mode 1))
 
-(unless (version< emacs-version "24.4")
-  (use-package magit))
+(use-package diminish
+  :diminish (undo-tree-mode . "⎌")
+  :diminish (eldoc-mode . "🖹"))
+
+(use-package magit
+  :if (not (version< emacs-version "24.4")))
 
 (defun edit-init-file ()
   "Open `init.el' for editing."
