@@ -102,7 +102,7 @@
   (which-key-mode 1))
 
 (use-package diminish
-  :diminish (undo-tree-mode . "⎌")
+  :diminish (undo-tree-mode . "⎌🌴")
   :diminish (eldoc-mode . "🖹"))
 
 (use-package magit
@@ -244,9 +244,10 @@
   (global-anzu-mode 1))
 
 (use-package flycheck
+  :diminish (flycheck-mode . "🦋✓")
   :hook
-   (prog-mode . flycheck-mode))
-  
+  (prog-mode . flycheck-mode))
+
 ;; (use-package counsel
 ;;   :ensure t
 ;;   :general
@@ -328,7 +329,7 @@
 
 
 (use-package company
-  :diminish company
+  :diminish (company-mode . "➨")
   :init
   :hook
   (prog-mode . company-mode)
@@ -406,7 +407,7 @@
   (org-agenda-log-mode-items '(closed clock state))
   (org-columns-default-format "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM")
   (org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
-                                      ("STYLE_ALL" . "habit"))))
+				 ("STYLE_ALL" . "habit"))))
   (org-todo-keywords
    (quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
 	   (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING"))))
