@@ -174,6 +174,14 @@
     :keymaps 'prog-mode-map
     ";" 'comment-or-uncomment-region))
 
+(use-package recentf
+  :after general
+  :config
+  (recentf-mode 1)
+  :general
+  (kc/leader-keys
+    "fr" 'recentf-open-files))
+
 (use-package spacemacs-theme
   :init
   (load-theme 'spacemacs-dark t)
