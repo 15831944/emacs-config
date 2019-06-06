@@ -369,18 +369,23 @@
   (set-face-attribute 'variable-pitch nil :family kc/variable-pitch-font))
 
 (use-package org
+  :defines
+  kc/agenda-dir
+  kc/org-all-agenda-files
   :custom
   (org-directory (if (string-equal window-system "w32")
-			  "~/../../org"
-			"~/Dropbox/org"))
-  (org-agenda-span 'day)
+		     "~/../../org"
+		   "~/Dropbox/org"))
   (kc/agenda-dir (concat org-directory ""))
-  (org-agenda-file-regexp "\\`[^.].*\\.org\\'")
-  (org-use-fast-todo-selection t)
-  (org-treat-S-cursor-todo-selection-as-state-change nil)
-  (org-ellipsis "⤵")
   (kc/org-all-agenda-files (directory-files
 			    (expand-file-name kc/agenda-dir) t org-agenda-file-regexp))
+  (org-agenda-span 'day)
+  (org-agenda-file-regexp "\\`[^.].*\\.org\\'")
+  (org-use-fast-todo-selection t)
+  (org-hide-emphasis-markers t)
+  (org-treat-S-cursor-todo-selection-as-state-change nil)
+  (org-ellipsis "⤵")
+  
   (org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2))))
   (org-catch-invisible-edits 'smart)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :fileskip0 t :formula %
