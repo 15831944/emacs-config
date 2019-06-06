@@ -94,15 +94,19 @@
 
 (use-package which-key
   :defer nil
-  :diminish which-key
+  :diminish (which-key-mode . "⌨")
   :custom
   (which-key-separator " ")
   (which-key-prefix-prefix "+")
   :config
   (which-key-mode 1))
 
-(use-package diminish
-  :diminish (undo-tree-mode . "⎌🌴")
+(use-package diminish)
+
+(use-package undo-tree
+  :diminish (undo-tree-mode . "⎌🌴"))
+
+(use-package eldoc
   :diminish (eldoc-mode . "🖹"))
 
 (use-package magit
