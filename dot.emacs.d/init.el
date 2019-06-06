@@ -161,6 +161,9 @@
     "lv"  'visual-line-mode
     "lt"  'toggle-truncate-lines
 
+    "t+"  'text-scale-increase
+    "t-"  'text-scale-decrease
+
     "bd"  'kill-this-buffer
     "fs"  '(save-buffer :which-key "Save this buffer")
     "fed" '(edit-init-file :which-key "Edit init file")
