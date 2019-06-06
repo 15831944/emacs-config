@@ -93,6 +93,8 @@
 
 (use-package which-key
   :defer nil
+  :functions
+  which-key-mode
   :diminish (which-key-mode . "⌨")
   :custom
   (which-key-separator " ")
@@ -121,6 +123,8 @@
   (evil-mode 1))
 
 (use-package general
+  :functions
+  general-define-key
   :config
   (general-unbind
     :states '(normal visual emacs motion)
@@ -171,7 +175,7 @@
     "gs"  '(magit-status :which-key "Magit Status")
     "aoa" '(org-agenda-list :which-key "Org Agenda")
     "aoo" 'org-agenda
-    "ac" '(calc-dispatch :which-key "Calc Dispatch")
+    "ac" '(calc-dispatch :which-key "🖩 Dispatch")
     "ad"  'dired
     "'"   '(eshell :which-key "Eshell")
     "aP"  'proced
@@ -388,6 +392,9 @@
   :defines
   kc/agenda-dir
   kc/org-all-agenda-files
+  :functions
+  evil-org-agenda-set-keys
+  evil-org-set-key-theme
   :custom
   (org-directory (if (string-equal window-system "w32")
 		     "~/../../org"
@@ -504,23 +511,25 @@
   (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
   (evil-org-agenda-set-keys))
 
-(defun kc/copy-query-notes ()
-  "Copy a query string to the clipboard for the `notes' table for the last hour."
-  (interactive)
-  (w32-set-clipboard-data
-   (format "SELECT * FROM notes WHERE NoteDateTime > '%s' AND Tag1 LIKE '%%ATHOS%%'"
-	   (format-time-string "%Y-%m-%d %H:%M:%S"
-			       (time-subtract (current-time)
-					      (seconds-to-time (* 60 60 30))) "wall"))))
+(if (string-equal window-system "x")
+    (message "Using Linux! 😃")
+  (defun kc/copy-query-notes ()
+    "Copy a query string to the clipboard for the `notes' table for the last hour."
+    (interactive)
+    (w32-set-clipboard-data
+     (format "SELECT * FROM notes WHERE NoteDateTime > '%s' AND Tag1 LIKE '%%ATHOS%%'"
+	     (format-time-string "%Y-%m-%d %H:%M:%S"
+				 (time-subtract (current-time)
+						(seconds-to-time (* 60 60 30))) "wall"))))
 
-(defun kc/copy-query-incidents ()
-  "Copy a query string to the clipboard for the `incidents' table for the last hour."
-  (interactive)
-  (w32-set-clipboard-data
-   (format "SELECT * FROM incidents WHERE DateAdded > '%s' AND Resolved <> 'Y'"
-	   (format-time-string "%Y-%m-%d %H:%M:%S"
-			       (time-subtract (current-time)
-					      (seconds-to-time (* 60 60 30))) "wall"))))
+  (defun kc/copy-query-incidents ()
+    "Copy a query string to the clipboard for the `incidents' table for the last hour."
+    (interactive)
+    (w32-set-clipboard-data
+     (format "SELECT * FROM incidents WHERE DateAdded > '%s' AND Resolved <> 'Y'"
+	     (format-time-string "%Y-%m-%d %H:%M:%S"
+				 (time-subtract (current-time)
+						(seconds-to-time (* 60 60 30))) "wall")))))
 (kc/leader-keys
   "cqn" 'kc/copy-query-notes
   "cqi" 'kc/copy-query-incidents)
