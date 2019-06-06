@@ -56,7 +56,6 @@
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
-;; (bind-key (kbd "C-x ;") 'comment-or-uncomment-region)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -148,8 +147,9 @@
     "hdv" 'describe-variable
     "hdc" 'describe-char
     "hdo" 'describe-symbol
+    "hdm" 'describe-mode
+    "hd?" '(describe-bindings :which-key "Describe bindings")
     "hi"  '(info :which-key "Info")
-    "h?"  '(describe-bindings :which-key "Describe bindings")
     "iu"  'insert-char
     "wl"  '(windmove-right :which-key "move right")
     "wh"  '(windmove-left :which-key "move left")
