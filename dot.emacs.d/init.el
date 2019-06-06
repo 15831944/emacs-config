@@ -93,6 +93,7 @@
   (prog-mode . linum-mode))
 
 (use-package which-key
+  :defer nil
   :diminish which-key
   :custom
   (which-key-separator " ")
