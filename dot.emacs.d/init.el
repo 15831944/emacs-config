@@ -122,6 +122,11 @@
   :config
   (evil-mode 1))
 
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
 (use-package general
   :functions
   general-define-key
