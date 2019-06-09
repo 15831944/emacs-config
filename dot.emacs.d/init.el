@@ -355,7 +355,6 @@
 
 (use-package company
   :diminish (company-mode . "➨")
-  :init
   :hook
   (prog-mode . company-mode)
   (after-init . global-company-mode)
