@@ -109,7 +109,8 @@
   :config
   (which-key-mode 1))
 
-(use-package diminish)
+(use-package diminish
+  :defer nil)
 
 (use-package undo-tree
   :diminish (undo-tree-mode . "⎌🌴"))
