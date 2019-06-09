@@ -91,6 +91,13 @@
   :hook
   (prog-mode . linum-mode))
 
+(use-package projectile
+  :diminish (projectile-mode . "Πρ")
+  :if (not (string-equal window-system "w32"))
+  :after diminish
+  :config
+  (add-hook 'prog-mode-hook 'projectile-mode))
+
 (use-package which-key
   :defer nil
   :functions
