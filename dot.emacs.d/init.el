@@ -1,4 +1,4 @@
-;;; init.el --- My init.el file.
+;; init.el --- My init.el file.
 
 ;; Copyright (C) 2019 K. C. Juntunen
 
