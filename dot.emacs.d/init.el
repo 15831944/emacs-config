@@ -158,6 +158,7 @@
     :non-normal-prefix "C-SPC"
     :prefix "SPC")
   (kc/leader-keys
+    "H"   'hyperbole
     "hdF" 'describe-face
     "hdk" 'describe-key
     "hdf" 'describe-function
