@@ -365,7 +365,14 @@
                                       company-elisp
                                       company-gtags
                                       company-irony
+				      company-omnisharp
                                       company-shell))))
+
+(use-package omnisharp
+  :diminish (omnisharp-mode . "⃝")
+  :if (not (string-equal window-system "w32"))
+  :hook
+  (csharp-mode . omnisharp-mode))
 
 (use-package smartparens
   :config
@@ -373,11 +380,18 @@
   (smartparens-global-mode 1)
   (sp-use-paredit-bindings))
 
+(use-package hyperbole
+  :demand t
+  :diminish (hyperbole-mode . "ĥ")
+  :config
+  (require 'hyperbole))
+
 (use-package org-bullets
   :init
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package evil-org
+  :diminish (evil-org-mode . "😈")
   :init
   (require 'evil-org)
   (require 'evil-org-agenda)
