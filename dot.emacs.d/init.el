@@ -23,7 +23,8 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
-;; The idea is to replace the Spacemacs stuff I like, and start in less than 3 seconds.
+;; The idea is to replace the Spacemacs stuff I like, and start in less than 3
+;; seconds.
 
 ;;; Code:
 (defconst kc/emacs-start-time (current-time))
@@ -443,23 +444,27 @@
   (org-hide-emphasis-markers t)
   (org-treat-S-cursor-todo-selection-as-state-change nil)
   (org-ellipsis "⤵")
-  
+
   (org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2))))
   (org-catch-invisible-edits 'smart)
-  (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :fileskip0 t :formula %
-                                                  :properties ("RequestNbr" "Billable" "SectionNbr" "TaskNbr")))
+  (org-agenda-clockreport-parameter-plist
+   '(:link t :maxlevel 4 :fileskip0 t :formula %
+	   :properties ("RequestNbr" "Billable" "SectionNbr" "TaskNbr")))
   (org-deadline-warning-days 45)
   (org-agenda-window-setup 'current-window)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-timestamp-if-done t)
   (org-agenda-log-mode-items '(closed clock state))
-  (org-columns-default-format "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM")
-  (org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
-				 ("STYLE_ALL" . "habit"))))
+  (org-columns-default-format
+   "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM")
+  (org-global-properties
+   (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+	   ("STYLE_ALL" . "habit"))))
   (org-todo-keywords
    (quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
-	   (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c/!)" "PHONE" "MEETING"))))
+	   (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|"
+		     "CANCELLED(c/!)" "PHONE" "MEETING"))))
   (org-todo-keyword-faces
    (quote (("TODO" :foreground "red" :weight bold)
 	   ("WIP" :foreground "blue" :weight bold)
@@ -549,22 +554,26 @@
 (if (string-equal window-system "x")
     (message "Using Linux! 😃")
   (defun kc/copy-query-notes ()
-    "Copy a query string to the clipboard for the `notes' table for the last hour."
+    "Copy a query string to the clipboard for the `notes'
+table for the last hour."
     (interactive)
     (w32-set-clipboard-data
      (format "SELECT * FROM notes WHERE NoteDateTime > '%s' AND Tag1 LIKE '%%ATHOS%%'"
 	     (format-time-string "%Y-%m-%d %H:%M:%S"
 				 (time-subtract (current-time)
-						(seconds-to-time (* 60 60 30))) "wall"))))
+						(seconds-to-time (* 60 60 30)))
+				 "wall"))))
 
   (defun kc/copy-query-incidents ()
-    "Copy a query string to the clipboard for the `incidents' table for the last hour."
+    "Copy a query string to the clipboard for the `incidents'
+table for the last hour."
     (interactive)
     (w32-set-clipboard-data
      (format "SELECT * FROM incidents WHERE DateAdded > '%s' AND Resolved <> 'Y'"
 	     (format-time-string "%Y-%m-%d %H:%M:%S"
 				 (time-subtract (current-time)
-						(seconds-to-time (* 60 60 30))) "wall")))))
+						(seconds-to-time (* 60 60 30)))
+				 "wall")))))
 (kc/leader-keys
   "cqn" 'kc/copy-query-notes
   "cqi" 'kc/copy-query-incidents)
