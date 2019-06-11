@@ -42,7 +42,7 @@
 			      "Consolas") "Default monospace font.")
 
 (defvar kc/variable-pitch-font (if (string-equal (window-system) "x")
-				   "IBM Plex Sans"
+				   "IBM Plex Serif Light"
 				 "Segoe UI") "Default variable pitch font.")
 
 (add-to-list 'default-frame-alist '(height . 24))
