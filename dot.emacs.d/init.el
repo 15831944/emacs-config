@@ -65,6 +65,8 @@
 (setq use-package-always-ensure t)
 
 (use-package emacs
+  :defines
+  personal-file
   :custom
   (blink-cursor-delay .2)
   (blink-cursor-interval .2)
