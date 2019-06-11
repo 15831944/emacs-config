@@ -92,7 +92,8 @@
   (show-paren-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   :hook
-  (prog-mode . linum-mode))
+  (prog-mode . linum-mode)
+  (prog-mode . whitespace-mode))
 
 (use-package projectile
   :diminish (projectile-mode . "Πρ")
