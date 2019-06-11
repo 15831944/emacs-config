@@ -192,7 +192,7 @@
     "fed" '(edit-init-file :which-key "Edit init file")
 
     "gs"  '(magit-status :which-key "Magit Status")
-    "aoa" '(org-agenda-list :which-key "📅 Org Agenda")
+    "aoa" '(org-agenda-list :which-key "📅 Org Agenda List")
     "aoo" 'org-agenda
     "ac"  '(calc-dispatch :which-key "🖩 Calc Dispatch")
     "ad"  'dired
