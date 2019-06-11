@@ -80,10 +80,11 @@
   (whitespace-line-column 80) ;; limit line length
   (whitespace-style '(face tabs empty trailing lines-tail))
   (custom-file (expand-file-name "~/.emacs.d/custom.el"))
+  (personal-file (expand-file-name "~/.emacs.d/personal.el"))
   (inhibit-startup-screen t)
   :init
   (add-hook 'after-init-hook '(lambda () (load-file custom-file)))
-  (add-hook 'after-init-hook '(lambda () (load-file "~/.personal.el")))
+  (add-hook 'after-init-hook '(lambda () (load-file personal-file)))
   :config
   (whitespace-mode 1)
   (show-paren-mode 1)
