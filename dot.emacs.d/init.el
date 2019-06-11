@@ -161,7 +161,7 @@
     :non-normal-prefix "C-SPC"
     :prefix "SPC")
   (kc/leader-keys
-    "H"   'hyperbole
+    "H"   '(hyperbole :which-key "∞ Hyperbole")
     "hdF" 'describe-face
     "hdk" 'describe-key
     "hdf" 'describe-function
@@ -182,7 +182,7 @@
     "lv"  'visual-line-mode
     "lt"  'toggle-truncate-lines
 
-    "t+"  'text-scale-increase
+    "t="  'text-scale-increase
     "t-"  'text-scale-decrease
 
     "bd"  'kill-this-buffer
@@ -190,17 +190,22 @@
     "fed" '(edit-init-file :which-key "Edit init file")
 
     "gs"  '(magit-status :which-key "Magit Status")
-    "aoa" '(org-agenda-list :which-key "Org Agenda")
+    "aoa" '(org-agenda-list :which-key "📅 Org Agenda")
     "aoo" 'org-agenda
-    "ac" '(calc-dispatch :which-key "🖩 Dispatch")
+    "ac"  '(calc-dispatch :which-key "🖩 Calc Dispatch")
     "ad"  'dired
+    "ag"  '(gnus :which-key "🐮 Gnus")
     "'"   '(eshell :which-key "Eshell")
     "aP"  'proced
-    
+
     "qq"  'save-buffers-kill-emacs)
   (kc/mode-leader-keys
     :keymaps 'prog-mode-map
-    ";" 'comment-or-uncomment-region))
+    ";" 'comment-or-uncomment-region)
+  (kc/mode-leader-keys
+    :keymaps 'global-map
+    "=" 'text-scale-increase
+    "-" 'text-scale-decrease))
 
 (use-package recentf
   :after general
