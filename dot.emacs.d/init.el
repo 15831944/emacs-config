@@ -530,14 +530,14 @@
   :END:" :clock-in t :clock-resume t)))
   :general
   (kc/mode-leader-keys
-    :keymap 'org-mode-map
+    :keymaps 'org-mode-map
     "P" 'org-set-property
     "tic" 'org-table-insert-column
     "tir" 'org-table-insert-row
     "ti-" 'org-table-insert-hline
     "tdc" 'org-table-delete-column)
   (kc/leader-keys
-    :keymap 'org-agenda-mode-map
+    :keymaps 'org-agenda-mode-map
     "TAB" '(switch-to-prev-buffer :which-key "find files")
     "ff"  'helm-find-files
     "fl"  'helm-locate
@@ -545,7 +545,7 @@
     "bd"  'kill-this-buffer
     "bb"  'helm-buffers-list)
   (kc/mode-leader-keys
-    :keymap 'org-agenda-mode-map
+    :keymaps 'org-agenda-mode-map
     "l" 'org-agenda-log-mode)
   :config
   (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
