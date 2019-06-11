@@ -382,8 +382,7 @@
                                       company-elisp
                                       company-gtags
                                       company-irony
-				      company-omnisharp
-                                      company-shell))))
+				      company-omnisharp))))
 
 (use-package omnisharp
   :diminish (omnisharp-mode . "⃝")
