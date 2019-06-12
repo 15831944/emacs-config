@@ -23,7 +23,7 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
-;; The idea is to replace the Spacemacs stuff I like, and start in less than 3
+;; The idea is to replace the Spacemacs stuff I like, and start in less than 5
 ;; seconds.
 
 ;;; Code:
@@ -68,27 +68,29 @@
 (use-package emacs
   :defines
   personal-file
-  :custom
-  (blink-cursor-delay .2)
-  (blink-cursor-interval .2)
-  (blink-cursor-blinks 10000)
-  (scroll-step 1)
-  (sentence-end-double-space nil)
-  (scroll-margin 0)
-  (scroll-conservatively 100000)
-  (scroll-preserve-screen-position 1)
-  (show-paren-delay 0)
-  (make-backup-files nil)
-  (auto-save-default nil)
-  (whitespace-line-column 80) ;; limit line length
-  (whitespace-style '(face tabs empty trailing lines-tail))
-  (custom-file (expand-file-name "~/.emacs.d/custom.el"))
-  (personal-file (expand-file-name "~/.emacs.d/personal.el"))
-  (inhibit-startup-screen t)
+  show-paren-delay
+  whitespace-line-column
+  whitespace-style
   :init
   (add-hook 'after-init-hook '(lambda () (load-file custom-file)))
   (add-hook 'after-init-hook '(lambda () (load-file personal-file)))
   :config
+  (setq blink-cursor-delay .2
+	blink-cursor-interval .2
+	blink-cursor-blinks 10000
+	scroll-step 1
+	sentence-end-double-space nil
+	scroll-margin 0
+	scroll-conservatively 100000
+	scroll-preserve-screen-position 1
+	show-paren-delay 0
+	make-backup-files nil
+	auto-save-default nil
+	whitespace-line-column 80 ;; limit line length
+	whitespace-style '(face tabs empty trailing lines-tail)
+	custom-file (expand-file-name "~/.emacs.d/custom.el")
+	personal-file (expand-file-name "~/.emacs.d/personal.el")
+	inhibit-startup-screen t)
   (whitespace-mode 1)
   (show-paren-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
@@ -98,7 +100,7 @@
 
 (use-package projectile
   :diminish (projectile-mode . "Πρ")
-  :if (not (string-equal window-system "w32"))
+  :if (not (string-equal (window-system) "w32"))
   :after diminish
   :config
   (add-hook 'prog-mode-hook 'projectile-mode))
@@ -108,10 +110,9 @@
   :functions
   which-key-mode
   :diminish (which-key-mode . "⌨")
-  :custom
-  (which-key-separator " ")
-  (which-key-prefix-prefix "+")
   :config
+  (setq which-key-separator " "
+	which-key-prefix-prefix "+")
   (which-key-mode 1))
 
 (use-package diminish
@@ -136,7 +137,11 @@
   (evil-mode 1))
 
 (use-package evil-collection
+  :defines
+  evil-want-binding
   :after evil
+  :init
+  (setq evil-want-binding nil)
   :config
   (evil-collection-init))
 
@@ -218,38 +223,52 @@
     "fr" 'recentf-open-files))
 
 (use-package spacemacs-theme
+  :defines
+  spacemacs-theme-org-agenda-height
+  spacemacs-theme-org-height
   :init
   (load-theme 'spacemacs-dark t)
-  :custom
-  (spacemacs-theme-org-agenda-height nil)
-  (spacemacs-theme-org-height nil))
+  :config
+  (setq spacemacs-theme-org-agenda-height nil
+	spacemacs-theme-org-height nil))
 
 (use-package spaceline
   :demand t
-  :custom
-  (powerline-default-separator 'arrow-fade)
   :config
+  (setq powerline-default-separator 'arrow-fade)
   (require 'spaceline-config)
   (spaceline-emacs-theme))
 
 (use-package helm
   :diminish helm-mode
+  :defines
+  helm-M-x-fuzzy-match
+  helm-buffers-fuzzy-matching
+  helm-recentf-fuzzy-match
+  helm-locate-fuzzy-match
+  helm-semantic-fuzzy-match
+  helm-imenu-fuzzy-match
+  helm-completion-in-region-fuzzy-match
+  helm-candidate-number-list
+  helm-split-window-inside-p
+  helm-move-to-line-cycle-in-source
+  helm-autoresize-max-height
+  helm-autoresize-min-height
   :init
   (require 'helm-config)
-  :custom
-  (helm-M-x-fuzzy-match t)
-  (helm-buffers-fuzzy-matching t)
-  (helm-recentf-fuzzy-match t)
-  (helm-locate-fuzzy-match t)
-  (helm-semantic-fuzzy-match t)
-  (helm-imenu-fuzzy-match t)
-  (helm-completion-in-region-fuzzy-match t)
-  (helm-candidate-number-list 150)
-  (helm-split-window-in-side-p t)
-  (helm-move-to-line-cycle-in-source t)
-  (helm-autoresize-max-height 0)
-  (helm-autoresize-min-height 20)
   :config
+  (setq helm-M-x-fuzzy-match t
+	helm-buffers-fuzzy-matching t
+	helm-recentf-fuzzy-match t
+	helm-locate-fuzzy-match t
+	helm-semantic-fuzzy-match t
+	helm-imenu-fuzzy-match t
+	helm-completion-in-region-fuzzy-match t
+	helm-candidate-number-list 150
+	helm-split-window-inside-p t
+	helm-move-to-line-cycle-in-source t
+	helm-autoresize-max-height 0
+	helm-autoresize-min-height 20)
   (helm-mode 1)
   :general
   ("M-x" 'helm-M-x
@@ -365,29 +384,30 @@
 
 (use-package company
   :diminish (company-mode . "➨")
+  :defines
+  company-dabbrev-downcase
   :hook
   (prog-mode . company-mode)
   (after-init . global-company-mode)
   :config
   (use-package company-irony)
   (use-package company-anaconda)
-  :custom
-  (company-idle-delay              0)
-  (company-minimum-prefix-length   2)
-  (company-show-numbers            t)
-  (company-tooltip-limit           20)
-  (company-dabbrev-downcase        nil)
-  (company-tooltip-flip-when-above t)
-  (company-backends                '((company-anaconda
-                                      company-bbdb
-                                      company-elisp
-                                      company-gtags
-                                      company-irony
-				      company-omnisharp))))
+  (setq company-idle-delay              0
+	company-minimum-prefix-length   2
+	company-show-numbers            t
+	company-tooltip-limit           20
+	company-dabbrev-downcase        nil
+	company-tooltip-flip-when-above t
+	company-backends                '((company-anaconda
+					   company-bbdb
+					   company-elisp
+					   company-gtags
+					   company-irony
+					   company-omnisharp))))
 
 (use-package omnisharp
   :diminish (omnisharp-mode . "⃝")
-  :if (not (string-equal window-system "w32"))
+  :if (not (string-equal (window-system) "w32"))
   :hook
   (csharp-mode . omnisharp-mode))
 
@@ -418,112 +438,122 @@
 (use-package org-variable-pitch
   :hook
   (org-mode . org-variable-pitch-minor-mode)
-  :custom
-  (org-variable-pitch-fixed-font kc/fixed-width-font)
   :config
+  (setq org-variable-pitch-fixed-font kc/fixed-width-font)
   (set-face-attribute 'org-variable-pitch-face nil :family kc/fixed-width-font)
   (set-face-attribute 'variable-pitch nil :family kc/variable-pitch-font))
 
 (use-package org
   :defines
   kc/agenda-dir
+  kc/diary-file
+  kc/notes-file
+  kc/refile-file
   kc/org-all-agenda-files
+  org-agenda-span
+  org-agenda-clockreport-parameter-plist
+  org-agenda-window-setup
+  org-agenda-skip-scheduled-if-done
+  org-agenda-skip-deadline-if-done
+  org-agenda-skip-timestamp-if-done
+  org-agenda-log-mode-items
+  org-capture-templates
   :functions
   evil-org-agenda-set-keys
   evil-org-set-key-theme
-  :custom
-  (org-directory (if (string-equal window-system "w32")
-		     "~/../../org"
-		   "~/Dropbox/org"))
-  (kc/agenda-dir (concat org-directory ""))
-  (kc/org-all-agenda-files (directory-files
-			    (expand-file-name kc/agenda-dir) t org-agenda-file-regexp))
-  (org-agenda-span 'day)
-  (org-agenda-file-regexp "\\`[^.].*\\.org\\'")
-  (org-use-fast-todo-selection t)
-  (org-hide-emphasis-markers t)
-  (org-treat-S-cursor-todo-selection-as-state-change nil)
-  (org-ellipsis "⤵")
+  :config
+  (setq org-directory (if (string-equal (window-system) "w32")
+			  "~/../../org"
+			"~/Dropbox/org")
+	kc/agenda-dir (concat org-directory "")
+	kc/org-all-agenda-files (directory-files
+				 (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
+	org-agenda-span 'day
+	org-agenda-file-regexp "\\`[^.].*\\.org\\'"
+	org-use-fast-todo-selection t
+	org-hide-emphasis-markers t
+	org-treat-S-cursor-todo-selection-as-state-change nil
+	org-ellipsis "⤵"
 
-  (org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2))))
-  (org-catch-invisible-edits 'smart)
-  (org-agenda-clockreport-parameter-plist
-   '(:link t :maxlevel 4 :fileskip0 t :formula %
-	   :properties ("RequestNbr" "Billable" "SectionNbr" "TaskNbr")))
-  (org-deadline-warning-days 45)
-  (org-agenda-window-setup 'current-window)
-  (org-agenda-skip-scheduled-if-done t)
-  (org-agenda-skip-deadline-if-done t)
-  (org-agenda-skip-timestamp-if-done t)
-  (org-agenda-log-mode-items '(closed clock state))
-  (org-columns-default-format
-   "%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM")
-  (org-global-properties
-   (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
-	   ("STYLE_ALL" . "habit"))))
-  (org-todo-keywords
-   (quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
-	   (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|"
-		     "CANCELLED(c/!)" "PHONE" "MEETING"))))
-  (org-todo-keyword-faces
-   (quote (("TODO" :foreground "red" :weight bold)
-	   ("WIP" :foreground "blue" :weight bold)
-	   ("DONE" :foreground "forest green" :weight bold)
-	   ("WAITING" :foreground "orange" :weight bold)
-	   ("HOLD" :foreground "magenta" :weight bold)
-	   ("CANCELLED" :foreground "forest green" :weight bold)
-	   ("MEETING" :foreground "forest green" :weight bold)
-	   ("PHONE" :foreground "forest green" :weight bold))))
-  (org-todo-state-tags-triggers
-   (quote (("CANCELLED" ("ARCHIVE" . t))
-	   ("WAITING" ("WAITING" . t))
-	   ("HOLD" ("WAITING") ("HOLD" . t))
-	   (done ("WAITING") ("HOLD"))
-	   ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-	   ("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
-	   ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
-  (kc/refile-file (concat kc/agenda-dir "/refile.org"))
-  (kc/diary-file (concat org-directory "/diary.org"))
-  (kc/notes-file (concat org-directory "/notes.org"))
-  (org-capture-templates
-   '(("t" "todo" entry
-      (file kc/refile-file)
-      "* TODO %?
+	org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
+	org-catch-invisible-edits 'smart
+	org-agenda-clockreport-parameter-plist
+	'(:link t :maxlevel 4 :fileskip0 t :formula %
+		:properties ("RequestNbr" "Billable" "SectionNbr" "TaskNbr"))
+	org-deadline-warning-days 45
+	org-agenda-window-setup 'current-window
+	org-agenda-skip-scheduled-if-done t
+	org-agenda-skip-deadline-if-done t
+	org-agenda-skip-timestamp-if-done t
+	org-agenda-log-mode-items '(closed clock state)
+	org-columns-default-format
+	"%25ITEM(Task) %40Description %20Captured %10Effort(Effort){:} %10CLOCKSUM"
+	org-global-properties
+	(quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+		("STYLE_ALL" . "habit")))
+	org-todo-keywords
+	(quote ((sequence "TODO(t)" "WIP(n)" "|" "DONE(d)" "CANCELLED(c/!)")
+		(sequence "WAITING(w@/!)" "HOLD(h@/!)" "|"
+			  "CANCELLED(c/!)" "PHONE" "MEETING")))
+	org-todo-keyword-faces
+	(quote (("TODO" :foreground "red" :weight bold)
+		("WIP" :foreground "blue" :weight bold)
+		("DONE" :foreground "forest green" :weight bold)
+		("WAITING" :foreground "orange" :weight bold)
+		("HOLD" :foreground "magenta" :weight bold)
+		("CANCELLED" :foreground "forest green" :weight bold)
+		("MEETING" :foreground "forest green" :weight bold)
+		("PHONE" :foreground "forest green" :weight bold)))
+	org-todo-state-tags-triggers
+	(quote (("CANCELLED" ("ARCHIVE" . t))
+		("WAITING" ("WAITING" . t))
+		("HOLD" ("WAITING") ("HOLD" . t))
+		(done ("WAITING") ("HOLD"))
+		("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+		("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
+		("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+	kc/refile-file (concat kc/agenda-dir "/refile.org")
+	kc/diary-file (concat org-directory "/diary.org")
+	kc/notes-file (concat org-directory "/notes.org")
+	org-capture-templates
+	'(("t" "todo" entry
+	   (file kc/refile-file)
+	   "* TODO %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-     ("p" "Phone call" entry
-      (file kc/refile-file)
-      "* PHONE %?
+	  ("p" "Phone call" entry
+	   (file kc/refile-file)
+	   "* PHONE %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-     ("i" "Interuption" entry
-      (file kc/refile-file)
-      "* %?
+	  ("i" "Interuption" entry
+	   (file kc/refile-file)
+	   "* %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-     ("j" "Journal" entry
-      (file+olp+datetree kc/diary-file)
-      "* %?
+	  ("j" "Journal" entry
+	   (file+olp+datetree kc/diary-file)
+	   "* %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-     ("n" "Note" entry
-      (file kc/notes-file)
-      "* %? :NOTE:
+	  ("n" "Note" entry
+	   (file kc/notes-file)
+	   "* %? :NOTE:
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
   :END:" :clock-in t :clock-resume t)
-     ("m" "Meeting" entry
-      (file kc/notes-file)
-      "* MEETING %?
+	  ("m" "Meeting" entry
+	   (file kc/notes-file)
+	   "* MEETING %?
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
@@ -551,7 +581,7 @@
   (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
   (evil-org-agenda-set-keys))
 
-(if (string-equal window-system "x")
+(if (string-equal (window-system) "x")
     (message "Using Linux! 😃")
   (defun kc/copy-query-notes ()
     "Copy a query string to the clipboard for the `notes'
