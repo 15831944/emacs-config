@@ -402,10 +402,10 @@
                 company-dabbrev-downcase        nil
                 company-tooltip-flip-when-above t
                 company-backends                '((company-anaconda
+                                                   company-clang
                                                    company-bbdb
                                                    company-elisp
                                                    company-gtags
-                                                   company-irony
                                                    company-omnisharp))))
 
 (use-package omnisharp
