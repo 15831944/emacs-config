@@ -417,11 +417,12 @@
 (use-package smartparens
   :config
   (require 'smartparens-config)
-  (smartparens-global-mode 1)
-  (sp-use-paredit-bindings))
+  (smartparens-global-strict-mode 1)
+  (sp-use-paredit-bindings)
+  :hook
+  (prog-mode . smartparens-strict-mode))
 
 (use-package hyperbole
-  ;;<(Button Info)>
   :demand t
   :diminish (hyperbole-mode . "ĥ")
   :config
