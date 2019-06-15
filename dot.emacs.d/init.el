@@ -194,7 +194,8 @@
     "t-"  'text-scale-decrease
 
     "bd"  'kill-this-buffer
-    "fs"  '(save-buffer :which-key "Save this buffer")
+    "fs"  '(save-buffer :which-key "💾 Save this buffer")
+    "fS"  '(save-some-buffers :which-key "🖴 Save all buffers")
     "fed" '(edit-init-file :which-key "Edit init file")
 
     "gs"  '(magit-status :which-key "Magit Status")
