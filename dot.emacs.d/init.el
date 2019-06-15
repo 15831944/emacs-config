@@ -53,9 +53,9 @@
 
 (require 'package)
 (setq package-enable-at-startup nil
-              package-archives '(("org" . "http://orgmode.org/elpa/")
-                                 ("gnu" . "http://elpa.gnu.org/packages/")
-                                 ("melpa" . "https://melpa.org/packages/")))
+      package-archives '(("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -609,10 +609,11 @@ table for the last hour."
              (format-time-string "%Y-%m-%d %H:%M:%S"
                                  (time-subtract (current-time)
                                                 (seconds-to-time (* 60 60 30)))
-                                 "wall")))))
-(kc/leader-keys
-  "cqn" 'kc/copy-query-notes
-  "cqi" 'kc/copy-query-incidents)
+                                 "wall"))))
+  (kc/leader-keys
+    "cqn" 'kc/copy-query-notes
+    "cqi" 'kc/copy-query-incidents))
+
 
 (defconst kc/after-init (current-time))
 (when window-system
