@@ -225,7 +225,6 @@
     "fr" 'recentf-open-files))
 
 (use-package spacemacs-theme
-  :disabled t
   :defines
   spacemacs-theme-org-agenda-height
   spacemacs-theme-org-height
@@ -236,7 +235,6 @@
                 spacemacs-theme-org-height nil))
 
 (use-package spaceline
-  :disabled t
   :demand t
   :config
   (setq-default powerline-default-separator 'arrow-fade)
