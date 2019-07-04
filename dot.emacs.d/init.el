@@ -152,14 +152,14 @@
 (use-package general
   :functions
   general-define-key
-  :config
+  :init
   (general-unbind
     :states '(normal visual emacs motion)
     "SPC")
   (general-unbind
     :states '(normal visual emacs motion)
     ",")
-
+  :config
   (general-create-definer
     kc/mode-leader-keys
     :states '(emacs normal visual motion insert)
