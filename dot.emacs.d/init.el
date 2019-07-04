@@ -463,6 +463,11 @@
   :hook
   (org-mode . evil-org-mode))
 
+(use-package evil-magit
+  :after magit
+  :hook
+  (magit-mode . evil-magit-init))
+
 (use-package org-variable-pitch
   :hook
   (org-mode . org-variable-pitch-minor-mode)
