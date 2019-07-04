@@ -38,11 +38,14 @@
 (if (fboundp 'menu-bar-mode)
     (menu-bar-mode -1))
 
-(defvar kc/fixed-width-font (if (string-equal (window-system) "x")
+(defvar not-win (string-equal (window-system) "x")
+  "If NOT-WIN is non-nil, then we're not in MS-Windows.")
+
+(defvar kc/fixed-width-font (if not-win
                                 "Anka/Coder Condensed:style=Regular"
                               "Consolas") "Default monospace font.")
 
-(defvar kc/variable-pitch-font (if (string-equal (window-system) "x")
+(defvar kc/variable-pitch-font (if not-win
                                    "IBM Plex Serif Light"
                                  "Segoe UI") "Default variable pitch font.")
 
@@ -101,7 +104,7 @@
 
 (use-package projectile
   :diminish (projectile-mode . "Πρ")
-  :if (not (string-equal (window-system) "w32"))
+  :if not-win
   :after diminish
   :config
   (add-hook 'prog-mode-hook 'projectile-mode))
@@ -383,6 +386,23 @@
 ;;       :prefix "SPC"
 ;;       "u" 'universal-argument-more))
 
+(use-package lsp-mode
+  :if not-win
+  :hook
+  (c++-mode . lsp)
+  (python-mode . lsp)
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-sideline-ignore-duplicate t))
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;; optionally if you want to use debugger
+(use-package dap-mode)
 
 (use-package company
   :diminish (company-mode . "➨")
@@ -404,16 +424,20 @@
                                                    company-clang
                                                    company-bbdb
                                                    company-elisp
+                                                   company-lsp
                                                    company-gtags
                                                    company-omnisharp))))
 
 (use-package omnisharp
   :diminish (omnisharp-mode . "⃝")
-  :if (not (string-equal (window-system) "w32"))
+  :if not-win
   :hook
-  (csharp-mode . omnisharp-mode))
+  (csharp-mode . omnisharp-mode)
+  :config
+  ())
 
 (use-package smartparens
+  :diminish (smartparens-strict-mode . "᪾")
   :config
   (require 'smartparens-config)
   (smartparens-global-strict-mode 1)
@@ -466,9 +490,9 @@
   evil-org-agenda-set-keys
   evil-org-set-key-theme
   :config
-  (setq-default org-directory (if (string-equal (window-system) "w32")
-                                  "~/../../org"
-                                "~/Dropbox/org")
+  (setq-default org-directory (if not-win
+                                  "~/Dropbox/org"
+                                "~/../../org")
                 kc/agenda-dir (concat org-directory "")
                 kc/org-all-agenda-files (directory-files
                                          (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
@@ -570,22 +594,28 @@
     "tir" 'org-table-insert-row
     "ti-" 'org-table-insert-hline
     "tdc" 'org-table-delete-column)
-  (kc/leader-keys
+  ;; (kc/leader-keys
+  ;;   :keymaps 'org-agenda-mode-map
+  ;;   "TAB" '(switch-to-prev-buffer :which-key "find files")
+  ;;   "ff"  'helm-find-files
+  ;;   "fl"  'helm-locate
+  ;;   "SPC" 'helm-M-x
+  ;;   "bd"  'kill-this-buffer
+  ;;   "bb"  'helm-buffers-list)
+  (kc/mode-leader-keys
     :keymaps 'org-agenda-mode-map
+    "l" 'org-agenda-log-mode
     "TAB" '(switch-to-prev-buffer :which-key "find files")
     "ff"  'helm-find-files
     "fl"  'helm-locate
     "SPC" 'helm-M-x
     "bd"  'kill-this-buffer
     "bb"  'helm-buffers-list)
-  (kc/mode-leader-keys
-    :keymaps 'org-agenda-mode-map
-    "l" 'org-agenda-log-mode)
   :config
   (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
   (evil-org-agenda-set-keys))
 
-(if (string-equal (window-system) "x")
+(if not-win
     (message "Using Linux! 😃")
   (defun kc/copy-query-notes ()
     "Copy a query string to the clipboard for the `notes'
