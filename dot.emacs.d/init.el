@@ -222,10 +222,7 @@
 (use-package recentf
   :after general
   :config
-  (recentf-mode 1)
-  :general
-  (kc/leader-keys
-    "fr" 'recentf-open-files))
+  (recentf-mode 1))
 
 (use-package spacemacs-theme
   :defines
@@ -281,6 +278,7 @@
   (kc/leader-keys
     "TAB" '(switch-to-prev-buffer :which-key "find files")
     "ff"  'helm-find-files
+    "fr"  'helm-recentf
     "fl"  'helm-locate
     "SPC" 'helm-M-x
     "bb"  'helm-buffers-list))
