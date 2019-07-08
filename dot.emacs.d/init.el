@@ -113,7 +113,7 @@
   :defer nil
   :functions
   which-key-mode
-  :diminish (which-key-mode . "⌨")
+  :diminish which-key-mode
   :config
   (setq-default which-key-separator " "
                 which-key-prefix-prefix "+")
@@ -123,10 +123,10 @@
   :defer nil)
 
 (use-package undo-tree
-  :diminish (undo-tree-mode . "⎌🌴"))
+  :diminish undo-tree-mode)
 
 (use-package eldoc
-  :diminish (eldoc-mode . "🖹"))
+  :diminish eldoc-mode)
 
 (use-package magit
   :if (not (version< emacs-version "24.4")))
@@ -301,7 +301,7 @@
   (global-anzu-mode 1))
 
 (use-package flycheck
-  :diminish (flycheck-mode . "🦋✓")
+  :diminish flycheck-mode
   :hook
   (prog-mode . flycheck-mode))
 
@@ -384,6 +384,12 @@
 ;;       :prefix "SPC"
 ;;       "u" 'universal-argument-more))
 
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :if not-win
+  :hook
+  (prog-mode . yas-minor-mode))
+
 (use-package lsp-mode
   :if not-win
   :hook
@@ -395,7 +401,7 @@
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
-  (setq lsp-ui-sideline-ignore-duplicate t))
+  (setq lsp-ui-sideline-ignore-duplicate nil))
 (use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -424,6 +430,7 @@
                                                    company-elisp
                                                    company-lsp
                                                    company-gtags
+                                                   company-yasnippet
                                                    company-omnisharp))))
 
 (use-package omnisharp
@@ -435,17 +442,15 @@
   ())
 
 (use-package smartparens
-  :diminish (smartparens-strict-mode . "᪾")
   :config
   (require 'smartparens-config)
-  (smartparens-global-strict-mode 1)
   (sp-use-paredit-bindings)
   :hook
   (prog-mode . smartparens-strict-mode))
 
 (use-package hyperbole
   :demand t
-  :diminish (hyperbole-mode . "ĥ")
+  :diminish hyperbole-mode
   :config
   (require 'hyperbole))
 
@@ -454,7 +459,7 @@
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package evil-org
-  :diminish (evil-org-mode . "😈")
+  :diminish evil-org-mode
   :init
   (require 'evil-org)
   (require 'evil-org-agenda)
