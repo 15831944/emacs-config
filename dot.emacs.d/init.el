@@ -104,6 +104,7 @@
 
 (use-package projectile
   :diminish (projectile-mode . "Πρ")
+  :ensure not-win
   :if not-win
   :after diminish
   :config
@@ -387,11 +388,13 @@
 
 (use-package yasnippet
   :diminish yas-minor-mode
+  :ensure not-win
   :if not-win
   :hook
   (prog-mode . yas-minor-mode))
 
 (use-package lsp-mode
+  :ensure not-win
   :if not-win
   :hook
   (c++-mode . lsp)
@@ -436,6 +439,7 @@
 
 (use-package omnisharp
   :diminish (omnisharp-mode . "⃝")
+  :ensure not-win
   :if not-win
   :hook
   (csharp-mode . omnisharp-mode)
@@ -481,6 +485,7 @@
   (set-face-attribute 'variable-pitch nil :family kc/variable-pitch-font))
 
 (use-package org-ref
+  :ensure not-win
   :if not-win
   :config
   (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
