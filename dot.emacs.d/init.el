@@ -138,7 +138,8 @@
 
 (use-package evil
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (setq-default evil-respect-visual-line-mode t))
 
 (use-package evil-collection
   :defines
@@ -620,7 +621,7 @@
     "bd"  'kill-this-buffer
     "bb"  'helm-buffers-list)
   :config
-  (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+  (evil-org-set-key-theme '(insert textobjects additional calendar))
   (evil-org-agenda-set-keys))
 
 (if not-win
