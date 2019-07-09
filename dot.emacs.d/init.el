@@ -480,6 +480,15 @@
   (set-face-attribute 'org-variable-pitch-face nil :family kc/fixed-width-font)
   (set-face-attribute 'variable-pitch nil :family kc/variable-pitch-font))
 
+(use-package org-ref
+  :if not-win
+  :config
+  (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+
+  (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+        org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
+        org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/"))
+
 (use-package org
   :defines
   kc/agenda-dir
