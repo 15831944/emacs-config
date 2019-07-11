@@ -151,6 +151,8 @@
   :config
   (evil-collection-init))
 
+(use-package helpful)
+
 (use-package general
   :functions
   general-define-key
@@ -176,11 +178,11 @@
   (kc/leader-keys
     "H"   '(hyperbole :which-key "∞ Hyperbole")
     "hdF" 'describe-face
-    "hdk" 'describe-key
-    "hdf" 'describe-function
-    "hdv" 'describe-variable
+    "hdk" 'helpful-key
+    "hdf" 'helpful-function
+    "hdv" 'helpful-variable
     "hdc" 'describe-char
-    "hdo" 'describe-symbol
+    "hdo" 'helpful-symbol
     "hdm" 'describe-mode
     "hd?" '(describe-bindings :which-key "Describe bindings")
     "hi"  '(info :which-key "Info")
