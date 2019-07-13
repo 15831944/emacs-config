@@ -38,7 +38,7 @@
 (if (fboundp 'menu-bar-mode)
     (menu-bar-mode -1))
 
-(defvar not-win (string-equal (window-system) "x")
+(defvar not-win (eq system-type 'gnu/linux)
   "If NOT-WIN is non-nil, then we're not in MS-Windows.")
 
 (defvar kc/fixed-width-font (if not-win
