@@ -406,7 +406,7 @@
 
 (use-package org-ref
   :if not-win
-  :config
+  :init
   (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
 
   (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
