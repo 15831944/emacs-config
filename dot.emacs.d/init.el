@@ -452,7 +452,7 @@
                 org-hide-emphasis-markers t
                 org-treat-S-cursor-todo-selection-as-state-change nil
                 org-ellipsis "⤵"
-
+                org-clock-continuously t
                 org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
                 org-catch-invisible-edits 'smart
                 org-agenda-clockreport-parameter-plist
