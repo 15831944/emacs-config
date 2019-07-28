@@ -305,67 +305,68 @@
   :config
   (global-anzu-mode 1))
 
-(use-package flycheck
-  :diminish flycheck-mode
-  :hook
-  (prog-mode . flycheck-mode))
+(when not-win
+  (use-package flycheck
+    :diminish flycheck-mode
+    :hook
+    (prog-mode . flycheck-mode))
 
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :if not-win
-  :hook
-  (prog-mode . yas-minor-mode))
+  (use-package yasnippet
+    :diminish yas-minor-mode
+    :if not-win
+    :hook
+    (prog-mode . yas-minor-mode))
 
-(use-package lsp-mode
-  :if not-win
-  :hook
-  (c++-mode . lsp)
-  (python-mode . lsp)
-  :commands lsp)
+  (use-package lsp-mode
+    :if not-win
+    :hook
+    (c++-mode . lsp)
+    (python-mode . lsp)
+    :commands lsp)
 
-;; optionally
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-sideline-ignore-duplicate nil))
-(use-package company-lsp :commands company-lsp)
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-;; optionally if you want to use debugger
-(use-package dap-mode)
+  ;; optionally
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-sideline-ignore-duplicate nil))
+  (use-package company-lsp :commands company-lsp)
+  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+  ;; optionally if you want to use debugger
+  (use-package dap-mode)
 
-(use-package company
-  :diminish (company-mode . "➨")
-  :defines
-  company-dabbrev-downcase
-  :hook
-  (prog-mode . company-mode)
-  (after-init . global-company-mode)
-  :config
-  (use-package company-irony)
-  (use-package company-anaconda)
-  (setq-default company-idle-delay              0
-                company-minimum-prefix-length   2
-                company-show-numbers            t
-                company-tooltip-limit           20
-                company-dabbrev-downcase        nil
-                company-tooltip-flip-when-above t
-                company-backends                '((company-anaconda
-                                                   company-clang
-                                                   company-bbdb
-                                                   company-elisp
-                                                   company-lsp
-                                                   company-gtags
-                                                   company-yasnippet
-                                                   company-omnisharp))))
+  (use-package company
+    :diminish (company-mode . "➨")
+    :defines
+    company-dabbrev-downcase
+    :hook
+    (prog-mode . company-mode)
+    (after-init . global-company-mode)
+    :config
+    (use-package company-irony)
+    (use-package company-anaconda)
+    (setq-default company-idle-delay              0
+                  company-minimum-prefix-length   2
+                  company-show-numbers            t
+                  company-tooltip-limit           20
+                  company-dabbrev-downcase        nil
+                  company-tooltip-flip-when-above t
+                  company-backends                '((company-anaconda
+                                                     company-clang
+                                                     company-bbdb
+                                                     company-elisp
+                                                     company-lsp
+                                                     company-gtags
+                                                     company-yasnippet
+                                                     company-omnisharp))))
 
-(use-package omnisharp
-  :diminish (omnisharp-mode . "⃝")
-  :if not-win
-  :hook
-  (csharp-mode . omnisharp-mode)
-  :config
-  ())
+  (use-package omnisharp
+    :diminish (omnisharp-mode . "⃝")
+    :if not-win
+    :hook
+    (csharp-mode . omnisharp-mode)
+    :config
+    ()))
 
 (use-package smartparens
   :config
