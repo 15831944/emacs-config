@@ -285,6 +285,7 @@
     "fr"  'helm-recentf
     "fl"  'helm-locate
     "SPC" 'helm-M-x
+    "ho"  'helm-occur
     "bb"  'helm-buffers-list))
 
 (use-package helm-descbinds
