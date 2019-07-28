@@ -42,8 +42,8 @@
   "If NOT-WIN is non-nil, then we're not in MS-Windows.")
 
 (defvar kc/fixed-width-font (if not-win
-                                ;; "Anka/Coder Condensed:style=Regular"
-                                "Victor Mono Bold"
+                                "Anka/Coder Condensed:style=Regular"
+                                ;; "Victor Mono Bold"
                               "Consolas") "Default monospace font.")
 
 (defvar kc/variable-pitch-font (if not-win
