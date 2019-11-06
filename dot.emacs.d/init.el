@@ -44,7 +44,7 @@
 (defvar kc/fixed-width-font (if not-win
                                 "Anka/Coder Condensed:style=Regular"
                                 ;; "Victor Mono Bold"
-                              "Consolas") "Default monospace font.")
+                              "Anka/Coder Condensed:style=Regular") "Default monospace font.")
 
 (defvar kc/variable-pitch-font (if not-win
                                    "IBM Plex Serif Light"
@@ -99,6 +99,7 @@
   (whitespace-mode 1)
   (show-paren-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
+  (load-theme 'leuven t)
   :hook
   (prog-mode . linum-mode)
   (prog-mode . whitespace-mode))
@@ -234,15 +235,15 @@
   :config
   (recentf-mode 1))
 
-(use-package spacemacs-theme
-  :defines
-  spacemacs-theme-org-agenda-height
-  spacemacs-theme-org-height
-  :init
-  (load-theme 'spacemacs-dark t)
-  :config
-  (setq-default spacemacs-theme-org-agenda-height nil
-                spacemacs-theme-org-height nil))
+;; (use-package spacemacs-theme
+;;   :defines
+;;   spacemacs-theme-org-agenda-height
+;;   spacemacs-theme-org-height
+;;   :init
+;;   (load-theme 'spacemacs-light t)
+;;   :config
+;;   (setq-default spacemacs-theme-org-agenda-height nil
+;;                 spacemacs-theme-org-height nil))
 
 (use-package spaceline
   :demand t
