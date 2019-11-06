@@ -407,6 +407,7 @@
   (magit-mode . evil-magit-init))
 
 (use-package org-variable-pitch
+  :if not-win
   :hook
   (org-mode . org-variable-pitch-minor-mode)
   :config
@@ -586,6 +587,9 @@
 
 (if not-win
     (message "Using Linux! 😃")
+  (message "Using Windows. :-(")
+  (setq inhibit-compacting-font-caches t
+        w32-pipe-read-delay 0)
   (defun kc/copy-query-notes ()
     "Copy a query string to the clipboard for the `notes'
 table for the last hour."
@@ -609,8 +613,8 @@ table for the last hour."
                                  "wall"))))
   (kc/leader-keys
     "cqn" 'kc/copy-query-notes
-    "cqi" 'kc/copy-query-incidents))
-
+    "cqi" 'kc/copy-query-incidents)
+  (server-start))
 
 (defconst kc/after-init (current-time))
 (when window-system
