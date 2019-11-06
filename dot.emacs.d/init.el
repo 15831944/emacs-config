@@ -215,6 +215,7 @@
     "gs"  '(magit-status :which-key "Magit Status")
     "aoa" '(org-agenda-list :which-key "📅 Org Agenda List")
     "aoo" 'org-agenda
+    "aoc" 'org-capture
     "ac"  '(calc-dispatch :which-key "🖩 Calc Dispatch")
     "ad"  'dired
     "ag"  '(gnus :which-key "🐮 Gnus")
@@ -563,7 +564,8 @@
     "tdc" 'org-table-delete-column)
   ;; (kc/leader-keys
   ;;   :keymaps 'org-agenda-mode-map
-  ;;   "TAB" '(switch-to-prev-buffer :which-key "find files")
+  ;;   :states '(normal motion)
+  ;;   "TAB" '(switch-to-prev-buffer)
   ;;   "ff"  'helm-find-files
   ;;   "fl"  'helm-locate
   ;;   "SPC" 'helm-M-x
