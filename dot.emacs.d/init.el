@@ -442,22 +442,25 @@
   :config
   (setq-default org-directory (if not-win
                                   "~/Dropbox/org"
-                                "~/../../org")
+                                "~/../../OneDrive/org")
                 kc/agenda-dir (concat org-directory "")
                 kc/org-all-agenda-files (directory-files
                                          (expand-file-name kc/agenda-dir) t org-agenda-file-regexp)
                 org-agenda-span 'day
+                org-fontify-quote-and-verse-blocks t
                 org-agenda-file-regexp "\\`[^.].*\\.org\\'"
                 org-use-fast-todo-selection t
                 org-hide-emphasis-markers t
                 org-treat-S-cursor-todo-selection-as-state-change nil
                 org-ellipsis "⤵"
                 org-clock-continuously t
+                org-clock-out-remove-zero-time-clocks t
+                org-log-done 'time
                 org-refile-targets (quote ((nil :maxlevel . 1) (kc/org-all-agenda-files :maxlevel . 2)))
                 org-catch-invisible-edits 'smart
                 org-agenda-clockreport-parameter-plist
                 '(:link t :maxlevel 4 :fileskip0 t :formula %
-                        :properties ("RequestNbr" "Billable" "SectionNbr" "TaskNbr"))
+                        :properties ("Request" "Phase" "TaskNbr"))
                 org-deadline-warning-days 45
                 org-agenda-window-setup 'current-window
                 org-agenda-skip-scheduled-if-done t
@@ -500,7 +503,8 @@
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
-  :END:" :clock-in t :clock-resume t)
+  :END:\n  SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
+                   :clock-in t :clock-resume t)
                   ("p" "Phone call" entry
                    (file kc/refile-file)
                    "* PHONE %?
@@ -535,7 +539,19 @@
   :PROPERTIES:
   :Captured: %U
   :Prev_Loc: %a
-  :END:" :clock-in t :clock-resume t)))
+  :END:" :clock-in t :clock-resume t)
+                   ("b" "Bookmark" entry
+                    (file+headline kc/notes-file "Bookmarks")
+                    "* %?\n:PROPERTIES:\n:Captured: %U\n:END:\n\n" :empty-lines 1))
+      org-clock-in-switch-to-state
+      (defun kc/clock-in-to-wip (kw)
+        "Switch from TODO to WIP when clocking in."
+        (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+          (cond
+           ((member (org-get-todo-state) (list "TODO"))
+            "WIP")
+           (t
+            kw)))))
   :general
   (kc/mode-leader-keys
     :keymaps 'org-mode-map
