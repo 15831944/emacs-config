@@ -599,6 +599,17 @@
   (message "Using Windows. :-(")
   (setq inhibit-compacting-font-caches t
         w32-pipe-read-delay 0)
+
+  (defvar request-looker-upper-path
+    "C:/Users/k.c.juntunen/opt/GetProject/Experimental.exe"
+    "The program that pulls in Projects/Phases/Tasks in Org format.")
+
+  (defun get-request-data (request-number)
+    "Insert Project/Phase/Task data into buffer in Org format."
+    (interactive "s")
+    (shell-command (format "%s %s"
+             request-looker-upper-path request-number)))
+
   (defun kc/copy-query-notes ()
     "Copy a query string to the clipboard for the `notes'
 table for the last hour."
@@ -621,8 +632,9 @@ table for the last hour."
                                                 (seconds-to-time (* 60 60 30)))
                                  "wall"))))
   (kc/leader-keys
-    "cqn" 'kc/copy-query-notes
-    "cqi" 'kc/copy-query-incidents)
+    "yqn" 'kc/copy-query-notes
+    "yqi" 'kc/copy-query-incidents
+    "ygr" 'get-request-data)
   (server-start))
 
 (defconst kc/after-init (current-time))
