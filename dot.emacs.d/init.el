@@ -591,54 +591,18 @@
     "SPC" 'helm-M-x
     "bd"  'kill-this-buffer
     "bb"  'helm-buffers-list)
+  :hook (org-mode . flyspell-mode)
   :config
+  (evil-normal-state)
   (evil-org-set-key-theme '(insert textobjects additional calendar))
   (evil-org-agenda-set-keys))
 
 (if not-win
-    (message "Using Linux! 😃")
-  (message "Using Windows. :-(")
-  (setq inhibit-compacting-font-caches t
-        w32-pipe-read-delay 0)
-
-  (defvar request-looker-upper-path
-    "C:/Users/k.c.juntunen/opt/GetProject/Experimental.exe"
-    "The program that pulls in Projects/Phases/Tasks in Org format.")
-
-  (defun get-request-data (request-number)
-    "Insert Project/Phase/Task data into buffer in Org format."
-    (interactive "s")
-    (shell-command (format "%s %s"
-             request-looker-upper-path request-number)))
-
-  (defun kc/copy-query-notes ()
-    "Copy a query string to the clipboard for the `notes'
-table for the last hour."
-    (interactive)
-    (w32-set-clipboard-data
-     (format "SELECT * FROM notes WHERE NoteDateTime > '%s' AND Tag1 LIKE '%%ATHOS%%'"
-             (format-time-string "%Y-%m-%d %H:%M:%S"
-                                 (time-subtract (current-time)
-                                                (seconds-to-time (* 60 60 30)))
-                                 "wall"))))
-
-  (defun kc/copy-query-incidents ()
-    "Copy a query string to the clipboard for the `incidents'
-table for the last hour."
-    (interactive)
-    (w32-set-clipboard-data
-     (format "SELECT * FROM incidents WHERE DateAdded > '%s' AND Resolved <> 'Y'"
-             (format-time-string "%Y-%m-%d %H:%M:%S"
-                                 (time-subtract (current-time)
-                                                (seconds-to-time (* 60 60 30)))
-                                 "wall"))))
-  (kc/leader-keys
-    "yqn" 'kc/copy-query-notes
-    "yqi" 'kc/copy-query-incidents
-    "ygr" 'get-request-data)
-  (server-start))
+    (load-file "~/.emacs.d/lin-init.el")
+  (load-file "~/.emacs.d/win-init.el"))
 
 (defconst kc/after-init (current-time))
+
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
                                             kc/emacs-start-time))))
@@ -648,8 +612,6 @@ table for the last hour."
                (let ((elapsed (float-time (time-subtract (current-time)
                                                          kc/emacs-start-time))))
                  (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))
-            t))
-
+                          ,load-file-name elapsed)))))
 (provide 'init)
 ;;; init.el ends here
