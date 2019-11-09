@@ -502,59 +502,68 @@
                 org-capture-templates
                 '(("t" "todo" entry
                    (file kc/refile-file)
-                   "* TODO %?
+                   "* TODO %?       :%^G:
   :PROPERTIES:
   :Captured: %U
-  :Prev_Loc: %a
+  :Client: %^{Client}
   :END:\n  SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
-                   :clock-in t :clock-resume t)
+                   :clock-in t :clock-resume t :prepend t)
                   ("p" "Phone call" entry
                    (file kc/refile-file)
                    "* PHONE %?
   :PROPERTIES:
   :Captured: %U
-  :Prev_Loc: %a
+  :Prev_Loc: %K
   :END:" :clock-in t :clock-resume t)
                   ("i" "Interuption" entry
                    (file kc/refile-file)
                    "* %?
   :PROPERTIES:
   :Captured: %U
-  :Prev_Loc: %a
-  :END:" :clock-in t :clock-resume t)
+  :Prev_Loc: %K
+  :END:
+#+begin_quote\n%x\n#+end_quote\n" :clock-in t :clock-resume t)
+                  ("s" "Source Note" entry
+                   (file kc/refile-file)
+                   "* %?
+  :PROPERTIES:
+  :Captured: %U
+  :Prev_Loc: %K
+  :END:
+#+begin_source %^{Language|conf|csharp|powershell|sgml|shell|sql}\n%x\n#+end_source\n" :clock-in t :clock-resume t)
                   ("j" "Journal" entry
                    (file+olp+datetree kc/diary-file)
                    "* %?
   :PROPERTIES:
   :Captured: %U
-  :Prev_Loc: %a
+  :Category: %^{Entry type|Bible|Note|Journal}
   :END:" :clock-in t :clock-resume t)
                   ("n" "Note" entry
                    (file kc/notes-file)
                    "* %? :NOTE:
   :PROPERTIES:
   :Captured: %U
-  :Prev_Loc: %a
+  :Prev_Loc: %K
   :END:" :clock-in t :clock-resume t)
                   ("m" "Meeting" entry
                    (file kc/notes-file)
                    "* MEETING %?
   :PROPERTIES:
   :Captured: %U
-  :Prev_Loc: %a
+  :Prev_Loc: %K
   :END:" :clock-in t :clock-resume t)
-                   ("b" "Bookmark" entry
-                    (file+headline kc/notes-file "Bookmarks")
-                    "* %?\n:PROPERTIES:\n:Captured: %U\n:END:\n\n" :empty-lines 1))
-      org-clock-in-switch-to-state
-      (defun kc/clock-in-to-wip (kw)
-        "Switch from TODO to WIP when clocking in."
-        (when (not (and (boundp 'org-capture-mode) org-capture-mode))
-          (cond
-           ((member (org-get-todo-state) (list "TODO"))
-            "WIP")
-           (t
-            kw)))))
+                  ("b" "Bookmark" entry
+                   (file+headline kc/notes-file "Bookmarks")
+                   "* %?\n:PROPERTIES:\n:Captured: %U\n:END:\n\n" :empty-lines 1))
+                org-clock-in-switch-to-state
+                (defun kc/clock-in-to-wip (kw)
+                  "Switch from TODO to WIP when clocking in."
+                  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+                    (cond
+                     ((member (org-get-todo-state) (list "TODO"))
+                      "WIP")
+                     (t
+                      kw)))))
   :general
   (kc/mode-leader-keys
     :keymaps 'org-mode-map
