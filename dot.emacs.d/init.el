@@ -101,6 +101,7 @@
   (fset 'yes-or-no-p 'y-or-n-p)
   (load-theme 'leuven t)
   :hook
+  (prog-mode . company-mode)
   (prog-mode . linum-mode)
   (prog-mode . whitespace-mode))
 
