@@ -105,6 +105,12 @@
   (prog-mode . linum-mode)
   (prog-mode . whitespace-mode))
 
+(use-package auctex
+  :config
+  (setq TeX-auto-save t
+  TeX-parse-self t)
+  (setq-default TeX-master nil))
+
 (use-package projectile
   :diminish (projectile-mode . "Πρ")
   :if not-win
