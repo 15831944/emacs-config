@@ -48,3 +48,4 @@ table for the last hour."
 
 (server-start)
 (provide 'win-init)
+;; win-init ends here

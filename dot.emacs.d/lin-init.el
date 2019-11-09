@@ -2,3 +2,4 @@
 (message "Using Linux! 😃")
 
 (provide 'lin-init)
+;; lin-init ends here
