@@ -1,3 +1,5 @@
+;; win-init.el --- Windows-specific configuration. -*- lexical-binding: t -*-
+;; Code:
 (message "Using Windows. :-(")
 (setq inhibit-compacting-font-caches t
       w32-pipe-read-delay 0)
@@ -28,8 +30,21 @@ table for the last hour."
                                (time-subtract (current-time)
                                               (seconds-to-time (* 60 60 30)))
                                "wall"))))
+(defvar request-looker-upper-path
+  "C:/Users/k.c.juntunen/opt/GetProject/Experimental.exe"
+  "The program that pulls in Projects/Phases/Tasks in Org format.")
+
+(defun kc/get-request-data (request-number)
+  "Insert Project/Phase/Task data into buffer in Org format."
+  (interactive "sRequestNbr: ")
+  (shell-command
+   (format "%s %s"
+           request-looker-upper-path request-number)))
+
 (kc/leader-keys
-  "cqn" 'kc/copy-query-notes
-  "cqi" 'kc/copy-query-incidents)
+  "yqn" 'kc/copy-query-notes
+  "yqi" 'kc/copy-query-incidents
+  "yrg" 'kc/get-request-data)
 
 (server-start)
+(provide 'win-init)
