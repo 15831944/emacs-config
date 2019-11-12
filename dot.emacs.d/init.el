@@ -95,6 +95,9 @@
                 whitespace-style '(face tabs empty trailing lines-tail)
                 custom-file (expand-file-name "~/.emacs.d/custom.el")
                 personal-file (expand-file-name "~/.emacs.d/personal.el")
+                initial-major-mode 'org-mode
+                initial-scratch-message
+                "#+title: Scratch buffer\n\n"
                 inhibit-startup-screen t)
   (whitespace-mode 1)
   (show-paren-mode 1)

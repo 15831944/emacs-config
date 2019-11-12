@@ -37,9 +37,9 @@ table for the last hour."
 (defun kc/get-request-data (request-number)
   "Insert Project/Phase/Task data into buffer in Org format."
   (interactive "sRequestNbr: ")
-  (shell-command
-   (format "%s %s"
-           request-looker-upper-path request-number)))
+  (shell-command-to-string
+   (insert (format "%s %s"
+                   request-looker-upper-path request-number))))
 
 (kc/leader-keys
   "yqn" 'kc/copy-query-notes
