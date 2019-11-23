@@ -31,14 +31,14 @@ table for the last hour."
                                               (seconds-to-time (* 60 60 30)))
                                "wall"))))
 (defvar request-looker-upper-path
-  "C:/Users/k.c.juntunen/opt/GetProject/Experimental.exe"
+  "D:/Source/C#-Production/Viewer/Experimental/bin/Debug/Experimental.exe"
   "The program that pulls in Projects/Phases/Tasks in Org format.")
 
 (defun kc/get-request-data (request-number)
   "Insert Project/Phase/Task data into buffer in Org format."
   (interactive "sRequestNbr: ")
-  (shell-command-to-string
-   (insert (format "%s %s"
+  (insert (shell-command-to-string
+           (format "%s %s"
                    request-looker-upper-path request-number))))
 
 (kc/leader-keys
