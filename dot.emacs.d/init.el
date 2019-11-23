@@ -103,10 +103,17 @@
   (show-paren-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (load-theme 'leuven t)
+  (load-file "~/.emacs.d/org-pretty-table.el")
   :hook
+  (kill-emacs . (lambda () (persistent-scratch-save)))
+  (org-mode . org-pretty-table-mode)
   (prog-mode . company-mode)
   (prog-mode . linum-mode)
   (prog-mode . whitespace-mode))
+
+(use-package persistent-scratch
+  :config
+  (persistent-scratch-autosave-mode t))
 
 (use-package auctex
   :config
@@ -621,6 +628,7 @@
                (let ((elapsed (float-time (time-subtract (current-time)
                                                          kc/emacs-start-time))))
                  (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))))
+                          ,load-file-name elapsed))
+               (persistent-scratch-restore))))
 (provide 'init)
 ;;; init.el ends here
