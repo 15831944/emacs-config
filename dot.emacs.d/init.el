@@ -514,8 +514,10 @@
                         ("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
                         ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
                 kc/refile-file (concat kc/agenda-dir "/refile.org")
-                kc/diary-file (concat org-directory "/diary.org")
-                kc/notes-file (concat org-directory "/notes.org")
+                kc/diary-file (if not-win (concat org-directory "/diary.org")
+                                "~/../../Dropbox/org/diary.org")
+                kc/notes-file (if not-win (concat org-directory "/notes.org")
+                                "~/../../Dropbox/org/notes.org")
                 org-capture-templates
                 '(("t" "todo" entry
                    (file kc/refile-file)
