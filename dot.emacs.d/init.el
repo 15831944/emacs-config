@@ -41,11 +41,7 @@
 (defvar not-win (eq system-type 'gnu/linux)
   "If NOT-WIN is non-nil, then we're not in MS-Windows.")
 
-(defvar kc/fixed-width-font (if not-win
-                                "Anka/Coder Condensed:style=Regular"
-                                ;; "Victor Mono Bold"
-                              "Anka/Coder Condensed:style=Regular") "Default monospace font.")
-
+(defvar kc/fixed-width-font "Anka/Coder Condensed-10:style=Regular" "Default monospace font.")
 (defvar kc/variable-pitch-font (if not-win
                                    "IBM Plex Serif Light"
                                  "Segoe UI") "Default variable pitch font.")
@@ -60,6 +56,7 @@
       package-archives '(("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
+
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -102,11 +99,9 @@
   (whitespace-mode 1)
   (show-paren-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
-  (load-theme 'leuven t)
-  (load-file "~/.emacs.d/org-pretty-table.el")
+  (load-theme 'spacemacs-dark t)
   :hook
   (kill-emacs . (lambda () (persistent-scratch-save)))
-  (org-mode . org-pretty-table-mode)
   (prog-mode . company-mode)
   (prog-mode . linum-mode)
   (prog-mode . whitespace-mode))
@@ -376,14 +371,16 @@
                   company-tooltip-limit           20
                   company-dabbrev-downcase        nil
                   company-tooltip-flip-when-above t
-                  company-backends                '((company-anaconda
-                                                     company-clang
-                                                     company-bbdb
-                                                     company-elisp
-                                                     company-lsp
-                                                     company-gtags
-                                                     company-yasnippet
-                                                     company-omnisharp))))
+                  company-backends                '(company-anaconda
+                                                    company-bbdb
+                                                    company-clang
+                                                    company-dabbrev-code
+                                                    company-elisp
+                                                    company-files
+                                                    company-gtags
+                                                    company-lsp
+                                                    company-omnisharp
+                                                    company-yasnippet)))
 
   (use-package omnisharp
     :diminish (omnisharp-mode . "⃝")
@@ -406,12 +403,9 @@
   :config
   (require 'hyperbole))
 
-;; (use-package org-bullets
-;;   :init
-;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
 (use-package evil-org
   :diminish evil-org-mode
+  :defines evil-normal-state
   :init
   (require 'evil-org)
   (require 'evil-org-agenda)
@@ -422,15 +416,6 @@
   :after magit
   :hook
   (magit-mode . evil-magit-init))
-
-(use-package org-variable-pitch
-  :if not-win
-  :hook
-  (org-mode . org-variable-pitch-minor-mode)
-  :config
-  (setq-default org-variable-pitch-fixed-font kc/fixed-width-font)
-  (set-face-attribute 'org-variable-pitch-face nil :family kc/fixed-width-font)
-  (set-face-attribute 'variable-pitch nil :family kc/variable-pitch-font))
 
 (use-package org-ref
   :if not-win
@@ -480,7 +465,7 @@
                 org-catch-invisible-edits 'smart
                 org-agenda-clockreport-parameter-plist
                 '(:link t :maxlevel 4 :fileskip0 t :formula %
-                        :properties ("Request" "Phase" "Task"))
+                        :properties ("Request" "Phase" "TaskNbr"))
                 org-deadline-warning-days 45
                 org-agenda-window-setup 'current-window
                 org-agenda-skip-scheduled-if-done t
@@ -514,10 +499,8 @@
                         ("WIP" ("WAITING") ("CANCELLED") ("HOLD"))
                         ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
                 kc/refile-file (concat kc/agenda-dir "/refile.org")
-                kc/diary-file (if not-win (concat org-directory "/diary.org")
-                                "~/../../Dropbox/org/diary.org")
-                kc/notes-file (if not-win (concat org-directory "/notes.org")
-                                "~/../../Dropbox/org/notes.org")
+                kc/diary-file (concat org-directory "/diary.org")
+                kc/notes-file (concat org-directory "/notes.org")
                 org-capture-templates
                 '(("t" "todo" entry
                    (file kc/refile-file)
@@ -609,11 +592,30 @@
     "SPC" 'helm-M-x
     "bd"  'kill-this-buffer
     "bb"  'helm-buffers-list)
-  :hook (org-mode . flyspell-mode)
+  :hook
+  (org-mode . flyspell-mode)
   :config
   (evil-normal-state)
   (evil-org-set-key-theme '(insert textobjects additional calendar))
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  (add-hook 'org-agenda-finalize-hook #'(lambda () (evil-normal-state))))
+
+  ;; (use-package org-msg
+  ;;   :defer nil
+  ;;   :config
+  ;;   (setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil"
+  ;;         org-msg-startup "hidestars indent inlineimages"
+  ;;         org-msg-greeting-fmt "\nHi %s,\n\n"
+  ;;         org-msg-greeting-fmt-mailto t
+  ;;         org-msg-signature "
+
+  ;; Thanks,
+
+  ;; ,#+begin_signature
+  ;; -- *K. C.* \\\\
+  ;; =juntunen.kc@gmail.com=
+  ;; ,#+end_signature")
+  ;;   (org-msg-mode))
 
 (if not-win
     (load-file "~/.emacs.d/lin-init.el")
