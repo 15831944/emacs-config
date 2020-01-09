@@ -90,7 +90,9 @@
                 auto-save-default nil
                 whitespace-line-column 80 ;; limit line length
                 whitespace-style '(face tabs empty trailing lines-tail)
-                custom-file (expand-file-name "~/.emacs.d/custom.el")
+                custom-file (if not-win
+                                (expand-file-name "~/.emacs.d/custom.el")
+                              (expand-file-name "~/../../OneDrive/custom.el"))
                 personal-file (expand-file-name "~/.emacs.d/personal.el")
                 initial-major-mode 'org-mode
                 initial-scratch-message
@@ -586,6 +588,7 @@
   (kc/mode-leader-keys
     :keymaps 'org-agenda-mode-map
     "l" 'org-agenda-log-mode
+    "r" 'org-agenda-clockreport-mode
     "TAB" '(switch-to-prev-buffer :which-key "find files")
     "ff"  'helm-find-files
     "fl"  'helm-locate
