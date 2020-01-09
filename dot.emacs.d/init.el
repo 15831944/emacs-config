@@ -467,7 +467,7 @@
                 org-catch-invisible-edits 'smart
                 org-agenda-clockreport-parameter-plist
                 '(:link t :maxlevel 4 :fileskip0 t :formula %
-                        :properties ("Request" "Phase" "TaskNbr"))
+                        :properties ("Request" "Phase" "Task"))
                 org-deadline-warning-days 45
                 org-agenda-window-setup 'current-window
                 org-agenda-skip-scheduled-if-done t
