@@ -27,29 +27,18 @@
 ;; seconds.
 
 ;;; Code:
-(defconst kc/emacs-start-time (current-time))
-
-(if (fboundp 'scroll-bar-mode)
-    (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode)
-    (tool-bar-mode -1))
-(if (fboundp 'tooltip-mode)
-    (tooltip-mode -1))
-(if (fboundp 'menu-bar-mode)
-    (menu-bar-mode -1))
 
 (defvar not-win (eq system-type 'gnu/linux)
   "If NOT-WIN is non-nil, then we're not in MS-Windows.")
 
-(defvar kc/fixed-width-font "Anka/Coder Condensed-10:style=Regular" "Default monospace font.")
 (defvar kc/variable-pitch-font (if not-win
                                    "IBM Plex Serif Light"
                                  "Segoe UI") "Default variable pitch font.")
 
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
-(add-to-list 'default-frame-alist (cons 'font
-                                        kc/fixed-width-font))
+;; (add-to-list 'default-frame-alist (cons 'font
+;;                                         kc/fixed-width-font))
 
 (require 'package)
 (setq package-enable-at-startup nil
@@ -197,7 +186,7 @@
     :non-normal-prefix "C-SPC"
     :prefix "SPC")
   (kc/leader-keys
-    "H"   '(hyperbole :which-key "∞ Hyperbole")
+    ;; "H"   '(hyperbole :which-key "∞ Hyperbole")
     "hdF" 'describe-face
     "hdk" 'helpful-key
     "hdf" 'helpful-function
@@ -400,6 +389,7 @@
   (prog-mode . smartparens-strict-mode))
 
 (use-package hyperbole
+  :if not-win
   :demand t
   :diminish hyperbole-mode
   :config
