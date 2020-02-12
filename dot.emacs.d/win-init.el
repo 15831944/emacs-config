@@ -9,6 +9,8 @@
       ispell-local-dictionary-alist
       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
 
+(load (expand-file-name "~/.emacs.d/york-mode.el"))
+
 (defun kc/copy-query-notes ()
   "Copy a query string to the clipboard for the `notes'
 table for the last hour."
@@ -44,7 +46,8 @@ table for the last hour."
 (kc/leader-keys
   "yqn" 'kc/copy-query-notes
   "yqi" 'kc/copy-query-incidents
-  "yrg" 'kc/get-request-data)
+  "yrg" 'kc/get-request-data
+  "yts" 'york-steep-tea)
 
 (server-start)
 (provide 'win-init)
